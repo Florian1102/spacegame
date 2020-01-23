@@ -14,20 +14,20 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BuildingHandler {
+public class SpaceshipBuildingHandler {
 
 	private final SpaceshipRepository spaceshipRepository;
 	private final SpaceshipStatsRepository spaceshipStatsRepository;
 
 	public boolean proofUpdatePossible(Spaceship spaceship) throws Exception {
 
-		Long spaceshipNewLvl = spaceship.getSpaceshipLvl() + 1;
+		int spaceshipNewLvl = spaceship.getSpaceshipLvl() + 1;
 
 		if (spaceship.getRemainingBuildingDuration() > 0) {
 			throw new Exception("Es wird schon etwas gebaut");
-		} else if (!spaceshipStatsRepository.existsById(spaceshipNewLvl)) {
+		} else if (!spaceshipStatsRepository.existsByLevel(spaceshipNewLvl)) {
 			throw new Exception("Du hast bereits die Maximalstufe erreicht");
-		} else if (spaceship.getIron() < spaceshipStatsRepository.findById(spaceshipNewLvl).get().getNecessaryIron()) {
+		} else if (spaceship.getMetal() < spaceshipStatsRepository.findByLevel(spaceshipNewLvl).getNecessaryMetal()) {
 			throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Raumschiff");
 		} else {
 			return true;
@@ -66,12 +66,12 @@ public class BuildingHandler {
 		return foundSpaceship;
 	}
 	
-	public SpaceshipStats getSpaceshipStatsOfNewLvl(Long currentSpaceshipLvl) throws Exception {
+	public SpaceshipStats getSpaceshipStatsOfNewLvl(int currentSpaceshipLvl) throws Exception {
 		currentSpaceshipLvl += 1;
-		if (!spaceshipStatsRepository.existsById(currentSpaceshipLvl)) {
+		if (!spaceshipStatsRepository.existsByLevel(currentSpaceshipLvl)) {
 			throw new Exception("Es sind zurzeit keine Informationen verfügbar");
 		}
-		SpaceshipStats spaceshipStatsWithLvl = spaceshipStatsRepository.findById(currentSpaceshipLvl).get();
+		SpaceshipStats spaceshipStatsWithLvl = spaceshipStatsRepository.findByLevel(currentSpaceshipLvl);
 		return spaceshipStatsWithLvl;
 	}
 }

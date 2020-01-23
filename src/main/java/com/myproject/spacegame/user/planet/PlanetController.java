@@ -71,10 +71,16 @@ public class PlanetController {
 		planet.setId(null);
 		Random random = new Random();
 		planet.setSize(100 + random.nextInt(200 - 100 + 1));
-		planet.setIron(500L);
-		planet.setIronMineLvl(0L);
-		planet.setIronProductionEveryHour(10L);
-		planet.setEnergy(0L);
+		planet.setMetal(500);
+		planet.setCrystal(500);
+		planet.setEnergy(0);
+		planet.setHydrogen(0);
+		planet.setMetalMineLvl(0);
+		planet.setCrystalMineLvl(0);
+		// TODO Hydrogen Mine und solarkraftwerk einsetzen
+		planet.setMetalProductionEveryHour(10);
+		planet.setCrystalProductionEveryHour(10);
+		planet.setHydrogenProductionEveryHour(0);
 		planet.setRemainingBuildingDuration(0L);
 		return planet;
 	}

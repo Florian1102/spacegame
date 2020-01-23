@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.user.technology.Technology;
 import com.myproject.spacegame.user.technology.TechnologyRepository;
-import com.myproject.spacegame.user.technology.technologyStats.EnergyTechnologyStatsRepository;
+import com.myproject.spacegame.user.technology.technologyStats.TechnologyStatsRepository;
+import com.myproject.spacegame.user.technology.technologyStats.NamesOfTechnologies;
 import com.myproject.spacegame.user.technology.technologyStats.TechnologyStats;
 
 import lombok.RequiredArgsConstructor;
@@ -21,17 +22,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TechnologyHandler {
 
-	private final EnergyTechnologyStatsRepository energyTechnologyStatsRepository;
+	private final TechnologyStatsRepository technologyStatsRepository;
 	private final TechnologyRepository technologyRepository;
 	
 	public boolean proofIncreasePossible(Technology technology) throws Exception {
-		Long newTechnologyLvl = technology.getEnergyTechnologyLvl() + 1;
+		int newTechnologyLvl = technology.getEnergyTechnologyLvl() + 1;
 		
 		if (technology.getRemainingIncreaseDuration() > 0) {
 			throw new Exception("Es wird schon etwas erforscht");
-		} else if (!energyTechnologyStatsRepository.existsById(newTechnologyLvl)) {
+		} else if (!technologyStatsRepository.existsByLevelAndNameOfTechnology(newTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase())) {
 			throw new Exception("Du hast bereits die Maximalstufe erreicht");
-		} else if (technology.getUser().getSpaceship().getIron() < energyTechnologyStatsRepository.findById(newTechnologyLvl).get().getNecessaryIron()) {
+		} else if (technology.getUser().getSpaceship().getMetal() < technologyStatsRepository.findByLevelAndNameOfTechnology(newTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase()).getNecessaryMetal()) {
 			throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Raumschiff");
 		} else {
 			return true;
@@ -74,12 +75,12 @@ public class TechnologyHandler {
 	
 	}
 	
-	public TechnologyStats getTechnologyStatsOfNewLvl(Long currentTechnologyLvl) throws Exception {
+	public TechnologyStats getTechnologyStatsOfNewLvl(int currentTechnologyLvl) throws Exception {
 		currentTechnologyLvl += 1;
-		if (!energyTechnologyStatsRepository.existsById(currentTechnologyLvl)) {
+		if (!technologyStatsRepository.existsByLevelAndNameOfTechnology(currentTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase())) {
 			throw new Exception("Es sind zurzeit keine Informationen verfügbar");
 		}
-		TechnologyStats technologyStatsWithLvl = energyTechnologyStatsRepository.findById(currentTechnologyLvl).get();
+		TechnologyStats technologyStatsWithLvl = technologyStatsRepository.findByLevelAndNameOfTechnology(currentTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase());
 		return technologyStatsWithLvl;
 	}
 }

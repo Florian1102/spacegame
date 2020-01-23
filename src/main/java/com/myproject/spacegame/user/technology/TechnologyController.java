@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,8 @@ import com.myproject.spacegame.user.technology.technologyService.TechnologyHandl
 
 import lombok.RequiredArgsConstructor;
 
-@RestController("/technology")
+@RestController
+@RequestMapping("/technology")
 @RequiredArgsConstructor
 public class TechnologyController {
 
@@ -37,7 +39,7 @@ public class TechnologyController {
 	}
 	
 	@PutMapping("/{id}/energy/levelup")
-	public ResponseEntity<?> levelUpenergyTechnology(@PathVariable Long id) {
+	public ResponseEntity<?> levelUpEnergyTechnology(@PathVariable Long id) {
 		if (!technologyRepository.existsById(id)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

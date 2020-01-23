@@ -31,12 +31,18 @@ public class Planet {
 	
 	private int size;
 	
-	private double iron;
-//	private int silver;
-	private Long energy;
+	private double metal;
+	private double crystal;
+	private double hydrogen;
+	private double energy;
 	
-	private Long ironMineLvl;
-	private double ironProductionEveryHour;
+	private int metalMineLvl;
+	private int crystalMineLvl;
+	// TODO Hydrogen Mine und solarkraftwerk einsetzen
+
+	private double metalProductionEveryHour;
+	private double crystalProductionEveryHour;
+	private double hydrogenProductionEveryHour;
 	
 	private Long remainingBuildingDuration;
 

@@ -14,16 +14,16 @@ public class SpaceshipRessourceHandler {
 	
 	private final SpaceshipRepository spaceshipRepository;
 	private final TechnologyHandler technologyHandler;
-	private final BuildingHandler buildingHandler;
+	private final SpaceshipBuildingHandler spaceshipBuildingHandler;
 
 	public Spaceship calculateNewSpaceshipRessources(Spaceship spaceship) throws Exception {
 
-		SpaceshipStats spaceshipStatsOfNewLvl = buildingHandler.getSpaceshipStatsOfNewLvl(spaceship.getSpaceshipLvl());
-		Long necessaryIron = spaceshipStatsOfNewLvl.getNecessaryIron();
-		if (spaceship.getIron() < necessaryIron) {
+		SpaceshipStats spaceshipStatsOfNewLvl = spaceshipBuildingHandler.getSpaceshipStatsOfNewLvl(spaceship.getSpaceshipLvl());
+		Long necessaryMetal = spaceshipStatsOfNewLvl.getNecessaryMetal();
+		if (spaceship.getMetal() < necessaryMetal) {
 			throw new Exception("Du hast nicht ausreichend Ressourcen");
 		} else {
-			spaceship.setIron(spaceship.getIron() - necessaryIron);
+			spaceship.setMetal(spaceship.getMetal() - necessaryMetal);
 			spaceship.setRemainingBuildingDuration(spaceshipStatsOfNewLvl.getBuildingDuration());
 			spaceshipRepository.save(spaceship);
 			return spaceship;
@@ -34,27 +34,31 @@ public class SpaceshipRessourceHandler {
 		
 		TechnologyStats technologyStatsOfNewLvl = technologyHandler.getTechnologyStatsOfNewLvl(technology.getEnergyTechnologyLvl());
 		
-		if (spaceship.getIron() < technologyStatsOfNewLvl.getNecessaryIron()) {
+		if (spaceship.getMetal() < technologyStatsOfNewLvl.getNecessaryMetal()) {
 			throw new Exception("Du hast nicht ausreichend Ressourcen");
 		} else {
-			spaceship.setIron(spaceship.getIron() - technologyStatsOfNewLvl.getNecessaryIron());
+			spaceship.setMetal(spaceship.getMetal() - technologyStatsOfNewLvl.getNecessaryMetal());
 			spaceshipRepository.save(spaceship);
 			System.out.println("Ressourcen neu berechnet");
 		}
 	}
 	
-	public void addRessources(Long id, Long iron, boolean addOrRemove) throws Exception {
+	public void addRessources(Long id, double metal, double crystal, double hydrogen, boolean addOrRemove) throws Exception {
 		if (!spaceshipRepository.existsById(id)) {
 			throw new Exception("Das Raumschiff existiert nicht");
 		} else {
 			Spaceship spaceshipFound = spaceshipRepository.findById(id).get();
 			if (addOrRemove) {
-				spaceshipFound.setIron(spaceshipFound.getIron() + iron);				
+				spaceshipFound.setMetal(spaceshipFound.getMetal() + metal);				
+				spaceshipFound.setCrystal(spaceshipFound.getCrystal() + crystal);				
+				spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() + hydrogen);				
 			} else {
-				if (spaceshipFound.getIron() <= iron) {
+				if (spaceshipFound.getMetal() <= metal || spaceshipFound.getCrystal() <= crystal || spaceshipFound.getHydrogen() <= hydrogen) {
 					throw new Exception("Du hast nicht ausreichend Ressourcen");
 				} else {
-					spaceshipFound.setIron(spaceshipFound.getIron() - iron);				
+					spaceshipFound.setMetal(spaceshipFound.getMetal() - metal);				
+					spaceshipFound.setCrystal(spaceshipFound.getCrystal() - crystal);				
+					spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() - hydrogen);				
 				}
 			}
 			spaceshipRepository.save(spaceshipFound);

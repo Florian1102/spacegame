@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.myproject.spacegame.services.GetStatsOfBuildings;
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.planet.PlanetRepository;
 
@@ -19,19 +20,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PlanetBuildingHandler {
 
-	private final IronMineStatsRepository ironMineStatsRepository;
+	private final GetStatsOfBuildings getStatsOfBuildings;
 	private final PlanetRepository planetRepository;
 	
 	public boolean proofBuildingPossible(Planet planet) throws Exception {
-		Long ironMineNewLvl = planet.getIronMineLvl() + 1;
 		
 		if (planet.getRemainingBuildingDuration() > 0) {
 			throw new Exception("Es wird schon etwas gebaut");
-		} else if (!ironMineStatsRepository.existsById(ironMineNewLvl)) {
+		} else if (!getStatsOfBuildings.existsNextBuildingLvl(planet.getMetalMineLvl(), NamesOfPlanetBuildings.METALMINE)) {
 			throw new Exception("Du hast bereits die Maximalstufe erreicht");
 		} else if (planet.getSize() < 1) {
 			throw new Exception("Du hast keinen Platz mehr auf dem Planeten");
-		} else if (planet.getIron() < ironMineStatsRepository.findById(ironMineNewLvl).get().getNecessaryIron()) {
+		} else if (planet.getMetal() < getSpecificPlanetBuildingStatsOfNewLvl(planet.getMetalMineLvl(), NamesOfPlanetBuildings.METALMINE).getNecessaryMetal()) {
 			throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Planeten");
 		} else {
 			return true;
@@ -49,7 +49,7 @@ public class PlanetBuildingHandler {
 				
 				return new ResponseEntity<>(planetWithFinishedBuilding, HttpStatus.OK);
 			}
-		}, getPlanetBuildingStatsOfNewLvl(planetWithUpdatedRessources.getIronMineLvl()).getBuildingDuration(), TimeUnit.SECONDS);
+		}, getSpecificPlanetBuildingStatsOfNewLvl(planetWithUpdatedRessources.getMetalMineLvl(), NamesOfPlanetBuildings.METALMINE).getBuildingDuration(), TimeUnit.SECONDS);
 		
 		executorService.shutdown();
 	}
@@ -59,9 +59,9 @@ public class PlanetBuildingHandler {
 			throw new Exception("Planet existiert nicht");
 		}
 		Planet foundPlanet = planetRepository.findById(id).get();
-		PlanetBuildingStats buildingStatsOfNewLvl = getPlanetBuildingStatsOfNewLvl(foundPlanet.getIronMineLvl());
-		foundPlanet.setIronMineLvl(buildingStatsOfNewLvl.getLevel());
-		foundPlanet.setIronProductionEveryHour(buildingStatsOfNewLvl.getProductionIron());
+		PlanetBuildingStats buildingStatsOfNewLvl = getSpecificPlanetBuildingStatsOfNewLvl(foundPlanet.getMetalMineLvl(), NamesOfPlanetBuildings.METALMINE);
+		foundPlanet.setMetalMineLvl(buildingStatsOfNewLvl.getLevel());
+		foundPlanet.setMetalProductionEveryHour(buildingStatsOfNewLvl.getProductionMetal());
 		foundPlanet.setSize(foundPlanet.getSize() - 1);
 		foundPlanet.setRemainingBuildingDuration(0L);
 		foundPlanet.setEnergy(foundPlanet.getEnergy() - buildingStatsOfNewLvl.getNecessaryEnergy());
@@ -70,13 +70,10 @@ public class PlanetBuildingHandler {
 		return foundPlanet;
 	}
 
-	public PlanetBuildingStats getPlanetBuildingStatsOfNewLvl(Long buildingLvl) throws Exception {
-		buildingLvl += 1;
-		if (!ironMineStatsRepository.existsById(buildingLvl)) {
-			throw new Exception("Es sind zurzeit keine Informationen verfügbar");
-		}
-		PlanetBuildingStats buildingStatsWithLvl = ironMineStatsRepository.findById(buildingLvl).get();
-		return buildingStatsWithLvl;
+	public PlanetBuildingStats getSpecificPlanetBuildingStatsOfNewLvl(int currentBuildingLvl, NamesOfPlanetBuildings nameOfBuilding) throws Exception {
+		
+		PlanetBuildingStats buildingStatsOfNextLvl = getStatsOfBuildings.getIronMineStatsOfNextLvl(currentBuildingLvl, nameOfBuilding);
+		return buildingStatsOfNextLvl;
 	}
 	
 }

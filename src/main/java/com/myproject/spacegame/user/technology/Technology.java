@@ -25,7 +25,7 @@ public class Technology {
 	@JsonBackReference
 	private User user;
 	
-	private Long energyTechnologyLvl = 0L;
+	private int energyTechnologyLvl = 0;
 	
 	private Long remainingIncreaseDuration = 0L;
 }

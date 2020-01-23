@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class SpaceshipController {
 
 	private final SpaceshipRepository spaceshipRepository;
-	private final BuildingHandler buildingHandler;
+	private final SpaceshipBuildingHandler spaceshipBuildingHandler;
 	private final SpaceshipRessourceHandler spaceshipRessourceHandler;
 
 	@GetMapping("/{id}")
@@ -48,11 +48,11 @@ public class SpaceshipController {
 		Spaceship spaceshipFound = spaceshipRepository.findById(id).get();
 
 		try {
-			if (!buildingHandler.proofUpdatePossible(spaceshipFound)) {
+			if (!spaceshipBuildingHandler.proofUpdatePossible(spaceshipFound)) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
 				Spaceship spaceshipWithUpdatedRessources = spaceshipRessourceHandler.calculateNewSpaceshipRessources(spaceshipFound);
-				buildingHandler.prepareBuidling(spaceshipWithUpdatedRessources);
+				spaceshipBuildingHandler.prepareBuidling(spaceshipWithUpdatedRessources);
 				return new ResponseEntity<>(HttpStatus.OK);
 
 			}

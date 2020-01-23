@@ -30,7 +30,13 @@ public class RessourceProduction {
 
 	public List<Planet> ressourceProductionEveryTenSecondsForAllPlanets() {
 		List<Planet> planets = planetRepository.findAll();
-		planets.stream().forEach(planet -> planet.setIron(planet.getIron() + (planet.getIronProductionEveryHour()/360)));
+		// TODO Nur wenn Energy positiv ist ansonsten weniger
+		
+		planets.stream().forEach(planet -> {
+			planet.setMetal(planet.getMetal() + (planet.getMetalProductionEveryHour()/360));
+			planet.setCrystal(planet.getCrystal() + (planet.getCrystalProductionEveryHour()/360));
+			planet.setCrystal(planet.getHydrogen() + (planet.getHydrogenProductionEveryHour()/360));
+		});
 	
 		return planets;
 	}

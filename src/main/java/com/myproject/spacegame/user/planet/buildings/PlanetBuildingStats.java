@@ -1,25 +1,35 @@
 package com.myproject.spacegame.user.planet.buildings;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@MappedSuperclass
-public abstract class PlanetBuildingStats {
+@Entity
+public class PlanetBuildingStats {
 
 	@Id
-	private Long level;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
-	private String name;
+	private int level;
 	
-	private Long necessaryIron;
+	private String nameOfBuilding;
+	
+	private Long necessaryMetal;
+	private Long necessaryCrystal;
+	private Long necessaryHydrogen;
 	private Long necessaryEnergy;
 	
-	private Long productionIron;
+	private double productionMetal;
+	private double productionCrystal;
+	private double productionHydrogen;
+	private double productionEnergy;
 	  
 	private Long buildingDuration;
 }

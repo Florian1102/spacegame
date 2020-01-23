@@ -1,25 +1,34 @@
 package com.myproject.spacegame.user.technology.technologyStats;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@MappedSuperclass
-public abstract class TechnologyStats {
+@Entity
+public class TechnologyStats {
 
 	@Id
-	private Long level;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private int level;
+	
+	private String nameOfTechnology;
 	
 	private String name;
 	
-	private Long necessaryIron;
+	private Long necessaryMetal;
+	private Long necessaryCrystal;
+	private Long necessaryHydrogen;
 	private Long necessaryEnergy;
 	
-// was bringt es
+// TODO Was bringt diese FOrschung integrieren
 	
 	private Long buildingDuration;
 }
