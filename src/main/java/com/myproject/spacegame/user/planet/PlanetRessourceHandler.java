@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class PlanetRessourceHandler {
 
 	private final IronMineStatsRepository ironMineStatsRepository;
+	private final PlanetRepository planetRepository;
 	
 	public Planet calculateNewPlanetRessources(Planet planet) {
 		long ironMineNewLvl = planet.getIronMineLvl() + 1;
@@ -19,6 +20,8 @@ public class PlanetRessourceHandler {
 		PlanetBuildingStats ironMineStatsOfLvl = ironMineStatsRepository.findById(ironMineNewLvl).get();
 		planet.setIron(planet.getIron() - ironMineStatsOfLvl.getNecessaryIron());
 		planet.setRemainingBuildingDuration(ironMineStatsOfLvl.getBuildingDuration());
+		planetRepository.save(planet);
+
 		System.out.println("Bau gestartet");
 		return planet;
 	}

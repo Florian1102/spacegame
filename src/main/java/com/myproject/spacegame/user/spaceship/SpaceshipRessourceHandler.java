@@ -2,34 +2,45 @@ package com.myproject.spacegame.user.spaceship;
 
 import org.springframework.stereotype.Service;
 
+import com.myproject.spacegame.user.technology.Technology;
+import com.myproject.spacegame.user.technology.technologyService.TechnologyHandler;
+import com.myproject.spacegame.user.technology.technologyStats.TechnologyStats;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class RessourceHandler {
+public class SpaceshipRessourceHandler {
 	
 	private final SpaceshipRepository spaceshipRepository;
-	private final SpaceshipStatsRepository spaceshipStatsRepository;
+	private final TechnologyHandler technologyHandler;
+	private final BuildingHandler buildingHandler;
 
 	public Spaceship calculateNewSpaceshipRessources(Spaceship spaceship) throws Exception {
 
-		SpaceshipStats spaceshipStatsOfNewLvl = getSpaceshipStatsOfNewLvl(spaceship.getSpaceshipLvl());
+		SpaceshipStats spaceshipStatsOfNewLvl = buildingHandler.getSpaceshipStatsOfNewLvl(spaceship.getSpaceshipLvl());
 		Long necessaryIron = spaceshipStatsOfNewLvl.getNecessaryIron();
 		if (spaceship.getIron() < necessaryIron) {
 			throw new Exception("Du hast nicht ausreichend Ressourcen");
 		} else {
 			spaceship.setIron(spaceship.getIron() - necessaryIron);
+			spaceship.setRemainingBuildingDuration(spaceshipStatsOfNewLvl.getBuildingDuration());
+			spaceshipRepository.save(spaceship);
 			return spaceship;
 		}
 	}
 	
-	public SpaceshipStats getSpaceshipStatsOfNewLvl(Long spaceshipLvl) throws Exception {
-		spaceshipLvl += 1;
-		if (!spaceshipStatsRepository.existsById(spaceshipLvl)) {
-			throw new Exception("Es sind zurzeit keine Informationen verfügbar");
+	public void calculateNewSpaceshipRessourcesTechnology(Spaceship spaceship, Technology technology) throws Exception {
+		
+		TechnologyStats technologyStatsOfNewLvl = technologyHandler.getTechnologyStatsOfNewLvl(technology.getEnergyTechnologyLvl());
+		
+		if (spaceship.getIron() < technologyStatsOfNewLvl.getNecessaryIron()) {
+			throw new Exception("Du hast nicht ausreichend Ressourcen");
+		} else {
+			spaceship.setIron(spaceship.getIron() - technologyStatsOfNewLvl.getNecessaryIron());
+			spaceshipRepository.save(spaceship);
+			System.out.println("Ressourcen neu berechnet");
 		}
-		SpaceshipStats spaceshipStatsWithLvl = spaceshipStatsRepository.findById(spaceshipLvl).get();
-		return spaceshipStatsWithLvl;
 	}
 	
 	public void addRessources(Long id, Long iron, boolean addOrRemove) throws Exception {

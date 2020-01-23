@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.spaceship.Spaceship;
+import com.myproject.spacegame.user.technology.Technology;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -44,6 +45,11 @@ public class User {
 	@JoinColumn(name = "spaceship_id")
 	@JsonManagedReference
 	private Spaceship spaceship;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "technology_id")
+	@JsonManagedReference
+	private Technology technology;
 	
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference

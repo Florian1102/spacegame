@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.spaceship.Spaceship;
+import com.myproject.spacegame.user.technology.Technology;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,6 +56,8 @@ public class UserController {
 		user.setPlanets(new ArrayList<Planet>());
 		Spaceship spaceship = new Spaceship();
 		user.setSpaceship(spaceship);
+		Technology technology = new Technology();
+		user.setTechnology(technology);
 		return userRepository.save(user);
 	}
 

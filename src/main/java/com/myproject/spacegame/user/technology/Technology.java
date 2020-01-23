@@ -1,4 +1,4 @@
-package com.myproject.spacegame.user.spaceship;
+package com.myproject.spacegame.user.technology;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,26 +15,17 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Spaceship {
+public class Technology {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne(mappedBy = "spaceship")
+	@OneToOne(mappedBy = "technology")
 	@JsonBackReference
 	private User user;
 	
-	private Long spaceshipLvl = 1L;
+	private Long energyTechnologyLvl = 0L;
 	
-	private Long attackPower = 100L;
-	private Long defense = 100L;
-	private Long speed = 100L;
-	private Long stockSize = 10000L;
-	
-	private double iron = 500;
-	private double silver = 500;
-	private double fuel = 0;
-	private Long remainingBuildingDuration = 0L;
-	
+	private Long remainingIncreaseDuration = 0L;
 }

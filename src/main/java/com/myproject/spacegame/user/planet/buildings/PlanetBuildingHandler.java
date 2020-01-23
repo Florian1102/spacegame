@@ -42,6 +42,7 @@ public class PlanetBuildingHandler {
 		
 		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 		
+		@SuppressWarnings("unused")
 		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
 			public Object call() throws Exception {
 				Planet planetWithFinishedBuilding = build(planetWithUpdatedRessources.getId());
@@ -50,7 +51,6 @@ public class PlanetBuildingHandler {
 			}
 		}, getPlanetBuildingStatsOfNewLvl(planetWithUpdatedRessources.getIronMineLvl()).getBuildingDuration(), TimeUnit.SECONDS);
 		
-		planetWithUpdatedRessources.setRemainingBuildingDuration(scheduledFuture.getDelay(TimeUnit.SECONDS));
 		executorService.shutdown();
 	}
 
@@ -64,7 +64,7 @@ public class PlanetBuildingHandler {
 		foundPlanet.setIronProductionEveryHour(buildingStatsOfNewLvl.getProductionIron());
 		foundPlanet.setSize(foundPlanet.getSize() - 1);
 		foundPlanet.setRemainingBuildingDuration(0L);
-		foundPlanet.setEnergy(foundPlanet.getEnergy() + buildingStatsOfNewLvl.getNecessaryEnergy());
+		foundPlanet.setEnergy(foundPlanet.getEnergy() - buildingStatsOfNewLvl.getNecessaryEnergy());
 		planetRepository.save(foundPlanet);
 		System.out.println("Bau Ende und gespeichert");
 		return foundPlanet;
@@ -78,4 +78,5 @@ public class PlanetBuildingHandler {
 		PlanetBuildingStats buildingStatsWithLvl = ironMineStatsRepository.findById(buildingLvl).get();
 		return buildingStatsWithLvl;
 	}
+	
 }

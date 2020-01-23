@@ -73,7 +73,7 @@ public class PlanetController {
 		planet.setSize(100 + random.nextInt(200 - 100 + 1));
 		planet.setIron(500L);
 		planet.setIronMineLvl(0L);
-		planet.setIronProductionEveryHour(0L);
+		planet.setIronProductionEveryHour(10L);
 		planet.setEnergy(0L);
 		planet.setRemainingBuildingDuration(0L);
 		return planet;
@@ -102,7 +102,6 @@ public class PlanetController {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
 				Planet planetWithUpdatedRessources = planetRessourceHandler.calculateNewPlanetRessources(planetFound);
-				planetRepository.save(planetWithUpdatedRessources);
 				planetBuildingHandler.prepareBuilding(planetWithUpdatedRessources);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
