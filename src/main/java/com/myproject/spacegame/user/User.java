@@ -17,8 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.myproject.spacegame.planet.Planet;
-import com.myproject.spacegame.spaceship.Spaceship;
+import com.myproject.spacegame.user.planet.Planet;
+import com.myproject.spacegame.user.spaceship.Spaceship;
 
 import lombok.Getter;
 import lombok.Setter;

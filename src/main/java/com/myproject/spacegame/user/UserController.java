@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.myproject.spacegame.planet.Planet;
-import com.myproject.spacegame.spaceship.Spaceship;
+import com.myproject.spacegame.user.planet.Planet;
+import com.myproject.spacegame.user.spaceship.Spaceship;
 
 import lombok.RequiredArgsConstructor;
 
