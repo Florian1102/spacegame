@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
 import com.myproject.spacegame.user.technology.Technology;
 import com.myproject.spacegame.user.technology.TechnologyRepository;
-import com.myproject.spacegame.user.technology.technologyStats.TechnologyStatsRepository;
 import com.myproject.spacegame.user.technology.technologyStats.NamesOfTechnologies;
 import com.myproject.spacegame.user.technology.technologyStats.TechnologyStats;
 
@@ -22,26 +22,32 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TechnologyHandler {
 
-	private final TechnologyStatsRepository technologyStatsRepository;
 	private final TechnologyRepository technologyRepository;
+	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 	
 	public boolean proofIncreasePossible(Technology technology) throws Exception {
-		int newTechnologyLvl = technology.getEnergyTechnologyLvl() + 1;
 		
 		if (technology.getRemainingIncreaseDuration() > 0) {
 			throw new Exception("Es wird schon etwas erforscht");
-		} else if (!technologyStatsRepository.existsByLevelAndNameOfTechnology(newTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase())) {
+		} else if (!getStatsOfBuildingsAndTechnologies.existsNextTechnologyLvl(technology.getEnergyTechnologyLvl(), NamesOfTechnologies.ENERGY)) {
 			throw new Exception("Du hast bereits die Maximalstufe erreicht");
-		} else if (technology.getUser().getSpaceship().getMetal() < technologyStatsRepository.findByLevelAndNameOfTechnology(newTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase()).getNecessaryMetal()) {
-			throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Raumschiff");
 		} else {
-			return true;
+			TechnologyStats technologyStatsOfNextLvl = getStatsOfBuildingsAndTechnologies.getTechnologyStatsOfNextLvl(technology.getEnergyTechnologyLvl(), NamesOfTechnologies.ENERGY);
+			if (technology.getUser().getSpaceship().getMetal() < technologyStatsOfNextLvl.getNecessaryMetal() ||
+				technology.getUser().getSpaceship().getCrystal() < technologyStatsOfNextLvl.getNecessaryCrystal() ||
+				technology.getUser().getSpaceship().getHydrogen() < technologyStatsOfNextLvl.getNecessaryHydrogen() ||
+				technology.getUser().getSpaceship().getEnergy() < technologyStatsOfNextLvl.getNecessaryEnergy()	) {
+				
+				throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Raumschiff");
+			} else {
+				return true;
+			}
 		}
 	}
 	
 	public void prepareBuilding(Technology technology) throws Exception {
 		
-		TechnologyStats technologyStatsOfNewLvl = getTechnologyStatsOfNewLvl(technology.getEnergyTechnologyLvl());
+		TechnologyStats technologyStatsOfNewLvl = getStatsOfBuildingsAndTechnologies.getTechnologyStatsOfNextLvl(technology.getEnergyTechnologyLvl(), NamesOfTechnologies.ENERGY);
 		technology.setRemainingIncreaseDuration(technologyStatsOfNewLvl.getBuildingDuration());
 		technologyRepository.save(technology);
 		
@@ -75,12 +81,12 @@ public class TechnologyHandler {
 	
 	}
 	
-	public TechnologyStats getTechnologyStatsOfNewLvl(int currentTechnologyLvl) throws Exception {
-		currentTechnologyLvl += 1;
-		if (!technologyStatsRepository.existsByLevelAndNameOfTechnology(currentTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase())) {
-			throw new Exception("Es sind zurzeit keine Informationen verfügbar");
-		}
-		TechnologyStats technologyStatsWithLvl = technologyStatsRepository.findByLevelAndNameOfTechnology(currentTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase());
-		return technologyStatsWithLvl;
-	}
+//	public TechnologyStats getTechnologyStatsOfNewLvl(int currentTechnologyLvl) throws Exception {
+//		currentTechnologyLvl += 1;
+//		if (!getexistsByLevelAndNameOfTechnology(currentTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase())) {
+//			throw new Exception("Es sind zurzeit keine Informationen verfügbar");
+//		}
+//		TechnologyStats technologyStatsWithLvl = technologyStatsRepository.findByLevelAndNameOfTechnology(currentTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase());
+//		return technologyStatsWithLvl;
+//	}
 }

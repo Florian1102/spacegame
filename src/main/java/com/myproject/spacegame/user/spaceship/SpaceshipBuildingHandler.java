@@ -21,16 +21,20 @@ public class SpaceshipBuildingHandler {
 
 	public boolean proofUpdatePossible(Spaceship spaceship) throws Exception {
 
-		int spaceshipNewLvl = spaceship.getSpaceshipLvl() + 1;
-
 		if (spaceship.getRemainingBuildingDuration() > 0) {
 			throw new Exception("Es wird schon etwas gebaut");
-		} else if (!spaceshipStatsRepository.existsByLevel(spaceshipNewLvl)) {
+		} else if (!spaceshipStatsRepository.existsByLevel(spaceship.getSpaceshipLvl())) {
 			throw new Exception("Du hast bereits die Maximalstufe erreicht");
-		} else if (spaceship.getMetal() < spaceshipStatsRepository.findByLevel(spaceshipNewLvl).getNecessaryMetal()) {
-			throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Raumschiff");
 		} else {
-			return true;
+			SpaceshipStats spaceshipStatsOfNextLvl = getSpaceshipStatsOfNewLvl(spaceship.getSpaceshipLvl());
+			if (spaceship.getMetal() < spaceshipStatsOfNextLvl.getNecessaryMetal()
+					|| spaceship.getCrystal() < spaceshipStatsOfNextLvl.getNecessaryCrystal()
+					|| spaceship.getHydrogen() < spaceshipStatsOfNextLvl.getNecessaryHydrogen()) {
+
+				throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Planeten");
+			} else {
+				return true;
+			}
 		}
 	}
 
@@ -43,8 +47,8 @@ public class SpaceshipBuildingHandler {
 				Spaceship buildedSpaceship = build(spaceshipWithUpdatedRessources.getId());
 				return new ResponseEntity<>(buildedSpaceship, HttpStatus.OK);
 			}
-		}, getSpaceshipStatsOfNewLvl(spaceshipWithUpdatedRessources.getSpaceshipLvl())
-				.getBuildingDuration(), TimeUnit.SECONDS);
+		}, getSpaceshipStatsOfNewLvl(spaceshipWithUpdatedRessources.getSpaceshipLvl()).getBuildingDuration(),
+				TimeUnit.SECONDS);
 		executorService.shutdown();
 	}
 
@@ -65,7 +69,7 @@ public class SpaceshipBuildingHandler {
 		System.out.println("Bau Ende und gespeichert");
 		return foundSpaceship;
 	}
-	
+
 	public SpaceshipStats getSpaceshipStatsOfNewLvl(int currentSpaceshipLvl) throws Exception {
 		currentSpaceshipLvl += 1;
 		if (!spaceshipStatsRepository.existsByLevel(currentSpaceshipLvl)) {

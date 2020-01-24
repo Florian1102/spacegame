@@ -2,7 +2,7 @@ package com.myproject.spacegame.user.planet;
 
 import org.springframework.stereotype.Service;
 
-import com.myproject.spacegame.services.GetStatsOfBuildings;
+import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
 import com.myproject.spacegame.user.planet.buildings.NamesOfPlanetBuildings;
 import com.myproject.spacegame.user.planet.buildings.PlanetBuildingStats;
 
@@ -13,11 +13,11 @@ import lombok.RequiredArgsConstructor;
 public class PlanetRessourceHandler {
 
 	private final PlanetRepository planetRepository;
-	private final GetStatsOfBuildings getStatsOfBuildings;
+	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 	
 	public Planet calculateNewPlanetRessources(Planet planet) {
 		
-		PlanetBuildingStats ironMineStatsOfNextLvl = getStatsOfBuildings.getIronMineStatsOfNextLvl(planet.getMetalMineLvl(), NamesOfPlanetBuildings.METALMINE);
+		PlanetBuildingStats ironMineStatsOfNextLvl = getStatsOfBuildingsAndTechnologies.getBuildingStatsOfNextLvl(planet.getMetalMineLvl(), NamesOfPlanetBuildings.METALMINE);
 		planet.setMetal(planet.getMetal() - ironMineStatsOfNextLvl.getNecessaryMetal());
 		planet.setCrystal(planet.getCrystal() - ironMineStatsOfNextLvl.getNecessaryCrystal());
 		planet.setHydrogen(planet.getHydrogen() - ironMineStatsOfNextLvl.getNecessaryHydrogen());

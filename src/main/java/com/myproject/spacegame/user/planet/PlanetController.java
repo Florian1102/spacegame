@@ -62,8 +62,8 @@ public class PlanetController {
 		if (planetRepository.countByUserId(planet.getUser().getId()) >= 3) {
 			throw new Exception("Du kannst keinen weiteren Planeten kolonisieren");
 		} else {
-			Planet setupedPlanet = setupPlanet(planet);
-			return setupedPlanet;
+			Planet setupPlanet = setupPlanet(planet);
+			return setupPlanet;
 		}
 	}
 

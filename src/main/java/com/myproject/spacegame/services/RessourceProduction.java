@@ -1,4 +1,4 @@
-package com.myproject.spacegame.user.planet;
+package com.myproject.spacegame.services;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -7,6 +7,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Service;
+
+import com.myproject.spacegame.user.planet.Planet;
+import com.myproject.spacegame.user.planet.PlanetRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +38,7 @@ public class RessourceProduction {
 		planets.stream().forEach(planet -> {
 			planet.setMetal(planet.getMetal() + (planet.getMetalProductionEveryHour()/360));
 			planet.setCrystal(planet.getCrystal() + (planet.getCrystalProductionEveryHour()/360));
-			planet.setCrystal(planet.getHydrogen() + (planet.getHydrogenProductionEveryHour()/360));
+			planet.setHydrogen(planet.getHydrogen() + (planet.getHydrogenProductionEveryHour()/360));
 		});
 	
 		return planets;
