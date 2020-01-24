@@ -38,27 +38,26 @@ public class SpaceshipBuildingHandler {
 		}
 	}
 
-	public void prepareBuidling(Spaceship spaceshipWithUpdatedRessources) throws Exception {
+	public void prepareBuidling(Spaceship spaceshipWithUpdatedRessources, SpaceshipStats spaceshipStatsOfNewLvl) throws Exception {
 		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
 		@SuppressWarnings("unused")
 		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
 			public Object call() throws Exception {
-				Spaceship buildedSpaceship = build(spaceshipWithUpdatedRessources.getId());
+				Spaceship buildedSpaceship = build(spaceshipWithUpdatedRessources.getId(), spaceshipStatsOfNewLvl);
 				return new ResponseEntity<>(buildedSpaceship, HttpStatus.OK);
 			}
-		}, getSpaceshipStatsOfNewLvl(spaceshipWithUpdatedRessources.getSpaceshipLvl()).getBuildingDuration(),
+		}, spaceshipStatsOfNewLvl.getBuildingDuration(),
 				TimeUnit.SECONDS);
 		executorService.shutdown();
 	}
 
-	public Spaceship build(Long id) throws Exception {
+	public Spaceship build(Long id, SpaceshipStats spaceshipStatsOfNewLvl) throws Exception {
 
 		if (!spaceshipRepository.existsById(id)) {
 			throw new Exception("Raumschiff existiert nicht");
 		}
 		Spaceship foundSpaceship = spaceshipRepository.findById(id).get();
-		SpaceshipStats spaceshipStatsOfNewLvl = getSpaceshipStatsOfNewLvl(foundSpaceship.getSpaceshipLvl());
 		foundSpaceship.setSpaceshipLvl(spaceshipStatsOfNewLvl.getLevel());
 		foundSpaceship.setAttackPower(spaceshipStatsOfNewLvl.getAttackPower());
 		foundSpaceship.setDefense(spaceshipStatsOfNewLvl.getDefense());

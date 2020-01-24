@@ -51,8 +51,8 @@ public class SpaceshipController {
 			if (!spaceshipBuildingHandler.proofUpdatePossible(spaceshipFound)) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
+				@SuppressWarnings("unused")
 				Spaceship spaceshipWithUpdatedRessources = spaceshipRessourceHandler.calculateNewSpaceshipRessources(spaceshipFound);
-				spaceshipBuildingHandler.prepareBuidling(spaceshipWithUpdatedRessources);
 				return new ResponseEntity<>(HttpStatus.OK);
 
 			}

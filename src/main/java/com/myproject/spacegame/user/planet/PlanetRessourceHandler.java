@@ -3,7 +3,6 @@ package com.myproject.spacegame.user.planet;
 import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
-import com.myproject.spacegame.user.planet.buildings.NamesOfPlanetBuildings;
 import com.myproject.spacegame.user.planet.buildings.PlanetBuildingHandler;
 import com.myproject.spacegame.user.planet.buildings.PlanetBuildingStats;
 
@@ -20,9 +19,9 @@ public class PlanetRessourceHandler {
 	public Planet calculateNewPlanetRessources(Planet planet, String nameOfBuilding) {
 		
 		try {
-			int lvlOfSpecificBuilding = getCurrentLvlOfSpecificBuilding(planet, nameOfBuilding);
+			int currentLvlOfSpecificBuilding = planetBuildingHandler.getCurrentLvlOfSpecificBuilding(planet, nameOfBuilding);
 			
-			PlanetBuildingStats specificBuildingStatsOfNextLvl = getStatsOfBuildingsAndTechnologies.getBuildingStatsOfNextLvl(lvlOfSpecificBuilding, nameOfBuilding);
+			PlanetBuildingStats specificBuildingStatsOfNextLvl = getStatsOfBuildingsAndTechnologies.getBuildingStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
 			planet.setMetal(planet.getMetal() - specificBuildingStatsOfNextLvl.getNecessaryMetal());
 			planet.setCrystal(planet.getCrystal() - specificBuildingStatsOfNextLvl.getNecessaryCrystal());
 			planet.setHydrogen(planet.getHydrogen() - specificBuildingStatsOfNextLvl.getNecessaryHydrogen());
@@ -41,18 +40,4 @@ public class PlanetRessourceHandler {
 		
 	}
 	
-	private int getCurrentLvlOfSpecificBuilding(Planet planet, String nameOfBuilding) throws Exception {
-		// TODO: Hier müssen alle Gebäude eingefügt werden
-		if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.METALMINE.toString())) {
-			return planet.getMetalMineLvl();
-		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.CRYSTALMINE.toString())) {
-			return planet.getCrystalMineLvl();
-		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.CRYSTALMINE.toString())) {
-			return planet.getCrystalMineLvl();
-		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.CRYSTALMINE.toString())) {
-			return planet.getCrystalMineLvl();
-		} else {
-			throw new Exception("Es liegen keine Informationen über das aktuelle Level des Gebäudes vor");
-		}
-	}
 }

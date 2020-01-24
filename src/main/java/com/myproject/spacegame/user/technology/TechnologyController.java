@@ -38,19 +38,18 @@ public class TechnologyController {
 		return ResponseEntity.of(technologyRepository.findById(id));
 	}
 	
-	@PutMapping("/{id}/energy/levelup")
-	public ResponseEntity<?> levelUpEnergyTechnology(@PathVariable Long id) {
-		if (!technologyRepository.existsById(id)) {
+	@PutMapping("/{technologyFromPlayerWithId}/{technologyName}/levelup")
+	public ResponseEntity<?> levelUpEnergyTechnology(@PathVariable Long technologyFromPlayerWithId, @PathVariable String technologyName) {
+		if (!technologyRepository.existsById(technologyFromPlayerWithId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		Technology foundTechnology = technologyRepository.findById(id).get();
+		Technology foundTechnology = technologyRepository.findById(technologyFromPlayerWithId).get();
 		try {
-			if (!technologyHandler.proofIncreasePossible(foundTechnology)) {
+			if (!technologyHandler.proofIncreasePossible(foundTechnology, technologyName)) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
-				spaceshipRessourceHandler.calculateNewSpaceshipRessourcesTechnology(foundTechnology.getUser().getSpaceship(), foundTechnology);
+				spaceshipRessourceHandler.calculateNewSpaceshipRessourcesTechnology(foundTechnology.getUser().getSpaceship(), foundTechnology, technologyName);
 				
-				technologyHandler.prepareBuilding(foundTechnology);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 		} catch (Exception e) {

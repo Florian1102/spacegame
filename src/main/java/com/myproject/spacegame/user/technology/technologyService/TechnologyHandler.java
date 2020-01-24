@@ -25,14 +25,17 @@ public class TechnologyHandler {
 	private final TechnologyRepository technologyRepository;
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 	
-	public boolean proofIncreasePossible(Technology technology) throws Exception {
+	public boolean proofIncreasePossible(Technology technology, String technologyName) throws Exception {
 		
 		if (technology.getRemainingIncreaseDuration() > 0) {
 			throw new Exception("Es wird schon etwas erforscht");
-		} else if (!getStatsOfBuildingsAndTechnologies.existsNextTechnologyLvl(technology.getEnergyTechnologyLvl(), NamesOfTechnologies.ENERGY)) {
+		} else if (!getStatsOfBuildingsAndTechnologies.existsTechnology(technologyName)) {
+			throw new Exception("Die Technologie existiert nicht");
+		} else if (!getStatsOfBuildingsAndTechnologies.existsNextTechnologyLvl(technology.getEnergyTechnologyLvl(), technologyName)) {
 			throw new Exception("Du hast bereits die Maximalstufe erreicht");
 		} else {
-			TechnologyStats technologyStatsOfNextLvl = getStatsOfBuildingsAndTechnologies.getTechnologyStatsOfNextLvl(technology.getEnergyTechnologyLvl(), NamesOfTechnologies.ENERGY);
+			int currentLvlOfSpecificTechnology = getCurrentLvlOfSpecificTechnology(technology, technologyName);
+			TechnologyStats technologyStatsOfNextLvl = getStatsOfBuildingsAndTechnologies.getTechnologyStatsOfNextLvl(currentLvlOfSpecificTechnology, technologyName);
 			if (technology.getUser().getSpaceship().getMetal() < technologyStatsOfNextLvl.getNecessaryMetal() ||
 				technology.getUser().getSpaceship().getCrystal() < technologyStatsOfNextLvl.getNecessaryCrystal() ||
 				technology.getUser().getSpaceship().getHydrogen() < technologyStatsOfNextLvl.getNecessaryHydrogen() ||
@@ -45,9 +48,18 @@ public class TechnologyHandler {
 		}
 	}
 	
-	public void prepareBuilding(Technology technology) throws Exception {
+	public int getCurrentLvlOfSpecificTechnology(Technology technology, String nameOfTechnology) throws Exception {
+		if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.ENERGY.toString())) {
+			return technology.getEnergyTechnologyLvl();
+			
+		//TODO: Um weitere Technologien ergänzen
+		} else {
+			throw new Exception("Es liegen keine Informationen über das aktuelle Level der Technologie vor");
+		}
+	}
+	
+	public void prepareBuilding(Technology technology, TechnologyStats technologyStatsOfNewLvl) throws Exception {
 		
-		TechnologyStats technologyStatsOfNewLvl = getStatsOfBuildingsAndTechnologies.getTechnologyStatsOfNextLvl(technology.getEnergyTechnologyLvl(), NamesOfTechnologies.ENERGY);
 		technology.setRemainingIncreaseDuration(technologyStatsOfNewLvl.getBuildingDuration());
 		technologyRepository.save(technology);
 		
@@ -56,7 +68,7 @@ public class TechnologyHandler {
 		@SuppressWarnings("unused")
 		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
 			public Object call() throws Exception {
-				Technology finishedTechnology = build(technology.getId());
+				Technology finishedTechnology = build(technology.getId(), technologyStatsOfNewLvl);
 				
 				return new ResponseEntity<>(finishedTechnology, HttpStatus.OK);
 			}
@@ -65,13 +77,14 @@ public class TechnologyHandler {
 		executorService.shutdown();
 	}
 
-	public Technology build(Long id) throws Exception {
+	public Technology build(Long id, TechnologyStats technologyStatsOfNewLvl) throws Exception {
 		if (!technologyRepository.existsById(id)) {
 			throw new Exception("Technologie existiert nicht");
 		}
 		Technology foundTechnology = technologyRepository.findById(id).get();
 		
-		foundTechnology.setEnergyTechnologyLvl(foundTechnology.getEnergyTechnologyLvl() + 1);
+		setSomeStatsDependentOnWhichTechnology(foundTechnology, technologyStatsOfNewLvl);
+		
 		foundTechnology.setRemainingIncreaseDuration(0L);
 		technologyRepository.save(foundTechnology);
 		// TODO Hier muss noch eingefügt werden, was durch die Forschung am Raumschiff oder Planeten verbessert wird. ZB GetRaumschiff, increase speed, save
@@ -80,13 +93,18 @@ public class TechnologyHandler {
 		return foundTechnology;
 	
 	}
-	
-//	public TechnologyStats getTechnologyStatsOfNewLvl(int currentTechnologyLvl) throws Exception {
-//		currentTechnologyLvl += 1;
-//		if (!getexistsByLevelAndNameOfTechnology(currentTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase())) {
-//			throw new Exception("Es sind zurzeit keine Informationen verfügbar");
-//		}
-//		TechnologyStats technologyStatsWithLvl = technologyStatsRepository.findByLevelAndNameOfTechnology(currentTechnologyLvl, NamesOfTechnologies.ENERGY.toString().toLowerCase());
-//		return technologyStatsWithLvl;
-//	}
+	private Technology setSomeStatsDependentOnWhichTechnology(Technology foundTechnology,
+			TechnologyStats technologyStatsOfNewLvl) throws Exception {
+
+		String nameOfTechnology = technologyStatsOfNewLvl.getNameOfTechnology();
+
+		if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.ENERGY.toString())) {
+			foundTechnology.setEnergyTechnologyLvl(technologyStatsOfNewLvl.getLevel());
+		// TODO: Hier müssen alle Forschungen eingefügt werden	
+		
+		} else {
+			throw new Exception("Das erhöhen des Gebäudelevels ist fehlgeschlagen");
+		}
+		return foundTechnology;
+	}
 }
