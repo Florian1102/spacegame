@@ -70,7 +70,8 @@ public class PlanetController {
 	public Planet setupPlanet(Planet planet) {
 		planet.setId(null);
 		Random random = new Random();
-		planet.setSize(100 + random.nextInt(200 - 100 + 1));
+		planet.setFields(100 + random.nextInt(200 - 100 + 1));
+		planet.setRemainingFields(planet.getFields());
 		planet.setMetal(500);
 		planet.setCrystal(500);
 		planet.setHydrogen(0);
@@ -82,9 +83,12 @@ public class PlanetController {
 		planet.setCrystalMineLvl(0);
 		planet.setHydrogenPlantLvl(0);
 		planet.setSolarPowerPlantLvl(0);
-		planet.setMetalStorehouseLvl(1);
-		planet.setCrystalStorehouseLvl(1);
-		planet.setHydrogenTankLvl(1);
+		planet.setMetalStorehouseLvl(0);
+		planet.setCrystalStorehouseLvl(0);
+		planet.setHydrogenTankLvl(0);
+		planet.setMetalStorehouse(10000);
+		planet.setCrystalStorehouse(10000);
+		planet.setHydrogenTank(1000);
 		planet.setCommandCentralLvl(1);
 		planet.setRemainingBuildingDuration(0L);
 		return planet;

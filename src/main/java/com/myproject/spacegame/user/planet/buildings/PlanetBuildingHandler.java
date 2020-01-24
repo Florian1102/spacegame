@@ -32,7 +32,7 @@ public class PlanetBuildingHandler {
 		} else if (!getStatsOfBuildingsAndTechnologies.existsNextBuildingLvl(planet.getMetalMineLvl(),
 				nameOfBuilding)) {
 			throw new Exception("Du hast bereits die Maximalstufe erreicht");
-		} else if (planet.getSize() < 1) {
+		} else if (planet.getRemainingFields() < 1) {
 			throw new Exception("Du hast keinen Platz mehr auf dem Planeten");
 		} else {
 			int currentLvlOfSpecificBuilding = getCurrentLvlOfSpecificBuilding(planet, nameOfBuilding);
@@ -97,7 +97,7 @@ public class PlanetBuildingHandler {
 
 		foundPlanet = setSomeStatsDependentOnWhichBuilding(foundPlanet, specificBuildingStatsOfNextLvl);
 
-		foundPlanet.setSize(foundPlanet.getSize() - 1);
+		foundPlanet.setRemainingFields(foundPlanet.getRemainingFields() - 1);
 		foundPlanet.setRemainingBuildingDuration(0L);
 		foundPlanet.setEnergy(foundPlanet.getEnergy() - specificBuildingStatsOfNextLvl.getNecessaryEnergy());
 
@@ -125,10 +125,13 @@ public class PlanetBuildingHandler {
 			foundPlanet.setEnergy(foundPlanet.getEnergy() + specificBuildingStatsOfNextLvl.getProductionEnergy());
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.METALSTOREHOUSE.toString())) {
 			foundPlanet.setMetalStorehouseLvl(specificBuildingStatsOfNextLvl.getLevel());
+			foundPlanet.setMetalStorehouse(specificBuildingStatsOfNextLvl.getMetalStorehouse());
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.CRYSTALSTOREHOUSE.toString())) {
 			foundPlanet.setCrystalStorehouseLvl(specificBuildingStatsOfNextLvl.getLevel());
+			foundPlanet.setCrystalStorehouse(specificBuildingStatsOfNextLvl.getCrystalStorehouse());
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.HYDROGENTANK.toString())) {
 			foundPlanet.setHydrogenTankLvl(specificBuildingStatsOfNextLvl.getLevel());
+			foundPlanet.setHydrogenTank(specificBuildingStatsOfNextLvl.getHydrogenTank());
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.COMMANDCENTRAL.toString())) {
 			foundPlanet.setCommandCentralLvl(specificBuildingStatsOfNextLvl.getLevel());
 		} else {

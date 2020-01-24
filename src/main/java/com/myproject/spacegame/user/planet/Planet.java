@@ -29,7 +29,8 @@ public class Planet {
 	@JsonBackReference
 	private User user;
 	
-	private int size;
+	private int fields;
+	private int remainingFields;
 	
 	private double metal;
 	private double crystal;
@@ -48,6 +49,10 @@ public class Planet {
 	private int metalStorehouseLvl;
 	private int crystalStorehouseLvl;
 	private int hydrogenTankLvl;
+	
+	private double metalStorehouse;
+	private double crystalStorehouse;
+	private double hydrogenTank;
 	
 	private int commandCentralLvl;
 	// TODO weiteres Gebäude um schneller bauen zu können

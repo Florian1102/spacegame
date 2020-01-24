@@ -30,6 +30,10 @@ public class PlanetBuildingStats {
 	private double productionCrystal;
 	private double productionHydrogen;
 	private double productionEnergy;
+	
+	private double metalStorehouse;
+	private double crystalStorehouse;
+	private double hydrogenTank;
 	  
 	private Long buildingDuration;
 }

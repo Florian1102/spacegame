@@ -25,7 +25,7 @@ public class Spaceship {
 	@JsonBackReference
 	private User user;
 	
-	private int spaceshipLvl = 0;
+	private int spaceshipLvl = 1;
 	
 	private Long attackPower = 100L;
 	private Long defense = 100L;
@@ -36,6 +36,13 @@ public class Spaceship {
 	private double crystal = 500;
 	private double hydrogen = 10;
 	private double energy = 0;
+	
+	private int metalStoreLvl;
+	private int crystalStoreLvl;
+	private int hydrogenTankLvl;
+	private double metalStore;
+	private double crystalStore;
+	private double hydrogenTank;
 	
 	private Long remainingBuildingDuration = 0L;
 	

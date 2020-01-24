@@ -38,7 +38,7 @@ public class User {
 	@Column(nullable = false)
 	private String username;
 	
-	private int points = 0;
+	private double points = 0;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "spaceship_id")
@@ -54,4 +54,5 @@ public class User {
 	@JsonManagedReference
 	private List<Planet> planets;
 	
+	private int daysLoggedIn;
 }
