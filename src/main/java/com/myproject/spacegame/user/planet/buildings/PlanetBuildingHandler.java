@@ -23,18 +23,20 @@ public class PlanetBuildingHandler {
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 	private final PlanetRepository planetRepository;
 
-	public boolean proofBuildingPossible(Planet planet) throws Exception {
+	public boolean proofBuildingPossible(Planet planet, String nameOfBuilding) throws Exception {
 
 		if (planet.getRemainingBuildingDuration() > 0) {
 			throw new Exception("Es wird schon etwas gebaut");
+		} else if (!getStatsOfBuildingsAndTechnologies.existsBuilding(nameOfBuilding)) {
+			throw new Exception("Das Gebäude existiert nicht");
 		} else if (!getStatsOfBuildingsAndTechnologies.existsNextBuildingLvl(planet.getMetalMineLvl(),
-				NamesOfPlanetBuildings.METALMINE)) {
+				nameOfBuilding)) {
 			throw new Exception("Du hast bereits die Maximalstufe erreicht");
 		} else if (planet.getSize() < 1) {
 			throw new Exception("Du hast keinen Platz mehr auf dem Planeten");
 		} else {
 			PlanetBuildingStats planetBuildingStatsOfNextLvl = getStatsOfBuildingsAndTechnologies
-					.getBuildingStatsOfNextLvl(planet.getMetalMineLvl(), NamesOfPlanetBuildings.METALMINE);
+					.getBuildingStatsOfNextLvl(planet.getMetalMineLvl(), nameOfBuilding);
 			if (planet.getMetal() < planetBuildingStatsOfNextLvl.getNecessaryMetal()
 					|| planet.getCrystal() < planetBuildingStatsOfNextLvl.getNecessaryCrystal()
 					|| planet.getHydrogen() < planetBuildingStatsOfNextLvl.getNecessaryHydrogen()) {
@@ -47,44 +49,70 @@ public class PlanetBuildingHandler {
 
 	}
 
-	public void prepareBuilding(Planet planetWithUpdatedRessources) throws Exception {
+	public void prepareBuilding(Planet planetWithUpdatedRessources, PlanetBuildingStats specificBuildingStatsOfNextLvl)
+			throws Exception {
 
 		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
 		@SuppressWarnings("unused")
 		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
 			public Object call() throws Exception {
-				Planet planetWithFinishedBuilding = build(planetWithUpdatedRessources.getId());
+				Planet planetWithFinishedBuilding = build(planetWithUpdatedRessources.getId(),
+						specificBuildingStatsOfNextLvl);
 
 				return new ResponseEntity<>(planetWithFinishedBuilding, HttpStatus.OK);
 			}
-		}, getStatsOfBuildingsAndTechnologies.getBuildingStatsOfNextLvl(planetWithUpdatedRessources.getMetalMineLvl(),
-				NamesOfPlanetBuildings.METALMINE).getBuildingDuration(), TimeUnit.SECONDS);
+		}, specificBuildingStatsOfNextLvl.getBuildingDuration(), TimeUnit.SECONDS);
 
 		executorService.shutdown();
 	}
 
-	public Planet build(Long id) throws Exception {
+	public Planet build(Long id, PlanetBuildingStats specificBuildingStatsOfNextLvl) throws Exception {
 		if (!planetRepository.existsById(id)) {
 			throw new Exception("Planet existiert nicht");
 		}
 		Planet foundPlanet = planetRepository.findById(id).get();
-		PlanetBuildingStats buildingStatsOfNewLvl = getStatsOfBuildingsAndTechnologies
-				.getBuildingStatsOfNextLvl(foundPlanet.getMetalMineLvl(), NamesOfPlanetBuildings.METALMINE);
-		foundPlanet.setMetalMineLvl(buildingStatsOfNewLvl.getLevel());
-		foundPlanet.setMetalProductionEveryHour(buildingStatsOfNewLvl.getProductionMetal());
+		
+		foundPlanet = setSomeStatsDependentOnWhichBuilding(foundPlanet, specificBuildingStatsOfNextLvl);
+
 		foundPlanet.setSize(foundPlanet.getSize() - 1);
 		foundPlanet.setRemainingBuildingDuration(0L);
-		foundPlanet.setEnergy(foundPlanet.getEnergy() - buildingStatsOfNewLvl.getNecessaryEnergy());
+		foundPlanet.setEnergy(foundPlanet.getEnergy() - specificBuildingStatsOfNextLvl.getNecessaryEnergy());
+		
 		planetRepository.save(foundPlanet);
 		System.out.println("Bau Ende und gespeichert");
 		return foundPlanet;
 	}
 
-//	public PlanetBuildingStats getSpecificPlanetBuildingStatsOfNewLvl(int currentBuildingLvl, NamesOfPlanetBuildings nameOfBuilding) throws Exception {
-//		
-//		PlanetBuildingStats buildingStatsOfNextLvl = getStatsOfBuildingsAndTechnologies.getBuildingStatsOfNextLvl(currentBuildingLvl, nameOfBuilding);
-//		return buildingStatsOfNextLvl;
-//	}
+	private Planet setSomeStatsDependentOnWhichBuilding(Planet foundPlanet,
+			PlanetBuildingStats specificBuildingStatsOfNextLvl) throws Exception {
+		
+		String nameOfBuilding = specificBuildingStatsOfNextLvl.getNameOfBuilding();
+		
+		if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.METALMINE.toString())) {
+			foundPlanet.setMetalMineLvl(specificBuildingStatsOfNextLvl.getLevel());
+			foundPlanet.setMetalProductionEveryHour(specificBuildingStatsOfNextLvl.getProductionMetal());
+		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.CRYSTALMINE.toString())) {
+			foundPlanet.setCrystalMineLvl(specificBuildingStatsOfNextLvl.getLevel());
+			foundPlanet.setCrystalProductionEveryHour(specificBuildingStatsOfNextLvl.getProductionCrystal());
+		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.HYDROGENPLANT.toString())) {
+			foundPlanet.setHydrogenPlantLvl(specificBuildingStatsOfNextLvl.getLevel());
+			foundPlanet.setHydrogenProductionEveryHour(specificBuildingStatsOfNextLvl.getProductionHydrogen());
+		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.SOLARPOWERPLANT.toString())) {
+			foundPlanet.setSolarPowerPlantLvl(specificBuildingStatsOfNextLvl.getLevel());
+			foundPlanet.setEnergy(foundPlanet.getEnergy() + specificBuildingStatsOfNextLvl.getProductionEnergy());
+		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.METALSTOREHOUSE.toString())) {
+			foundPlanet.setMetalStorehouseLvl(specificBuildingStatsOfNextLvl.getLevel());
+		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.CRYSTALSTOREHOUSE.toString())) {
+			foundPlanet.setCrystalStorehouseLvl(specificBuildingStatsOfNextLvl.getLevel());
+		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.HYDROGENTANK.toString())) {
+			foundPlanet.setHydrogenTankLvl(specificBuildingStatsOfNextLvl.getLevel());
+		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.COMMANDCENTRAL.toString())) {
+			foundPlanet.setCommandCentralLvl(specificBuildingStatsOfNextLvl.getLevel());
+		} else {
+			throw new Exception("Das erhöhen des Gebäudelevels ist fehlgeschlagen");
+		}
+		return foundPlanet;
+	}
 
 }

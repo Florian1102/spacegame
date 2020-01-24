@@ -48,9 +48,9 @@ public class PlanetController {
 	public ResponseEntity<?> create(@RequestBody @Valid Planet planet) {
 
 		try {
-			Planet setupedPlanet = proofUserPlanets(planet);
-			planetRepository.save(setupedPlanet);
-			return new ResponseEntity<>(setupedPlanet, HttpStatus.CREATED);
+			Planet setupPlanet = proofUserPlanets(planet);
+			planetRepository.save(setupPlanet);
+			return new ResponseEntity<>(setupPlanet, HttpStatus.CREATED);
 			
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -73,14 +73,19 @@ public class PlanetController {
 		planet.setSize(100 + random.nextInt(200 - 100 + 1));
 		planet.setMetal(500);
 		planet.setCrystal(500);
-		planet.setEnergy(0);
 		planet.setHydrogen(0);
-		planet.setMetalMineLvl(0);
-		planet.setCrystalMineLvl(0);
-		// TODO Hydrogen Mine und solarkraftwerk einsetzen
+		planet.setEnergy(0);
 		planet.setMetalProductionEveryHour(10);
 		planet.setCrystalProductionEveryHour(10);
 		planet.setHydrogenProductionEveryHour(0);
+		planet.setMetalMineLvl(0);
+		planet.setCrystalMineLvl(0);
+		planet.setHydrogenPlantLvl(0);
+		planet.setSolarPowerPlantLvl(0);
+		planet.setMetalStorehouseLvl(1);
+		planet.setCrystalStorehouseLvl(1);
+		planet.setHydrogenTankLvl(1);
+		planet.setCommandCentralLvl(1);
 		planet.setRemainingBuildingDuration(0L);
 		return planet;
 	}
@@ -97,18 +102,19 @@ public class PlanetController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PutMapping("/{id}/ironmine/levelup")
-	public ResponseEntity<?> levelUpIronMine(@PathVariable Long id) {
-		if (!planetRepository.existsById(id)) {
+	@PutMapping("/{planetId}/{nameOfBuilding}/levelup")
+	public ResponseEntity<?> levelUpIronMine(@PathVariable Long planetId, @PathVariable String nameOfBuilding) {
+		if (!planetRepository.existsById(planetId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		Planet planetFound = planetRepository.findById(id).get();
+		Planet planetFound = planetRepository.findById(planetId).get();
 		try {
-			if (!planetBuildingHandler.proofBuildingPossible(planetFound)) {
+			if (!planetBuildingHandler.proofBuildingPossible(planetFound, nameOfBuilding)) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
-				Planet planetWithUpdatedRessources = planetRessourceHandler.calculateNewPlanetRessources(planetFound);
-				planetBuildingHandler.prepareBuilding(planetWithUpdatedRessources);
+				
+				@SuppressWarnings("unused")
+				Planet planetWithUpdatedRessources = planetRessourceHandler.calculateNewPlanetRessources(planetFound, nameOfBuilding);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 		} catch (Exception e) {

@@ -18,32 +18,42 @@ public class GetStatsOfBuildingsAndTechnologies {
 	private final PlanetBuildingStatsRepository planetBuildingStatsRepository;
 	private final TechnologyStatsRepository technologyStatsRepository;
 
-	public PlanetBuildingStats getBuildingStatsOfNextLvl(int currentBuildingLvl, NamesOfPlanetBuildings nameOfBuilding) {
+	public PlanetBuildingStats getBuildingStatsOfNextLvl(int currentBuildingLvl, String nameOfBuilding) {
 		
 		int nextLvl = currentBuildingLvl + 1;
-		PlanetBuildingStats buildingStatsOfNextLvl = planetBuildingStatsRepository.findByLevelAndNameOfBuilding(nextLvl, nameOfBuilding.toString().toLowerCase());
+		PlanetBuildingStats buildingStatsOfNextLvl = planetBuildingStatsRepository.findByLevelAndNameOfBuilding(nextLvl, nameOfBuilding);
 		return buildingStatsOfNextLvl;
 	}
 	
-	public boolean existsNextBuildingLvl(int currentBuildingLvl, NamesOfPlanetBuildings nameOfBuilding) {
+	public boolean existsBuilding(String nameOfBuilding) {
+		
+		if (planetBuildingStatsRepository.existsByNameOfBuilding(nameOfBuilding)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean existsNextBuildingLvl(int currentBuildingLvl, String nameOfBuilding) {
 		int nextLvl = currentBuildingLvl + 1;
-		if (!planetBuildingStatsRepository.existsByLevelAndNameOfBuilding(nextLvl, nameOfBuilding.toString().toLowerCase())) {
+		
+		if (!planetBuildingStatsRepository.existsByLevelAndNameOfBuilding(nextLvl, nameOfBuilding)) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 	
-	public TechnologyStats getTechnologyStatsOfNextLvl(int currentTechnologyLvl, NamesOfTechnologies nameOfTechnology) {
+	public TechnologyStats getTechnologyStatsOfNextLvl(int currentTechnologyLvl, String nameOfTechnology) {
 		
 		int nextLvl = currentTechnologyLvl + 1;
-		TechnologyStats technologyStatsOfNextLvl = technologyStatsRepository.findByLevelAndNameOfTechnology(nextLvl, nameOfTechnology.toString().toLowerCase());
+		TechnologyStats technologyStatsOfNextLvl = technologyStatsRepository.findByLevelAndNameOfTechnology(nextLvl, nameOfTechnology);
 		return technologyStatsOfNextLvl;
 	}
 	
-	public boolean existsNextTechnologyLvl(int currentTechnologyLvl, NamesOfTechnologies nameOfTechnology) {
+	public boolean existsNextTechnologyLvl(int currentTechnologyLvl, String nameOfTechnology) {
 		int nextLvl = currentTechnologyLvl + 1;
-		if (!technologyStatsRepository.existsByLevelAndNameOfTechnology(nextLvl, nameOfTechnology.toString().toLowerCase())) {
+		if (!technologyStatsRepository.existsByLevelAndNameOfTechnology(nextLvl, nameOfTechnology)) {
 			return false;
 		} else {
 			return true;

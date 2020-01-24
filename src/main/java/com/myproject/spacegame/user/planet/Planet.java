@@ -36,13 +36,22 @@ public class Planet {
 	private double hydrogen;
 	private double energy;
 	
-	private int metalMineLvl;
-	private int crystalMineLvl;
-	// TODO Hydrogen Mine und solarkraftwerk einsetzen
-
 	private double metalProductionEveryHour;
 	private double crystalProductionEveryHour;
 	private double hydrogenProductionEveryHour;
+	
+	private int metalMineLvl;
+	private int crystalMineLvl;
+	private int hydrogenPlantLvl;
+	private int solarPowerPlantLvl;
+	
+	private int metalStorehouseLvl;
+	private int crystalStorehouseLvl;
+	private int hydrogenTankLvl;
+	
+	private int commandCentralLvl;
+	// TODO weiteres Gebäude um schneller bauen zu können
+
 	
 	private Long remainingBuildingDuration;
 

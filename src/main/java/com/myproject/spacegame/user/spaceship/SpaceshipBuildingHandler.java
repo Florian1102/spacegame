@@ -23,7 +23,7 @@ public class SpaceshipBuildingHandler {
 
 		if (spaceship.getRemainingBuildingDuration() > 0) {
 			throw new Exception("Es wird schon etwas gebaut");
-		} else if (!spaceshipStatsRepository.existsByLevel(spaceship.getSpaceshipLvl())) {
+		} else if (!spaceshipStatsRepository.existsByLevel(spaceship.getSpaceshipLvl() + 1)) {
 			throw new Exception("Du hast bereits die Maximalstufe erreicht");
 		} else {
 			SpaceshipStats spaceshipStatsOfNextLvl = getSpaceshipStatsOfNewLvl(spaceship.getSpaceshipLvl());
