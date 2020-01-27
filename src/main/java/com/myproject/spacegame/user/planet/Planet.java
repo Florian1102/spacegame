@@ -55,6 +55,7 @@ public class Planet {
 	private double hydrogenTank;
 	
 	private int commandCentralLvl;
+	private int buildingTimeReduction;
 	// TODO weiteres Gebäude um schneller bauen zu können
 
 	

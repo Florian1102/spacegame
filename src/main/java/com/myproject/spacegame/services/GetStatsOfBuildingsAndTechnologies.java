@@ -68,5 +68,7 @@ public class GetStatsOfBuildingsAndTechnologies {
 			return true;
 		}
 	}
+	
+	
 
 }
