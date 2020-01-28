@@ -25,26 +25,35 @@ public class RessourceProduction {
 
 			@Override
 			public void run() {
-				List<Planet> updatedPlanets = ressourceProductionEveryTenSecondsForAllPlanets();
+				List<Planet> updatedPlanets = ressourceProductionForAllPlanets();
 				planetRepository.saveAll(updatedPlanets);
-//				System.out.println("Ressources updated");
 			}
 		}, 10, 10, TimeUnit.SECONDS);
 
-	public List<Planet> ressourceProductionEveryTenSecondsForAllPlanets() {
+	public List<Planet> ressourceProductionForAllPlanets() {
 		List<Planet> planets = planetRepository.findAll();
-		// TODO Nur wenn Energy positiv ist ansonsten weniger
-		System.out.println("Produktion");
+		
 		planets.stream().forEach(planet -> {
-			if (planet.getMetal() <= planet.getMetalStorehouse()) {
-				System.out.println("Prod Metal");
-				planet.setMetal(planet.getMetal() + (planet.getMetalProductionEveryHour()/360));
-			}
-			if (planet.getCrystal() <= planet.getCrystalStorehouse()) {
-				planet.setCrystal(planet.getCrystal() + (planet.getCrystalProductionEveryHour()/360));
-			}
-			if (planet.getHydrogen() <= planet.getHydrogenTank()) {
-				planet.setHydrogen(planet.getHydrogen() + (planet.getHydrogenProductionEveryHour()/360));
+			if (planet.getEnergy() >= 0) {
+				if (planet.getMetal() <= planet.getMetalStorehouse()) {
+					planet.setMetal(planet.getMetal() + (planet.getMetalProductionEveryHour()/360));
+				}
+				if (planet.getCrystal() <= planet.getCrystalStorehouse()) {
+					planet.setCrystal(planet.getCrystal() + (planet.getCrystalProductionEveryHour()/360));
+				}
+				if (planet.getHydrogen() <= planet.getHydrogenTank()) {
+					planet.setHydrogen(planet.getHydrogen() + (planet.getHydrogenProductionEveryHour()/360));
+				}
+			} else {
+				if (planet.getMetal() <= planet.getMetalStorehouse()) {
+					planet.setMetal(planet.getMetal() + (planet.getMetalProductionEveryHour()/360/2));
+				}
+				if (planet.getCrystal() <= planet.getCrystalStorehouse()) {
+					planet.setCrystal(planet.getCrystal() + (planet.getCrystalProductionEveryHour()/360/2));
+				}
+				if (planet.getHydrogen() <= planet.getHydrogenTank()) {
+					planet.setHydrogen(planet.getHydrogen() + (planet.getHydrogenProductionEveryHour()/360/2));
+				}
 			}
 		});
 	

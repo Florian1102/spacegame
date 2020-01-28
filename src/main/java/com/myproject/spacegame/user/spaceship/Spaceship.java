@@ -30,7 +30,6 @@ public class Spaceship {
 	private Long attackPower = 100L;
 	private Long defense = 100L;
 	private Long speed = 100L;
-	private Long stockSize = 10000L;
 	
 	private double metal = 500;
 	private double crystal = 500;

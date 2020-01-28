@@ -86,8 +86,8 @@ public class PlanetController {
 		planet.setMetalStorehouseLvl(0);
 		planet.setCrystalStorehouseLvl(0);
 		planet.setHydrogenTankLvl(0);
-		planet.setMetalStorehouse(10000);
-		planet.setCrystalStorehouse(10000);
+		planet.setMetalStorehouse(5000);
+		planet.setCrystalStorehouse(5000);
 		planet.setHydrogenTank(1000);
 		planet.setCommandCentralLvl(1);
 		planet.setRemainingBuildingDuration(0L);

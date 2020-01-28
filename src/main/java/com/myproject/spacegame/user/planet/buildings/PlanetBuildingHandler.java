@@ -55,17 +55,17 @@ public class PlanetBuildingHandler {
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.CRYSTALMINE.toString())) {
 			return planet.getCrystalMineLvl();
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.HYDROGENPLANT.toString())) {
-			return planet.getCrystalMineLvl();
+			return planet.getHydrogenPlantLvl();
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.SOLARPOWERPLANT.toString())) {
-			return planet.getCrystalMineLvl();
+			return planet.getSolarPowerPlantLvl();
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.METALSTOREHOUSE.toString())) {
-			return planet.getCrystalMineLvl();
+			return planet.getMetalStorehouseLvl();
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.CRYSTALSTOREHOUSE.toString())) {
-			return planet.getCrystalMineLvl();
+			return planet.getCrystalStorehouseLvl();
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.HYDROGENTANK.toString())) {
-			return planet.getCrystalMineLvl();
+			return planet.getHydrogenTankLvl();
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.COMMANDCENTRAL.toString())) {
-			return planet.getCrystalMineLvl();
+			return planet.getCommandCentralLvl();
 		} else {
 			throw new Exception("Es liegen keine Informationen über das aktuelle Level des Gebäudes vor");
 		}
@@ -84,7 +84,7 @@ public class PlanetBuildingHandler {
 
 				return new ResponseEntity<>(planetWithFinishedBuilding, HttpStatus.OK);
 			}
-		}, specificBuildingStatsOfNextLvl.getBuildingDuration(), TimeUnit.SECONDS);
+		}, (long) (specificBuildingStatsOfNextLvl.getBuildingDuration()*(Math.pow(0.6, planetWithUpdatedRessources.getCommandCentralLvl()-1))), TimeUnit.SECONDS);
 
 		executorService.shutdown();
 	}
@@ -102,7 +102,6 @@ public class PlanetBuildingHandler {
 		foundPlanet.setEnergy(foundPlanet.getEnergy() - specificBuildingStatsOfNextLvl.getNecessaryEnergy());
 
 		planetRepository.save(foundPlanet);
-		System.out.println("Bau Ende und gespeichert");
 		return foundPlanet;
 	}
 

@@ -26,11 +26,10 @@ public class PlanetRessourceHandler {
 			planet.setCrystal(planet.getCrystal() - specificBuildingStatsOfNextLvl.getNecessaryCrystal());
 			planet.setHydrogen(planet.getHydrogen() - specificBuildingStatsOfNextLvl.getNecessaryHydrogen());
 			
-			planet.setRemainingBuildingDuration(specificBuildingStatsOfNextLvl.getBuildingDuration());
+			planet.setRemainingBuildingDuration((long) (specificBuildingStatsOfNextLvl.getBuildingDuration()*(Math.pow(0.5, planet.getCommandCentralLvl()-1))));
 			planetRepository.save(planet);
 			
 			planetBuildingHandler.prepareBuilding(planet, specificBuildingStatsOfNextLvl);
-			System.out.println("Bau gestartet");
 			return planet;
 			
 		} catch (Exception e) {
