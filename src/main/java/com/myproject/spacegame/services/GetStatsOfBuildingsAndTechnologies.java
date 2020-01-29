@@ -3,9 +3,7 @@ package com.myproject.spacegame.services;
 import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.user.planet.buildings.BuildingStats;
-import com.myproject.spacegame.user.planet.buildings.PlanetBuildingStatsRepository;
-import com.myproject.spacegame.user.technology.technologyStats.TechnologyStats;
-import com.myproject.spacegame.user.technology.technologyStats.TechnologyStatsRepository;
+import com.myproject.spacegame.user.planet.buildings.BuildingStatsRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,68 +11,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GetStatsOfBuildingsAndTechnologies {
 
-	private final PlanetBuildingStatsRepository planetBuildingStatsRepository;
-//	private final TechnologyStatsRepository technologyStatsRepository;
+	private final BuildingStatsRepository buildingStatsRepository;
 
-	public BuildingStats getBuildingStatsOfNextLvl(int currentBuildingLvl, String nameOfBuilding) throws Exception {
+	public BuildingStats getBuildingOrTechnologyStatsOfNextLvl(int currentBuildingOrTechnologyLvl, String nameOfBuildingOrTechnology) throws Exception {
 
-		int nextLvl = currentBuildingLvl + 1;
-		if (!planetBuildingStatsRepository.existsByNameOfBuilding(nameOfBuilding)) {
+		int nextLvl = currentBuildingOrTechnologyLvl + 1;
+		if (!buildingStatsRepository.existsByNameOfBuildingOTechnology(nameOfBuildingOrTechnology)) {
 			throw new Exception("Das Gebäude existiert nicht.");
-		} else if (!planetBuildingStatsRepository.existsByLevelAndNameOfBuilding(nextLvl, nameOfBuilding)) {
+		} else if (!buildingStatsRepository.existsByLevelAndNameOfBuildingOTechnology(nextLvl, nameOfBuildingOrTechnology)) {
 			throw new Exception("Du hast das Maximallevel bereits erreicht");
 		} else {
-			BuildingStats buildingStatsOfNextLvl = planetBuildingStatsRepository.findByLevelAndNameOfBuilding(nextLvl,
-					nameOfBuilding);
+			BuildingStats buildingStatsOfNextLvl = buildingStatsRepository.findByLevelAndNameOfBuildingOTechnology(nextLvl,
+					nameOfBuildingOrTechnology);
 			return buildingStatsOfNextLvl;
 		}
 	}
-
-//	public boolean existsBuilding(String nameOfBuilding) {
-//
-//		if (!planetBuildingStatsRepository.existsByNameOfBuilding(nameOfBuilding)) {
-//			return true;
-//		} else {
-//			return true;
-//		}
-//	}
-//
-//	public boolean existsNextBuildingLvl(int currentBuildingLvl, String nameOfBuilding) {
-//		int nextLvl = currentBuildingLvl + 1;
-//
-//		if (!planetBuildingStatsRepository.existsByLevelAndNameOfBuilding(nextLvl, nameOfBuilding)) {
-//			return false;
-//		} else {
-//			return true;
-//		}
-//	}
-//
-//	public TechnologyStats getTechnologyStatsOfNextLvl(int currentTechnologyLvl, String nameOfTechnology) {
-//
-//		int nextLvl = currentTechnologyLvl + 1;
-//		TechnologyStats technologyStatsOfNextLvl = technologyStatsRepository.findByLevelAndNameOfTechnology(nextLvl,
-//				nameOfTechnology);
-//		return technologyStatsOfNextLvl;
-//	}
-//
-//	public boolean existsTechnology(String nameOTechnology) {
-//
-//		if (technologyStatsRepository.existsByNameOfTechnology(nameOTechnology)) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
-//
-//	public boolean existsNextTechnologyLvl(int currentTechnologyLvl, String nameOfTechnology) {
-//		int nextLvl = currentTechnologyLvl + 1;
-//		if (!technologyStatsRepository.existsByLevelAndNameOfTechnology(nextLvl, nameOfTechnology)) {
-//			return false;
-//		} else {
-//			return true;
-//		}
-//	}
-//	
-	
-
 }

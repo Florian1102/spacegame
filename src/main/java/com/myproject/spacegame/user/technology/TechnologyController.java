@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.myproject.spacegame.user.technology.technologyService.TechnologyHandler;
+import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
+import com.myproject.spacegame.user.planet.RessourceHandler;
+import com.myproject.spacegame.user.planet.buildings.BuildingStats;
+import com.myproject.spacegame.user.spaceship.Spaceship;
+import com.myproject.spacegame.user.spaceship.SpaceshipRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +25,10 @@ import lombok.RequiredArgsConstructor;
 public class TechnologyController {
 
 	private final TechnologyRepository technologyRepository;
-	private final TechnologyHandler technologyHandler;
+	private final TechnologyResearchHandler technologyResearchHandler;
+	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
+	private final RessourceHandler ressourceHandler;
+	private final SpaceshipRepository spaceshipRepository;
 	
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -36,22 +43,41 @@ public class TechnologyController {
 		return ResponseEntity.of(technologyRepository.findById(id));
 	}
 	
-//	@PutMapping("/{technologyFromPlayerWithId}/{technologyName}/levelup")
-//	public ResponseEntity<?> levelUpEnergyTechnology(@PathVariable Long technologyFromPlayerWithId, @PathVariable String technologyName) {
-//		if (!technologyRepository.existsById(technologyFromPlayerWithId)) {
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//		Technology foundTechnology = technologyRepository.findById(technologyFromPlayerWithId).get();
-//		try {
-//			if (!technologyHandler.proofIncreasePossible(foundTechnology, technologyName)) {
-//				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//			} else {
-//				spaceshipRessourceHandler.calculateNewSpaceshipRessourcesTechnology(foundTechnology.getUser().getSpaceship(), foundTechnology, technologyName);
-//				
-//				return new ResponseEntity<>(HttpStatus.OK);
-//			}
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//		}
-//	}
+	@PutMapping("/{technologyFromPlayerWithId}/{technologyName}/research")
+	public ResponseEntity<?> researchTechnology(@PathVariable Long technologyFromPlayerWithId, @PathVariable String technologyName) {
+		if (!technologyRepository.existsById(technologyFromPlayerWithId)) {
+			return new ResponseEntity<>("Technologie des Spielers nicht gefunden", HttpStatus.NOT_FOUND);
+		}
+		Technology technologyFound = technologyRepository.findById(technologyFromPlayerWithId).get();
+		if (!spaceshipRepository.existsById(technologyFound.getUser().getSpaceship().getId())) {
+			return new ResponseEntity<>("Raumschiff des Spieler nicht gefunden", HttpStatus.NOT_FOUND);
+		}
+		Spaceship spaceshipOfPlayer = technologyFound.getUser().getSpaceship();
+		try {
+			System.out.println("Test1");
+			if (!technologyResearchHandler.proofBuildPossible(spaceshipOfPlayer)) {
+				System.out.println("Test2");
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			} else {
+				System.out.println("Test3");
+				int currentLvlOfSpecificTechnology = technologyResearchHandler.getCurrentLvlOfSpecificTechnology(technologyFound,
+						technologyName);
+				BuildingStats statsOfTechnologyNextLvl = getStatsOfBuildingsAndTechnologies
+						.getBuildingOrTechnologyStatsOfNextLvl(currentLvlOfSpecificTechnology, technologyName);
+				Spaceship spaceshipWithUpdatedRessources = ressourceHandler.calculateNewSpaceshipRessources(spaceshipOfPlayer,
+						statsOfTechnologyNextLvl.getNecessaryMetal(), statsOfTechnologyNextLvl.getNecessaryCrystal(),
+						statsOfTechnologyNextLvl.getNecessaryHydrogen(), statsOfTechnologyNextLvl.getNecessaryEnergy());
+				
+				spaceshipWithUpdatedRessources.setRemainingResearchDuration((long) (statsOfTechnologyNextLvl.getBuildingOrResearchDuration() * spaceshipWithUpdatedRessources.getReduceResearchDuration()));
+
+				spaceshipRepository.save(spaceshipWithUpdatedRessources);
+
+				technologyResearchHandler.prepareBuild(spaceshipWithUpdatedRessources, technologyFound, statsOfTechnologyNextLvl);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			System.out.println("TestEnde");
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 }

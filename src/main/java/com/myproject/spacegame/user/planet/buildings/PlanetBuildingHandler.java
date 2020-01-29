@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.myproject.spacegame.services.CalculatePointsOfPlayer;
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.planet.PlanetRepository;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class PlanetBuildingHandler {
 
 	private final PlanetRepository planetRepository;
+	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
 
 	public boolean proofBuildPossible(Planet planet) throws Exception {
 		if (planet.getRemainingBuildingDuration() > 0) {
@@ -69,7 +71,7 @@ public class PlanetBuildingHandler {
 
 				return new ResponseEntity<>(planetWithFinishedBuilding, HttpStatus.OK);
 			}
-		}, (long) (statsOfBuildingNextLvl.getBuildingDuration()
+		}, (long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()
 				* planetWithUpdatedRessources.getReduceBuildingDuration()), TimeUnit.SECONDS);
 
 		executorService.shutdown();
@@ -87,13 +89,15 @@ public class PlanetBuildingHandler {
 		foundPlanet.setEnergy(foundPlanet.getEnergy() - statsOfBuildingNextLvl.getNecessaryEnergy());
 
 		planetRepository.save(foundPlanet);
+		calculatePointsOfPlayer.calculateAndSaveNewPoints(foundPlanet.getUser().getId(), statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(), statsOfBuildingNextLvl.getNecessaryHydrogen());
+
 		return foundPlanet;
 	}
 	
 	private Planet setSomeStatsDependentOnWhichBuilding(Planet foundPlanet,
 			BuildingStats specificBuildingStatsOfNextLvl) throws Exception {
 
-		String nameOfBuilding = specificBuildingStatsOfNextLvl.getNameOfBuilding();
+		String nameOfBuilding = specificBuildingStatsOfNextLvl.getNameOfBuildingOTechnology();
 
 		if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.METALMINE.toString())) {
 			foundPlanet.setMetalMineLvl(specificBuildingStatsOfNextLvl.getLevel());

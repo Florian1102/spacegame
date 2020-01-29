@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
-import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.planet.RessourceHandler;
-import com.myproject.spacegame.user.planet.buildings.NamesOfPlanetBuildings;
 import com.myproject.spacegame.user.planet.buildings.BuildingStats;
 
 import lombok.RequiredArgsConstructor;
@@ -61,12 +59,12 @@ public class SpaceshipController {
 				int currentLvlOfSpecificBuilding = spaceshipBuildingHandler.getCurrentLvlOfSpecificBuilding(spaceshipFound,
 						nameOfBuilding);
 				BuildingStats statsOfBuildingNextLvl = getStatsOfBuildingsAndTechnologies
-						.getBuildingStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
+						.getBuildingOrTechnologyStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
 				Spaceship spaceshipWithUpdatedRessources = ressourceHandler.calculateNewSpaceshipRessources(spaceshipFound,
 						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
 						statsOfBuildingNextLvl.getNecessaryHydrogen(), statsOfBuildingNextLvl.getNecessaryEnergy());
 				
-				spaceshipWithUpdatedRessources.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingDuration() * spaceshipWithUpdatedRessources.getReduceBuildingDuration()));
+				spaceshipWithUpdatedRessources.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration() * spaceshipWithUpdatedRessources.getReduceBuildingDuration()));
 
 				spaceshipRepository.save(spaceshipWithUpdatedRessources);
 

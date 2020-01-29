@@ -19,7 +19,7 @@ public class BuildingStats {
 	
 	private int level;
 	
-	private String nameOfBuilding;
+	private String nameOfBuildingOTechnology;
 	
 	private Long necessaryMetal;
 	private Long necessaryCrystal;
@@ -39,7 +39,7 @@ public class BuildingStats {
 	private Long defense;
 	private Long speed;
 	  
-	private Long buildingDuration;
+	private Long buildingOrResearchDuration;
 
 	private double reduceBuildingDuration;
 	private double reduceResearchDuration;

@@ -10,9 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.myproject.spacegame.user.planet.Planet;
-import com.myproject.spacegame.user.planet.buildings.NamesOfPlanetBuildings;
 import com.myproject.spacegame.user.planet.buildings.NamesOfSpaceshipBuildings;
+import com.myproject.spacegame.services.CalculatePointsOfPlayer;
 import com.myproject.spacegame.user.planet.buildings.BuildingStats;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class SpaceshipBuildingHandler {
 
 	private final SpaceshipRepository spaceshipRepository;
+	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
 
 	public boolean proofBuildPossible(Spaceship spaceship) throws Exception {
 		if (spaceship.getRemainingBuildingDuration() > 0) {
@@ -51,19 +51,19 @@ public class SpaceshipBuildingHandler {
 		@SuppressWarnings("unused")
 		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
 			public Object call() throws Exception {
-				Spaceship planetWithFinishedBuilding = build(spaceshipWithUpdatedRessources.getId(),
+				Spaceship spacehipWithFinishedBuilding = build(spaceshipWithUpdatedRessources.getId(),
 						statsOfBuildingNextLvl);
 
-				return new ResponseEntity<>(planetWithFinishedBuilding, HttpStatus.OK);
+				return new ResponseEntity<>(spacehipWithFinishedBuilding, HttpStatus.OK);
 			}
-		}, (long) (statsOfBuildingNextLvl.getBuildingDuration()
+		}, (long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()
 				* spaceshipWithUpdatedRessources.getReduceBuildingDuration()), TimeUnit.SECONDS);
 		executorService.shutdown();
 	}
 
-	public Spaceship build(Long id, BuildingStats statsOfBuildingNextLvl) throws Exception {
+	private Spaceship build(Long id, BuildingStats statsOfBuildingNextLvl) throws Exception {
 		if (!spaceshipRepository.existsById(id)) {
-			throw new Exception("Planet existiert nicht");
+			throw new Exception("Raumschiff existiert nicht");
 		}
 		Spaceship foundSpaceship = spaceshipRepository.findById(id).get();
 
@@ -71,13 +71,15 @@ public class SpaceshipBuildingHandler {
 		foundSpaceship.setRemainingBuildingDuration(0L);
 
 		spaceshipRepository.save(foundSpaceship);
+		calculatePointsOfPlayer.calculateAndSaveNewPoints(foundSpaceship.getUser().getId(), statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(), statsOfBuildingNextLvl.getNecessaryHydrogen());
+
 		return foundSpaceship;
 	}
 
 	private Spaceship setSomeStatsDependentOnWhichBuilding(Spaceship foundSpaceship,
 			BuildingStats statsOfBuildingNextLvl) throws Exception {
 
-		String nameOfBuilding = statsOfBuildingNextLvl.getNameOfBuilding();
+		String nameOfBuilding = statsOfBuildingNextLvl.getNameOfBuildingOTechnology();
 
 		if (nameOfBuilding.equalsIgnoreCase(NamesOfSpaceshipBuildings.SPACESHIP.toString())) {
 			foundSpaceship.setSpaceshipLvl(statsOfBuildingNextLvl.getLevel());

@@ -22,7 +22,6 @@ public class RessourceHandler {
 			planet.setMetal(planet.getMetal() - necessaryMetal);
 			planet.setCrystal(planet.getCrystal() - necessaryCrystal);
 			planet.setHydrogen(planet.getHydrogen() - necessaryHydrogen);
-			
 			return planet;
 		}
 	}
@@ -47,7 +46,6 @@ public class RessourceHandler {
 			spaceship.setCrystal(spaceship.getCrystal() - necessaryCrystal);
 			spaceship.setHydrogen(spaceship.getHydrogen() - necessaryHydrogen);
 			spaceship.setEnergy(spaceship.getEnergy() - necessaryEnergy);
-
 			return spaceship;
 		}
 	}
@@ -85,5 +83,4 @@ public class RessourceHandler {
 			spaceshipRepository.save(spaceshipFound);
 		}
 	}
-
 }

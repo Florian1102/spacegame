@@ -45,6 +45,8 @@ public class Spaceship {
 	private int researchLaboratoryLvl;
 	
 	private Long remainingBuildingDuration = 0L;
+	private Long remainingResearchDuration = 0L;
+
 	private double hydrogenConsumption;
 
 	private double reduceBuildingDuration = 1.0;

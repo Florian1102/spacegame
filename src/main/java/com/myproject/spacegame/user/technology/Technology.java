@@ -26,6 +26,4 @@ public class Technology {
 	private User user;
 	
 	private int energyTechnologyLvl = 0;
-	
-	private Long remainingIncreaseDuration = 0L;
 }

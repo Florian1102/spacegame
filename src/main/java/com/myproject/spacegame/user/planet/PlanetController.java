@@ -124,12 +124,12 @@ public class PlanetController {
 				int currentLvlOfSpecificBuilding = planetBuildingHandler.getCurrentLvlOfSpecificBuilding(planetFound,
 						nameOfBuilding);
 				BuildingStats statsOfBuildingNextLvl = getStatsOfBuildingsAndTechnologies
-						.getBuildingStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
+						.getBuildingOrTechnologyStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
 				Planet planetWithUpdatedRessources = ressourceHandler.calculateNewPlanetRessources(planetFound,
 						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
 						statsOfBuildingNextLvl.getNecessaryHydrogen());
 				
-				planetWithUpdatedRessources.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingDuration() * planetWithUpdatedRessources.getReduceBuildingDuration()));
+				planetWithUpdatedRessources.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration() * planetWithUpdatedRessources.getReduceBuildingDuration()));
 				planetRepository.save(planetWithUpdatedRessources);
 				planetBuildingHandler.prepareBuild(planetWithUpdatedRessources, statsOfBuildingNextLvl);
 				return new ResponseEntity<>(HttpStatus.OK);
