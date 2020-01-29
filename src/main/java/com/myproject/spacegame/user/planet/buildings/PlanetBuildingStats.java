@@ -34,6 +34,9 @@ public class PlanetBuildingStats {
 	private double metalStorehouse;
 	private double crystalStorehouse;
 	private double hydrogenTank;
+	
+	private Long attackPower;
+	private Long Defense;
 	  
 	private Long buildingDuration;
 }

@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.myproject.spacegame.user.attackAndDefenseSystem.AttackAndDefenseSystemHandler;
+import com.myproject.spacegame.services.CalculatePointsOfPlayer;
+import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
 import com.myproject.spacegame.user.planet.buildings.PlanetBuildingHandler;
+import com.myproject.spacegame.user.planet.buildings.PlanetBuildingStats;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +32,7 @@ public class PlanetController {
 	private final PlanetRepository planetRepository;
 	private final PlanetBuildingHandler planetBuildingHandler;
 	private final PlanetRessourceHandler planetRessourceHandler;
-	private final AttackAndDefenseSystemHandler attackAndDefenseSystemHandler;
+	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -53,7 +55,7 @@ public class PlanetController {
 			Planet setupPlanet = proofUserPlanets(planet);
 			planetRepository.save(setupPlanet);
 			return new ResponseEntity<>(setupPlanet, HttpStatus.CREATED);
-			
+
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
@@ -95,51 +97,39 @@ public class PlanetController {
 		planet.setRemainingBuildingDuration(0L);
 		return planet;
 	}
-	
+
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid Planet planet) {
-		
+
 		if (!planetRepository.existsById(id)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		planet.setId(id);
 		planetRepository.save(planet);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/{planetId}/{nameOfBuilding}/levelup")
 	public ResponseEntity<?> levelUpPlanetBuilding(@PathVariable Long planetId, @PathVariable String nameOfBuilding) {
 		if (!planetRepository.existsById(planetId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		Planet planetFound = planetRepository.findById(planetId).get();
+
 		try {
-			if (!planetBuildingHandler.proofBuildPossible(planetFound, nameOfBuilding)) {
+			if (!planetBuildingHandler.proofBuildPossible(planetFound)) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
-				
-				@SuppressWarnings("unused")
-				Planet planetWithUpdatedRessources = planetRessourceHandler.calculateNewPlanetRessources(planetFound, nameOfBuilding);
-				return new ResponseEntity<>(HttpStatus.OK);
-			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
-	
-	@PutMapping("/{planetId}/{nameOfAttackOrDefenseSystem}/build")
-	public ResponseEntity<?> buildAttackOrDefenseSystem(@PathVariable Long planetId, @PathVariable String nameOfAttackOrDefenseSystem) {
-		if (!planetRepository.existsById(planetId)) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		Planet planetFound = planetRepository.findById(planetId).get();
-		try {
-			if (!attackAndDefenseSystemHandler.proofBuildPossibleAndCalculateRessources(planetFound, nameOfAttackOrDefenseSystem)) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			} else {
-				@SuppressWarnings("unused")
-				Planet planetWithUpdatedRessources = planetRessourceHandler.calculateNewPlanetRessourcesAttackAndDefense(planetFound, nameOfAttackOrDefenseSystem);
+				int currentLvlOfSpecificBuilding = planetBuildingHandler.getCurrentLvlOfSpecificBuilding(planetFound,
+						nameOfBuilding);
+				PlanetBuildingStats statsOfBuildingNextLvl = getStatsOfBuildingsAndTechnologies
+						.getBuildingStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
+				Planet planetWithUpdatedRessources = planetRessourceHandler.calculateNewPlanetRessources(planetFound,
+						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
+						statsOfBuildingNextLvl.getNecessaryHydrogen(), statsOfBuildingNextLvl.getNecessaryEnergy(),
+						statsOfBuildingNextLvl.getBuildingDuration());
+				planetBuildingHandler.prepareBuild(planetWithUpdatedRessources, statsOfBuildingNextLvl);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 		} catch (Exception e) {
@@ -149,7 +139,7 @@ public class PlanetController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
-		
+
 		if (!planetRepository.existsById(id)) {
 			return new ResponseEntity<>("Der Planet existiert nicht", HttpStatus.NOT_FOUND);
 		}
