@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
+import com.myproject.spacegame.user.planet.Planet;
+import com.myproject.spacegame.user.planet.RessourceHandler;
+import com.myproject.spacegame.user.planet.buildings.NamesOfPlanetBuildings;
+import com.myproject.spacegame.user.planet.buildings.BuildingStats;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,7 +26,8 @@ public class SpaceshipController {
 
 	private final SpaceshipRepository spaceshipRepository;
 	private final SpaceshipBuildingHandler spaceshipBuildingHandler;
-	private final SpaceshipRessourceHandler spaceshipRessourceHandler;
+	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
+	private final RessourceHandler ressourceHandler;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> showSpaceship(@PathVariable Long id) {
@@ -40,21 +47,31 @@ public class SpaceshipController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}/levelup")
-	public ResponseEntity<?> levelUpSpaceship(@PathVariable Long id) {
-		if (!spaceshipRepository.existsById(id)) {
+	@PutMapping("/{spaceshipId}/{nameOfBuilding}/build")
+	public ResponseEntity<?> levelUpSpaceshipBuilding(@PathVariable Long spaceshipId, @PathVariable String nameOfBuilding) {
+		if (!spaceshipRepository.existsById(spaceshipId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		Spaceship spaceshipFound = spaceshipRepository.findById(id).get();
+		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
 
 		try {
-			if (!spaceshipBuildingHandler.proofUpdatePossible(spaceshipFound)) {
+			if (!spaceshipBuildingHandler.proofBuildPossible(spaceshipFound)) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
-				@SuppressWarnings("unused")
-				Spaceship spaceshipWithUpdatedRessources = spaceshipRessourceHandler.calculateNewSpaceshipRessources(spaceshipFound);
-				return new ResponseEntity<>(HttpStatus.OK);
+				int currentLvlOfSpecificBuilding = spaceshipBuildingHandler.getCurrentLvlOfSpecificBuilding(spaceshipFound,
+						nameOfBuilding);
+				BuildingStats statsOfBuildingNextLvl = getStatsOfBuildingsAndTechnologies
+						.getBuildingStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
+				Spaceship spaceshipWithUpdatedRessources = ressourceHandler.calculateNewSpaceshipRessources(spaceshipFound,
+						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
+						statsOfBuildingNextLvl.getNecessaryHydrogen(), statsOfBuildingNextLvl.getNecessaryEnergy());
+				
+				spaceshipWithUpdatedRessources.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingDuration() * spaceshipWithUpdatedRessources.getReduceBuildingDuration()));
 
+				spaceshipRepository.save(spaceshipWithUpdatedRessources);
+
+				spaceshipBuildingHandler.prepareBuild(spaceshipWithUpdatedRessources, statsOfBuildingNextLvl);
+				return new ResponseEntity<>(HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

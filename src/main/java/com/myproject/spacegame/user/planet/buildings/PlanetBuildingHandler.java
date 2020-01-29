@@ -56,7 +56,7 @@ public class PlanetBuildingHandler {
 		}
 	}
 
-	public void prepareBuild(Planet planetWithUpdatedRessources, PlanetBuildingStats statsOfBuildingNextLvl)
+	public void prepareBuild(Planet planetWithUpdatedRessources, BuildingStats statsOfBuildingNextLvl)
 			throws Exception {
 
 		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
@@ -70,12 +70,12 @@ public class PlanetBuildingHandler {
 				return new ResponseEntity<>(planetWithFinishedBuilding, HttpStatus.OK);
 			}
 		}, (long) (statsOfBuildingNextLvl.getBuildingDuration()
-				* (Math.pow(0.6, planetWithUpdatedRessources.getCommandCentralLvl() - 1))), TimeUnit.SECONDS);
+				* planetWithUpdatedRessources.getReduceBuildingDuration()), TimeUnit.SECONDS);
 
 		executorService.shutdown();
 	}
 
-	public Planet build(Long id, PlanetBuildingStats statsOfBuildingNextLvl) throws Exception {
+	public Planet build(Long id, BuildingStats statsOfBuildingNextLvl) throws Exception {
 		if (!planetRepository.existsById(id)) {
 			throw new Exception("Planet existiert nicht");
 		}
@@ -91,7 +91,7 @@ public class PlanetBuildingHandler {
 	}
 	
 	private Planet setSomeStatsDependentOnWhichBuilding(Planet foundPlanet,
-			PlanetBuildingStats specificBuildingStatsOfNextLvl) throws Exception {
+			BuildingStats specificBuildingStatsOfNextLvl) throws Exception {
 
 		String nameOfBuilding = specificBuildingStatsOfNextLvl.getNameOfBuilding();
 
@@ -126,6 +126,7 @@ public class PlanetBuildingHandler {
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.COMMANDCENTRAL.toString())) {
 			foundPlanet.setCommandCentralLvl(specificBuildingStatsOfNextLvl.getLevel());
 			foundPlanet.setRemainingFields(foundPlanet.getRemainingFields() - 1);
+			foundPlanet.setReduceBuildingDuration(specificBuildingStatsOfNextLvl.getReduceBuildingDuration());
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.SOLARSATELLITE.toString())) {
 			foundPlanet.setSolarSatellite(foundPlanet.getSolarSatellite() + 1);
 			foundPlanet.setEnergy(foundPlanet.getEnergy() + specificBuildingStatsOfNextLvl.getProductionEnergy());

@@ -9,13 +9,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PlanetRessourceHandler {
+public class RessourceHandler {
 
-	private final PlanetRepository planetRepository;
 	private final SpaceshipRepository spaceshipRepository;
 
 	public Planet calculateNewPlanetRessources(Planet planet, Long necessaryMetal, Long necessaryCrystal,
-			Long necessaryHydrogen, Long necessaryEnergy, Long buildingDuration) throws Exception {
+			Long necessaryHydrogen) throws Exception {
 
 		if (!proofPlanetRessourcesEnough(planet, necessaryMetal, necessaryCrystal, necessaryHydrogen)) {
 			throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Planeten");
@@ -23,10 +22,7 @@ public class PlanetRessourceHandler {
 			planet.setMetal(planet.getMetal() - necessaryMetal);
 			planet.setCrystal(planet.getCrystal() - necessaryCrystal);
 			planet.setHydrogen(planet.getHydrogen() - necessaryHydrogen);
-			planet.setEnergy(planet.getEnergy() - necessaryEnergy);
-			planet.setRemainingBuildingDuration((long) (buildingDuration * Math.pow(0.6, planet.getCommandCentralLvl() - 1)));
-
-			planetRepository.save(planet);
+			
 			return planet;
 		}
 	}
@@ -42,18 +38,16 @@ public class PlanetRessourceHandler {
 	}
 
 	public Spaceship calculateNewSpaceshipRessources(Spaceship spaceship, Long necessaryMetal, Long necessaryCrystal,
-			Long necessaryHydrogen, Long necessaryEnergy, Long buildingDuration) throws Exception {
+			Long necessaryHydrogen, Long necessaryEnergy) throws Exception {
 
 		if (!proofSpaceshipRessourcesEnough(spaceship, necessaryMetal, necessaryCrystal, necessaryHydrogen)) {
-			throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Planeten");
+			throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Raumschiff");
 		} else {
 			spaceship.setMetal(spaceship.getMetal() - necessaryMetal);
 			spaceship.setCrystal(spaceship.getCrystal() - necessaryCrystal);
 			spaceship.setHydrogen(spaceship.getHydrogen() - necessaryHydrogen);
 			spaceship.setEnergy(spaceship.getEnergy() - necessaryEnergy);
-			spaceship.setRemainingBuildingDuration((long) (buildingDuration * Math.pow(0.6, spaceship.getSpaceshipLvl() - 1)));
 
-			spaceshipRepository.save(spaceship);
 			return spaceship;
 		}
 	}
@@ -68,5 +62,28 @@ public class PlanetRessourceHandler {
 		}
 	}
 
+	public void addRessources(Long id, double metal, double crystal, double hydrogen, boolean addOrRemove)
+			throws Exception {
+		if (!spaceshipRepository.existsById(id)) {
+			throw new Exception("Das Raumschiff existiert nicht");
+		} else {
+			Spaceship spaceshipFound = spaceshipRepository.findById(id).get();
+			if (addOrRemove) {
+				spaceshipFound.setMetal(spaceshipFound.getMetal() + metal);
+				spaceshipFound.setCrystal(spaceshipFound.getCrystal() + crystal);
+				spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() + hydrogen);
+			} else {
+				if (spaceshipFound.getMetal() <= metal || spaceshipFound.getCrystal() <= crystal
+						|| spaceshipFound.getHydrogen() <= hydrogen) {
+					throw new Exception("Du hast nicht ausreichend Ressourcen");
+				} else {
+					spaceshipFound.setMetal(spaceshipFound.getMetal() - metal);
+					spaceshipFound.setCrystal(spaceshipFound.getCrystal() - crystal);
+					spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() - hydrogen);
+				}
+			}
+			spaceshipRepository.save(spaceshipFound);
+		}
+	}
 
 }

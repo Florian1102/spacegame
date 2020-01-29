@@ -42,7 +42,12 @@ public class Spaceship {
 	private double metalStore;
 	private double crystalStore;
 	private double hydrogenTank;
+	private int researchLaboratoryLvl;
 	
 	private Long remainingBuildingDuration = 0L;
+	private double hydrogenConsumption;
+
+	private double reduceBuildingDuration = 1.0;
+	private double reduceResearchDuration = 1.0;
 	
 }

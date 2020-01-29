@@ -32,7 +32,6 @@ public class RessourceProduction {
 
 	public List<Planet> ressourceProductionForAllPlanets() {
 		List<Planet> planets = planetRepository.findAll();
-		
 		planets.stream().forEach(planet -> {
 			if (planet.getEnergy() >= 0) {
 				if (planet.getMetal() <= planet.getMetalStorehouse()) {

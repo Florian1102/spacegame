@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.myproject.spacegame.services.CalculatePointsOfPlayer;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
 import com.myproject.spacegame.user.planet.buildings.PlanetBuildingHandler;
-import com.myproject.spacegame.user.planet.buildings.PlanetBuildingStats;
+import com.myproject.spacegame.user.planet.buildings.BuildingStats;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +30,7 @@ public class PlanetController {
 
 	private final PlanetRepository planetRepository;
 	private final PlanetBuildingHandler planetBuildingHandler;
-	private final PlanetRessourceHandler planetRessourceHandler;
+	private final RessourceHandler ressourceHandler;
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 
 	@GetMapping
@@ -95,6 +94,7 @@ public class PlanetController {
 		planet.setHydrogenTank(1000);
 		planet.setCommandCentralLvl(1);
 		planet.setRemainingBuildingDuration(0L);
+		planet.setReduceBuildingDuration(1.0);
 		return planet;
 	}
 
@@ -110,7 +110,7 @@ public class PlanetController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PutMapping("/{planetId}/{nameOfBuilding}/levelup")
+	@PutMapping("/{planetId}/{nameOfBuilding}/build")
 	public ResponseEntity<?> levelUpPlanetBuilding(@PathVariable Long planetId, @PathVariable String nameOfBuilding) {
 		if (!planetRepository.existsById(planetId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -123,12 +123,14 @@ public class PlanetController {
 			} else {
 				int currentLvlOfSpecificBuilding = planetBuildingHandler.getCurrentLvlOfSpecificBuilding(planetFound,
 						nameOfBuilding);
-				PlanetBuildingStats statsOfBuildingNextLvl = getStatsOfBuildingsAndTechnologies
+				BuildingStats statsOfBuildingNextLvl = getStatsOfBuildingsAndTechnologies
 						.getBuildingStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
-				Planet planetWithUpdatedRessources = planetRessourceHandler.calculateNewPlanetRessources(planetFound,
+				Planet planetWithUpdatedRessources = ressourceHandler.calculateNewPlanetRessources(planetFound,
 						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
-						statsOfBuildingNextLvl.getNecessaryHydrogen(), statsOfBuildingNextLvl.getNecessaryEnergy(),
-						statsOfBuildingNextLvl.getBuildingDuration());
+						statsOfBuildingNextLvl.getNecessaryHydrogen());
+				
+				planetWithUpdatedRessources.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingDuration() * planetWithUpdatedRessources.getReduceBuildingDuration()));
+				planetRepository.save(planetWithUpdatedRessources);
 				planetBuildingHandler.prepareBuild(planetWithUpdatedRessources, statsOfBuildingNextLvl);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}

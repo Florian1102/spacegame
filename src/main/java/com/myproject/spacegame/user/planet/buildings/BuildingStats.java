@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class PlanetBuildingStats {
+public class BuildingStats {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +36,11 @@ public class PlanetBuildingStats {
 	private double hydrogenTank;
 	
 	private Long attackPower;
-	private Long Defense;
+	private Long defense;
+	private Long speed;
 	  
 	private Long buildingDuration;
+
+	private double reduceBuildingDuration;
+	private double reduceResearchDuration;
 }

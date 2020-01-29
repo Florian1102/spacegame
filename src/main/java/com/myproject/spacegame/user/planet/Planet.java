@@ -58,5 +58,6 @@ public class Planet {
 	private int defenseTower;
 	
 	private Long remainingBuildingDuration;
+	private double reduceBuildingDuration;
 
 }
