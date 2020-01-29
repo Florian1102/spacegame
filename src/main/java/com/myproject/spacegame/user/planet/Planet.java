@@ -45,19 +45,17 @@ public class Planet {
 	private int crystalMineLvl;
 	private int hydrogenPlantLvl;
 	private int solarPowerPlantLvl;
-	
 	private int metalStorehouseLvl;
 	private int crystalStorehouseLvl;
 	private int hydrogenTankLvl;
-	
 	private double metalStorehouse;
 	private double crystalStorehouse;
 	private double hydrogenTank;
-	
 	private int commandCentralLvl;
-	private int buildingTimeReduction;
 	// TODO weiteres Gebäude um schneller bauen zu können
 
+	private int solarSatellite;
+	private int defenseTower;
 	
 	private Long remainingBuildingDuration;
 

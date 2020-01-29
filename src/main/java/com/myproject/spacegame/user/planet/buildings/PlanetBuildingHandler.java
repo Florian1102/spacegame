@@ -23,7 +23,7 @@ public class PlanetBuildingHandler {
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 	private final PlanetRepository planetRepository;
 
-	public boolean proofBuildingPossible(Planet planet, String nameOfBuilding) throws Exception {
+	public boolean proofBuildPossible(Planet planet, String nameOfBuilding) throws Exception {
 
 		if (planet.getRemainingBuildingDuration() > 0) {
 			throw new Exception("Es wird schon etwas gebaut");

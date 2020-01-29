@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myproject.spacegame.user.attackAndDefenseSystem.AttackAndDefenseSystemHandler;
 import com.myproject.spacegame.user.planet.buildings.PlanetBuildingHandler;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class PlanetController {
 	private final PlanetRepository planetRepository;
 	private final PlanetBuildingHandler planetBuildingHandler;
 	private final PlanetRessourceHandler planetRessourceHandler;
+	private final AttackAndDefenseSystemHandler attackAndDefenseSystemHandler;
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -107,18 +109,37 @@ public class PlanetController {
 	}
 	
 	@PutMapping("/{planetId}/{nameOfBuilding}/levelup")
-	public ResponseEntity<?> levelUpIronMine(@PathVariable Long planetId, @PathVariable String nameOfBuilding) {
+	public ResponseEntity<?> levelUpPlanetBuilding(@PathVariable Long planetId, @PathVariable String nameOfBuilding) {
 		if (!planetRepository.existsById(planetId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		Planet planetFound = planetRepository.findById(planetId).get();
 		try {
-			if (!planetBuildingHandler.proofBuildingPossible(planetFound, nameOfBuilding)) {
+			if (!planetBuildingHandler.proofBuildPossible(planetFound, nameOfBuilding)) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
 				
 				@SuppressWarnings("unused")
 				Planet planetWithUpdatedRessources = planetRessourceHandler.calculateNewPlanetRessources(planetFound, nameOfBuilding);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PutMapping("/{planetId}/{nameOfAttackOrDefenseSystem}/build")
+	public ResponseEntity<?> buildAttackOrDefenseSystem(@PathVariable Long planetId, @PathVariable String nameOfAttackOrDefenseSystem) {
+		if (!planetRepository.existsById(planetId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		Planet planetFound = planetRepository.findById(planetId).get();
+		try {
+			if (!attackAndDefenseSystemHandler.proofBuildPossibleAndCalculateRessources(planetFound, nameOfAttackOrDefenseSystem)) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			} else {
+				@SuppressWarnings("unused")
+				Planet planetWithUpdatedRessources = planetRessourceHandler.calculateNewPlanetRessourcesAttackAndDefense(planetFound, nameOfAttackOrDefenseSystem);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 		} catch (Exception e) {
