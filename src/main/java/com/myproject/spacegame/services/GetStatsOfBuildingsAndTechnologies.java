@@ -2,8 +2,8 @@ package com.myproject.spacegame.services;
 
 import org.springframework.stereotype.Service;
 
-import com.myproject.spacegame.user.planet.buildings.BuildingStats;
-import com.myproject.spacegame.user.planet.buildings.BuildingStatsRepository;
+import com.myproject.spacegame.buildingStats.BuildingStats;
+import com.myproject.spacegame.buildingStats.BuildingStatsRepository;
 
 import lombok.RequiredArgsConstructor;
 

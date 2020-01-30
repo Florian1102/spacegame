@@ -1,4 +1,4 @@
-package com.myproject.spacegame.user.technology;
+package com.myproject.spacegame.buildingStats;
 
 public enum NamesOfTechnologies {
 	ENERGYTECHNOLOGY;

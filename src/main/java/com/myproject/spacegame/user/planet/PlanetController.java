@@ -17,14 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myproject.spacegame.buildingStats.BuildingStats;
+import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
+import com.myproject.spacegame.coordinateSystem.CoordinateSystemRepository;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
-import com.myproject.spacegame.user.planet.buildings.PlanetBuildingHandler;
-import com.myproject.spacegame.user.planet.buildings.BuildingStats;
+import com.myproject.spacegame.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/planets")
+@RequestMapping
 @RequiredArgsConstructor
 public class PlanetController {
 
@@ -32,47 +34,71 @@ public class PlanetController {
 	private final PlanetBuildingHandler planetBuildingHandler;
 	private final RessourceHandler ressourceHandler;
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
+	private final UserRepository userRepository;
+	private final CoordinateSystemRepository coordinateSystemRepository;
 
-	@GetMapping
+	@GetMapping("/planets")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Planet> showPlanets() {
 
 		return planetRepository.findAll();
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/planets/{id}")
 	public ResponseEntity<?> showPlanet(@PathVariable Long id) {
 
 		return ResponseEntity.of(planetRepository.findById(id));
 	}
 
-	@PostMapping
+	@PostMapping("/{userId}/planets/add/{galaxy}/{system}/{position}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> create(@RequestBody @Valid Planet planet) {
-
+	public ResponseEntity<?> create(@PathVariable Long userId, @PathVariable int galaxy, @PathVariable int system, @PathVariable int position) {
 		try {
-			Planet setupPlanet = proofUserPlanets(planet);
-			planetRepository.save(setupPlanet);
-			return new ResponseEntity<>(setupPlanet, HttpStatus.CREATED);
-
+			if (!userRepository.existsById(userId)) {
+				return new ResponseEntity<>("Spieler wurde nicht gefunden", HttpStatus.NOT_FOUND);
+			} else if (!allowToAddPlanet(userId)) {
+				return new ResponseEntity<>("Du kannst keine weiteren Planeten kolonisieren", HttpStatus.BAD_REQUEST);
+			} else if (!isCoordinateAvailable(galaxy, system, position)) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			} else {
+				Planet createdPlanet = setupPlanet(userId, galaxy, system, position);
+				planetRepository.save(createdPlanet);
+				CoordinateSystem coordinate = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position);
+				coordinate.setAvailable(false);
+				coordinateSystemRepository.save(coordinate);
+				return new ResponseEntity<>(createdPlanet, HttpStatus.CREATED);
+			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	public Planet proofUserPlanets(Planet planet) throws Exception {
+	private boolean allowToAddPlanet(Long userId) throws Exception {
 
-		if (planetRepository.countByUserId(planet.getUser().getId()) >= 3) {
+		if (planetRepository.countByUserId(userId) >= 3) {
 			throw new Exception("Du kannst keinen weiteren Planeten kolonisieren");
+			//TODO: Abhängig von einer Forschung machen
 		} else {
-			Planet setupPlanet = setupPlanet(planet);
-			return setupPlanet;
+			return true;
 		}
 	}
 
-	public Planet setupPlanet(Planet planet) {
+	private boolean isCoordinateAvailable(int galaxy, int system, int position) throws Exception {
+		if (!coordinateSystemRepository.existsByGalaxyAndSystemAndPosition(galaxy, system, position)) {
+			throw new Exception("Die Koordinate gibt es nicht");
+		} else if (!coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position).isAvailable()) {
+				throw new Exception("Der Planet ist schon besiedelt");
+		} else {
+			return true;
+		}
+	}
+	
+	private Planet setupPlanet(Long userId, int galaxy, int system, int position) {
+		Planet planet = new Planet();
 		planet.setId(null);
+		planet.setUser(userRepository.findById(userId).get());
 		Random random = new Random();
+		planet.setCoordinates(new Coordinates(galaxy, system, position));
 		planet.setFields(100 + random.nextInt(200 - 100 + 1));
 		planet.setRemainingFields(planet.getFields());
 		planet.setMetal(500);
@@ -98,7 +124,7 @@ public class PlanetController {
 		return planet;
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/planets/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid Planet planet) {
 
 		if (!planetRepository.existsById(id)) {
@@ -110,7 +136,7 @@ public class PlanetController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PutMapping("/{planetId}/{nameOfBuilding}/build")
+	@PutMapping("/planets/{planetId}/{nameOfBuilding}/build")
 	public ResponseEntity<?> levelUpPlanetBuilding(@PathVariable Long planetId, @PathVariable String nameOfBuilding) {
 		if (!planetRepository.existsById(planetId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -139,7 +165,7 @@ public class PlanetController {
 		}
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/planets/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 
 		if (!planetRepository.existsById(id)) {

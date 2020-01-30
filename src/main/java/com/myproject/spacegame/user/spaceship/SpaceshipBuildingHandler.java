@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.myproject.spacegame.user.planet.buildings.NamesOfSpaceshipBuildings;
+import com.myproject.spacegame.buildingStats.BuildingStats;
+import com.myproject.spacegame.buildingStats.NamesOfSpaceshipBuildings;
 import com.myproject.spacegame.services.CalculatePointsOfPlayer;
-import com.myproject.spacegame.user.planet.buildings.BuildingStats;
 
 import lombok.RequiredArgsConstructor;
 

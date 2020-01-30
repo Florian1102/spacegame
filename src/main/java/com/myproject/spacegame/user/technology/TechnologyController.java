@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
 import com.myproject.spacegame.user.planet.RessourceHandler;
-import com.myproject.spacegame.user.planet.buildings.BuildingStats;
 import com.myproject.spacegame.user.spaceship.Spaceship;
 import com.myproject.spacegame.user.spaceship.SpaceshipRepository;
 
@@ -46,20 +46,17 @@ public class TechnologyController {
 	@PutMapping("/{technologyFromPlayerWithId}/{technologyName}/research")
 	public ResponseEntity<?> researchTechnology(@PathVariable Long technologyFromPlayerWithId, @PathVariable String technologyName) {
 		if (!technologyRepository.existsById(technologyFromPlayerWithId)) {
-			return new ResponseEntity<>("Technologie des Spielers nicht gefunden", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Die Technologien des Spielers nicht gefunden", HttpStatus.NOT_FOUND);
 		}
 		Technology technologyFound = technologyRepository.findById(technologyFromPlayerWithId).get();
 		if (!spaceshipRepository.existsById(technologyFound.getUser().getSpaceship().getId())) {
-			return new ResponseEntity<>("Raumschiff des Spieler nicht gefunden", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Das Raumschiff des Spieler nicht gefunden", HttpStatus.NOT_FOUND);
 		}
 		Spaceship spaceshipOfPlayer = technologyFound.getUser().getSpaceship();
 		try {
-			System.out.println("Test1");
 			if (!technologyResearchHandler.proofBuildPossible(spaceshipOfPlayer)) {
-				System.out.println("Test2");
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
-				System.out.println("Test3");
 				int currentLvlOfSpecificTechnology = technologyResearchHandler.getCurrentLvlOfSpecificTechnology(technologyFound,
 						technologyName);
 				BuildingStats statsOfTechnologyNextLvl = getStatsOfBuildingsAndTechnologies
@@ -76,7 +73,6 @@ public class TechnologyController {
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 		} catch (Exception e) {
-			System.out.println("TestEnde");
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}

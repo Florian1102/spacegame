@@ -10,10 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.myproject.spacegame.buildingStats.BuildingStats;
+import com.myproject.spacegame.buildingStats.NamesOfTechnologies;
 import com.myproject.spacegame.services.CalculatePointsOfPlayer;
-import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
-import com.myproject.spacegame.user.planet.buildings.BuildingStats;
-import com.myproject.spacegame.user.planet.buildings.NamesOfSpaceshipBuildings;
 import com.myproject.spacegame.user.spaceship.Spaceship;
 import com.myproject.spacegame.user.spaceship.SpaceshipRepository;
 
@@ -29,10 +28,9 @@ public class TechnologyResearchHandler {
 	
 	public boolean proofBuildPossible(Spaceship spaceship) throws Exception {
 		if (spaceship.getRemainingResearchDuration() > 0) {
-			System.out.println("Test false");
 			throw new Exception("Es wird schon etwas erforscht");
 		} else {
-			System.out.println("Test true");
+			//TODO: Hier müssen weitere Einschränkungen eingefügt werden. Manche Forschungen sollen erst ab einem bestimmten Lvl vom Spaceship oder Forschungslabor möglich sein.
 			return true;
 		}
 	}

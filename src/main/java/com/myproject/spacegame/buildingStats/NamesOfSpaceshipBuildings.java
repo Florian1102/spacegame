@@ -1,4 +1,4 @@
-package com.myproject.spacegame.user.planet.buildings;
+package com.myproject.spacegame.buildingStats;
 
 public enum NamesOfSpaceshipBuildings {
 	SPACESHIP, SOLARCELL, RESEARCHLABORATORY;

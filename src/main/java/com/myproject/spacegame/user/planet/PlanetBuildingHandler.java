@@ -1,4 +1,4 @@
-package com.myproject.spacegame.user.planet.buildings;
+package com.myproject.spacegame.user.planet;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.myproject.spacegame.buildingStats.BuildingStats;
+import com.myproject.spacegame.buildingStats.NamesOfPlanetBuildings;
 import com.myproject.spacegame.services.CalculatePointsOfPlayer;
-import com.myproject.spacegame.user.planet.Planet;
-import com.myproject.spacegame.user.planet.PlanetRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +32,6 @@ public class PlanetBuildingHandler {
 			return true;
 		}
 	}
-
 
 	public int getCurrentLvlOfSpecificBuilding(Planet planet, String nameOfBuilding) throws Exception {
 		if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.METALMINE.toString())) {

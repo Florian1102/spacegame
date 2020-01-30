@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
 import com.myproject.spacegame.user.planet.RessourceHandler;
-import com.myproject.spacegame.user.planet.buildings.BuildingStats;
 
 import lombok.RequiredArgsConstructor;
 

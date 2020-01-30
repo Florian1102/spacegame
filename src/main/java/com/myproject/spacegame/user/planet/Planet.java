@@ -1,5 +1,6 @@
 package com.myproject.spacegame.user.planet;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +29,9 @@ public class Planet {
 	@JoinColumn(name = "user_id", nullable = false)
 	@JsonBackReference
 	private User user;
+	
+	@Embedded
+	private Coordinates coordinates;
 	
 	private int fields;
 	private int remainingFields;
