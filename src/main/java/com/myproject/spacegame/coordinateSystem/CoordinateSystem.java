@@ -21,5 +21,5 @@ public class CoordinateSystem {
 	private int galaxy;
 	private int system;
 	private int position;
-	private boolean isAvailable;
+	private Long planetId;
 }

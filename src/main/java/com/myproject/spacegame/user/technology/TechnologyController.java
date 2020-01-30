@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
-import com.myproject.spacegame.user.planet.RessourceHandler;
+import com.myproject.spacegame.user.planet.ResourceHandler;
 import com.myproject.spacegame.user.spaceship.Spaceship;
 import com.myproject.spacegame.user.spaceship.SpaceshipRepository;
 
@@ -27,7 +27,7 @@ public class TechnologyController {
 	private final TechnologyRepository technologyRepository;
 	private final TechnologyResearchHandler technologyResearchHandler;
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
-	private final RessourceHandler ressourceHandler;
+	private final ResourceHandler resourceHandler;
 	private final SpaceshipRepository spaceshipRepository;
 	
 	@GetMapping
@@ -61,7 +61,7 @@ public class TechnologyController {
 						technologyName);
 				BuildingStats statsOfTechnologyNextLvl = getStatsOfBuildingsAndTechnologies
 						.getBuildingOrTechnologyStatsOfNextLvl(currentLvlOfSpecificTechnology, technologyName);
-				Spaceship spaceshipWithUpdatedRessources = ressourceHandler.calculateNewSpaceshipRessources(spaceshipOfPlayer,
+				Spaceship spaceshipWithUpdatedRessources = resourceHandler.calculateNewSpaceshipRessources(spaceshipOfPlayer,
 						statsOfTechnologyNextLvl.getNecessaryMetal(), statsOfTechnologyNextLvl.getNecessaryCrystal(),
 						statsOfTechnologyNextLvl.getNecessaryHydrogen(), statsOfTechnologyNextLvl.getNecessaryEnergy());
 				

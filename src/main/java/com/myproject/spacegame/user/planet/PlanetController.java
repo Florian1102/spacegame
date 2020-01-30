@@ -32,7 +32,7 @@ public class PlanetController {
 
 	private final PlanetRepository planetRepository;
 	private final PlanetBuildingHandler planetBuildingHandler;
-	private final RessourceHandler ressourceHandler;
+	private final ResourceHandler resourceHandler;
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 	private final UserRepository userRepository;
 	private final CoordinateSystemRepository coordinateSystemRepository;
@@ -64,7 +64,7 @@ public class PlanetController {
 				Planet createdPlanet = setupPlanet(userId, galaxy, system, position);
 				planetRepository.save(createdPlanet);
 				CoordinateSystem coordinate = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position);
-				coordinate.setAvailable(false);
+				coordinate.setPlanetId(createdPlanet.getId());
 				coordinateSystemRepository.save(coordinate);
 				return new ResponseEntity<>(createdPlanet, HttpStatus.CREATED);
 			}
@@ -86,7 +86,7 @@ public class PlanetController {
 	private boolean isCoordinateAvailable(int galaxy, int system, int position) throws Exception {
 		if (!coordinateSystemRepository.existsByGalaxyAndSystemAndPosition(galaxy, system, position)) {
 			throw new Exception("Die Koordinate gibt es nicht");
-		} else if (!coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position).isAvailable()) {
+		} else if (!(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position).getPlanetId() == null)) {
 				throw new Exception("Der Planet ist schon besiedelt");
 		} else {
 			return true;
@@ -151,7 +151,7 @@ public class PlanetController {
 						nameOfBuilding);
 				BuildingStats statsOfBuildingNextLvl = getStatsOfBuildingsAndTechnologies
 						.getBuildingOrTechnologyStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
-				Planet planetWithUpdatedRessources = ressourceHandler.calculateNewPlanetRessources(planetFound,
+				Planet planetWithUpdatedRessources = resourceHandler.calculateNewPlanetRessources(planetFound,
 						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
 						statsOfBuildingNextLvl.getNecessaryHydrogen());
 				
@@ -171,6 +171,11 @@ public class PlanetController {
 		if (!planetRepository.existsById(id)) {
 			return new ResponseEntity<>("Der Planet existiert nicht", HttpStatus.NOT_FOUND);
 		}
+		Planet planet = planetRepository.findById(id).get();
+		CoordinateSystem coordinate = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(planet.getCoordinates().getGalaxy(), planet
+				.getCoordinates().getSystem(), planet.getCoordinates().getPosition());
+		coordinate.setPlanetId(null);
+		coordinateSystemRepository.save(coordinate);
 		planetRepository.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class RessourceHandler {
+public class ResourceHandler {
 
 	private final SpaceshipRepository spaceshipRepository;
 

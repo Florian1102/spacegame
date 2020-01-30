@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class RessourceProduction {
+public class ResourceProduction {
 
 	private final PlanetRepository planetRepository;
 

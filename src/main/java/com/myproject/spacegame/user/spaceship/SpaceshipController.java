@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
-import com.myproject.spacegame.user.planet.RessourceHandler;
+import com.myproject.spacegame.user.planet.ResourceHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +25,7 @@ public class SpaceshipController {
 	private final SpaceshipRepository spaceshipRepository;
 	private final SpaceshipBuildingHandler spaceshipBuildingHandler;
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
-	private final RessourceHandler ressourceHandler;
+	private final ResourceHandler resourceHandler;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> showSpaceship(@PathVariable Long id) {
@@ -60,7 +60,7 @@ public class SpaceshipController {
 						nameOfBuilding);
 				BuildingStats statsOfBuildingNextLvl = getStatsOfBuildingsAndTechnologies
 						.getBuildingOrTechnologyStatsOfNextLvl(currentLvlOfSpecificBuilding, nameOfBuilding);
-				Spaceship spaceshipWithUpdatedRessources = ressourceHandler.calculateNewSpaceshipRessources(spaceshipFound,
+				Spaceship spaceshipWithUpdatedRessources = resourceHandler.calculateNewSpaceshipRessources(spaceshipFound,
 						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
 						statsOfBuildingNextLvl.getNecessaryHydrogen(), statsOfBuildingNextLvl.getNecessaryEnergy());
 				
