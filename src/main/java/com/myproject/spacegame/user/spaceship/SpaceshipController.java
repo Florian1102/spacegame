@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myproject.spacegame.buildingStats.BuildingStats;
+import com.myproject.spacegame.services.CalculatePointsOfPlayer;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.planet.PlanetRepository;
@@ -30,6 +31,7 @@ public class SpaceshipController {
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 	private final ResourceHandler resourceHandler;
 	private final PlanetRepository planetRepository;
+	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> showSpaceship(@PathVariable Long id) {
@@ -93,7 +95,8 @@ public class SpaceshipController {
 		}
 		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
 		if (spaceshipFound.getSpaceshipLvl() < 5) {
-			return new ResponseEntity<>("Dein Raumschiff hat noch nicht das erforderliche Level", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Dein Raumschiff hat noch nicht das erforderliche Level",
+					HttpStatus.BAD_REQUEST);
 		}
 
 		try {
@@ -102,14 +105,14 @@ public class SpaceshipController {
 					throw new Exception("Das Raumschiff ist bereits auf Kampf spezialisert");
 				}
 				changePropertiesOfSpaceship(spaceshipFound, true, false);
-				//TODO Function increaseResourceProduction and changeSpeedOfSpaceship
+				// TODO Function increaseResourceProduction and changeSpeedOfSpaceship
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			} else if (fighterOrMerchant.equals("merchant")) {
 				if (spaceshipFound.isMerchantSpaceship()) {
 					throw new Exception("Das Raumschiff ist bereits auf Handel spezialisert");
 				}
 				changePropertiesOfSpaceship(spaceshipFound, false, true);
-				//TODO Function changeAttackpowerOfSpaceship and changeSpeedOfSpaceship
+				// TODO Function changeAttackpowerOfSpaceship and changeSpeedOfSpaceship
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			} else {
 				throw new Exception("Spezialisierung nicht bekannt");
@@ -118,23 +121,25 @@ public class SpaceshipController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	private void changePropertiesOfSpaceship(Spaceship spaceshipFound, boolean isFighter, boolean isMerchant) throws Exception {
+
+	private void changePropertiesOfSpaceship(Spaceship spaceshipFound, boolean isFighter, boolean isMerchant)
+			throws Exception {
 		Long necessaryMetal = 10L * (spaceshipFound.getCounterOfChangedSpecialization() + 1);
 		Long necessaryCrystal = 10L * (spaceshipFound.getCounterOfChangedSpecialization() + 1);
 		Long necessaryHydrogen = 10L * (spaceshipFound.getCounterOfChangedSpecialization() + 1);
 		Long necessaryEnergy = 10L * (spaceshipFound.getCounterOfChangedSpecialization() + 1);
-		
+
 		spaceshipFound.setFighterSpaceship(isFighter);
 		spaceshipFound.setMerchantSpaceship(isMerchant);
 		spaceshipFound.setCounterOfChangedSpecialization(spaceshipFound.getCounterOfChangedSpecialization() + 1);
-		Spaceship updatedSpaceship = resourceHandler.calculateNewSpaceshipRessources(spaceshipFound, necessaryMetal, necessaryCrystal,
-				necessaryHydrogen, necessaryEnergy);
+		Spaceship updatedSpaceship = resourceHandler.calculateNewSpaceshipRessources(spaceshipFound, necessaryMetal,
+				necessaryCrystal, necessaryHydrogen, necessaryEnergy);
 		spaceshipRepository.save(updatedSpaceship);
+		calculatePointsOfPlayer.calculateAndSaveNewPoints(spaceshipFound.getUser().getId(), necessaryMetal,
+				necessaryCrystal, necessaryHydrogen);
 	}
 
-	@PutMapping("/{spaceshipId}/{pickUpOrDeliver}/{planetId}/resources") // es ist auch möglich anstatt der spaceshipId
-																			// die userId zu nutzen
+	@PutMapping("/{spaceshipId}/{pickUpOrDeliver}/{planetId}/resources") //
 	public ResponseEntity<?> pickUpResources(@PathVariable Long spaceshipId, @PathVariable String pickUpOrDeliver,
 			@PathVariable Long planetId, @RequestParam(required = true) Long metal,
 			@RequestParam(required = true) Long crystal, @RequestParam(required = true) Long hydrogen) {

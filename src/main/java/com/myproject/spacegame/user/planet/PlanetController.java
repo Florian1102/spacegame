@@ -86,6 +86,8 @@ public class PlanetController {
 	private boolean isCoordinateAvailable(int galaxy, int system, int position) throws Exception {
 		if (!coordinateSystemRepository.existsByGalaxyAndSystemAndPosition(galaxy, system, position)) {
 			throw new Exception("Die Koordinate gibt es nicht");
+		} else if (position == 0) {
+			throw new Exception("Die Position kann nicht besiedelt werden");
 		} else if (!(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position).getPlanetId() == null)) {
 				throw new Exception("Der Planet ist schon besiedelt");
 		} else {

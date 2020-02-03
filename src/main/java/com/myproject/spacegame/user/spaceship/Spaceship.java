@@ -4,11 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.user.User;
-import com.myproject.spacegame.user.planet.Coordinates;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +28,10 @@ public class Spaceship {
 	@JsonBackReference
 	private User user;
 	
-//	private Coordinates position;
+	@ManyToOne
+	@JoinColumn(name = "currentPosition_id", nullable = false)
+	@JsonBackReference(value = "listOfSpaceshipsInThisSystemReference")
+	private CoordinateSystem currentPosition;
 	
 	private int spaceshipLvl = 1;
 	
