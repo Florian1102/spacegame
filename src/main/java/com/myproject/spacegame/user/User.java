@@ -42,12 +42,12 @@ public class User {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "spaceship_id")
-	@JsonManagedReference
+	@JsonManagedReference(value = "spaceshipToSpaceshipReference")
 	private Spaceship spaceship;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "technology_id")
-	@JsonManagedReference
+	@JsonManagedReference(value = "userToTechnologyReference")
 	private Technology technology;
 	
 	@OneToMany(mappedBy = "user")

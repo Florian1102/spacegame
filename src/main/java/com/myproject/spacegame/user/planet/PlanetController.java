@@ -88,7 +88,7 @@ public class PlanetController {
 			throw new Exception("Die Koordinate gibt es nicht");
 		} else if (position == 0) {
 			throw new Exception("Die Position kann nicht besiedelt werden");
-		} else if (!(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position) == null)) {
+		} else if ((coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position).getPlanet() != null)) {
 				throw new Exception("Der Planet ist schon besiedelt");
 		} else {
 			return true;
@@ -99,8 +99,8 @@ public class PlanetController {
 		Planet planet = new Planet();
 		planet.setId(null);
 		planet.setUser(userRepository.findById(userId).get());
+		planet.setCoordinates(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position));
 		Random random = new Random();
-		planet.setCoordinates(new Coordinates(galaxy, system, position));
 		planet.setFields(100 + random.nextInt(200 - 100 + 1));
 		planet.setRemainingFields(planet.getFields());
 		planet.setMetal(500);

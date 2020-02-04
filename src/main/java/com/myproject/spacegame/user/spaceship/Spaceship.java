@@ -25,7 +25,7 @@ public class Spaceship {
 	private Long id;
 	
 	@OneToOne(mappedBy = "spaceship")
-	@JsonBackReference
+	@JsonBackReference(value = "spaceshipToSpaceshipReference")
 	private User user;
 	
 	@ManyToOne

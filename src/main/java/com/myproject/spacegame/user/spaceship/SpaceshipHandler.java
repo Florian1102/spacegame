@@ -26,7 +26,7 @@ public class SpaceshipHandler {
 	}
 	// statsSpaceshipBerechnen()
 	
-	public Long calculateFlightDuration(Spaceship spaceship, CoordinateSystem coordinateSystem) {
+	public Long calculateFlightDuration(Spaceship spaceship, CoordinateSystem coordinates) {
 		
 		Long flightDuration = 10L;
 		//Speed and entfernung

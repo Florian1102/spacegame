@@ -6,8 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.spaceship.Spaceship;
@@ -28,6 +31,10 @@ public class CoordinateSystem {
 	private int galaxy;
 	private int system;
 	private int position;
+	
+	@OneToOne
+	@JoinColumn(name = "planet_id")
+	@JsonManagedReference(value = "spaceshipToCoordinatesReference")
 	private Planet planet;
 	
 	@OneToMany(mappedBy = "currentPosition")

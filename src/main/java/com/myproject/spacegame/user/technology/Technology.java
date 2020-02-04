@@ -22,7 +22,7 @@ public class Technology {
 	private Long id;
 	
 	@OneToOne(mappedBy = "technology")
-	@JsonBackReference
+	@JsonBackReference(value = "userToTechnologyReference")
 	private User user;
 	
 	private int energyTechnologyLvl = 0;

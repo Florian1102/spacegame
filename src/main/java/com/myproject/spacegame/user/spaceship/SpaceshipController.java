@@ -185,7 +185,7 @@ public class SpaceshipController {
 				}
 			} else if (pickUpOrDeliver.equals("deliver")) {
 				// TODO: Hydrogen berechnen
-				Long flightDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound); 
+				Long flightDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound, planetFound.getCoordinates()); 
 				spaceshipFound.setFlightDuration(flightDuration * 2);
 				spaceshipRepository.save(spaceshipFound);
 
