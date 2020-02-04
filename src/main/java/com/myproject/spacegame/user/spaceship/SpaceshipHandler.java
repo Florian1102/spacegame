@@ -24,12 +24,18 @@ public class SpaceshipHandler {
 	public void flyToPlanet(Spaceship spaceship, Planet planet) {
 		//Zeit berechnen
 	}
+	
 	// statsSpaceshipBerechnen()
 	
 	public Long calculateFlightDuration(Spaceship spaceship, CoordinateSystem coordinates) {
 		
-		Long flightDuration = 10L;
-		//Speed and entfernung
+		Long speed = spaceship.getSpeed();
+		Long galaxyDistance = (long) Math.abs((spaceship.getCurrentPosition().getGalaxy() - coordinates.getGalaxy()));
+		Long systemDistance = (long) Math.abs((spaceship.getCurrentPosition().getSystem() - coordinates.getSystem()));
+		Long positionDistance = (long) Math.abs((spaceship.getCurrentPosition().getPosition() - coordinates.getPosition()));
+		
+		Long timeForDistance = (galaxyDistance * 60) + (systemDistance * 20) + (positionDistance * 10); //TODO: ändern in 5 STunden, halbe Stunde, 15 Minuten
+		Long flightDuration = timeForDistance / speed;
 		return flightDuration;
 	}
 	

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myproject.spacegame.buildingStats.BuildingStats;
+import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
+import com.myproject.spacegame.coordinateSystem.CoordinateSystemRepository;
 import com.myproject.spacegame.services.CalculatePointsOfPlayer;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
 import com.myproject.spacegame.user.planet.Planet;
@@ -39,21 +41,40 @@ public class SpaceshipController {
 	private final PlanetRepository planetRepository;
 	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
 	private final SpaceshipHandler spaceshipHandler;
+	private final CoordinateSystemRepository coordinateSystemRepository;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<?> showSpaceship(@PathVariable Long id) {
+	@GetMapping("/{spaceshipId}")
+	public ResponseEntity<?> showSpaceship(@PathVariable Long spaceshipId) {
 
-		return ResponseEntity.of(spaceshipRepository.findById(id));
+		return ResponseEntity.of(spaceshipRepository.findById(spaceshipId));
+	}
+	
+	@GetMapping("/{spaceshipId}/calculatedurationtocoordinates")
+	public ResponseEntity<?> showFlightDurationToCoordinate(
+			@PathVariable Long spaceshipId, 
+			@RequestParam(required = true) int galaxy, 
+			@RequestParam(required = true) int system,
+			@RequestParam(required = true) int position) {
+		
+		if (!spaceshipRepository.existsById(spaceshipId)) {
+			return new ResponseEntity<>("Raumschiff exisitiert nicht", HttpStatus.NOT_FOUND);
+		} else if (!coordinateSystemRepository.existsByGalaxyAndSystemAndPosition(galaxy, system, position)) {
+			return new ResponseEntity<>("Koordinaten existieren nicht", HttpStatus.NOT_FOUND);
+		}
+		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
+		CoordinateSystem coordinatesFound = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position);
+		Long calculatedDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound, coordinatesFound);
+		return new ResponseEntity<>(calculatedDuration, HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid Spaceship spaceship) {
+	@PutMapping("/{spaceshipId}")
+	public ResponseEntity<?> update(@PathVariable Long spaceshipId, @RequestBody @Valid Spaceship spaceship) {
 
-		if (!spaceshipRepository.existsById(id)) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		if (!spaceshipRepository.existsById(spaceshipId)) {
+			return new ResponseEntity<>("Raumschiff exisitiert nicht", HttpStatus.NOT_FOUND);
 		}
 
-		spaceship.setId(id);
+		spaceship.setId(spaceshipId);
 		spaceshipRepository.save(spaceship);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -168,6 +189,7 @@ public class SpaceshipController {
 				} else {
 					// TODO: Hydrogen berechnen
 					Long flightDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound, planetFound.getCoordinates()); //getCoordniates zu coordinatesystem ändern
+					System.out.println(flightDuration);
 					spaceshipFound.setFlightDuration(flightDuration * 2);
 					spaceshipRepository.save(spaceshipFound);
 
