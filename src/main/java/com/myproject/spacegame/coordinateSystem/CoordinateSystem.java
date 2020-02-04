@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.spaceship.Spaceship;
 
 import lombok.Setter;
@@ -27,7 +28,7 @@ public class CoordinateSystem {
 	private int galaxy;
 	private int system;
 	private int position;
-	private Long planetId;
+	private Planet planet;
 	
 	@OneToMany(mappedBy = "currentPosition")
 	@JsonManagedReference(value = "listOfSpaceshipsInThisSystemReference")

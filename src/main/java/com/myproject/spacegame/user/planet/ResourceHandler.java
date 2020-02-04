@@ -61,9 +61,12 @@ public class ResourceHandler {
 		}
 	}
 
-	public void pickUpOrDeliverResources(Spaceship spaceshipFound, Planet planetFound, Long metal, Long crystal, Long hydrogen,
+	public void pickUpOrDeliverResources(Long spaceshipId, Long planetId, Long metal, Long crystal, Long hydrogen,
 			boolean pickUpOrDeliver) throws Exception {
-
+		
+		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
+		Planet planetFound = planetRepository.findById(planetId).get();
+		
 		if (pickUpOrDeliver) {
 			if (!proofPlanetRessourcesEnough(planetFound, metal, crystal, hydrogen)) {
 				throw new Exception("Du hast nicht so viele Rohstoffe auf dem Planeten");

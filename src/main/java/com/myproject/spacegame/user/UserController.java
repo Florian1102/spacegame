@@ -62,13 +62,12 @@ public class UserController {
 	public User create(@RequestBody @Valid User user) {
 
 		user.setId(null);
-		user.setPoints(0);
 		user.setPlanets(new ArrayList<Planet>());
 		
 		Spaceship spaceship = new Spaceship();
 		Random random = new Random();
-		int galaxy = random.nextInt(2) + 1;
-		int system = random.nextInt(2) + 1;
+		int galaxy = random.nextInt(2) + 1; //TODO auf 10 setzen
+		int system = random.nextInt(2) + 1; // auf 100 setzen
 		spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, 0)); //Zahlen kann man noch abhängig von dem CoordinateRepository machen
 		user.setSpaceship(spaceship);
 		

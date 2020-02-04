@@ -64,4 +64,6 @@ public class Spaceship {
 	private boolean fighterSpaceship = false;
 	private int counterOfChangedSpecialization = 0;
 	
+	private Long flightDuration = 0L;
+	
 }

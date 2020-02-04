@@ -1,5 +1,11 @@
 package com.myproject.spacegame.user.spaceship;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -32,6 +38,7 @@ public class SpaceshipController {
 	private final ResourceHandler resourceHandler;
 	private final PlanetRepository planetRepository;
 	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
+	private final SpaceshipHandler spaceshipHandler;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> showSpaceship(@PathVariable Long id) {
@@ -143,6 +150,7 @@ public class SpaceshipController {
 	public ResponseEntity<?> pickUpResources(@PathVariable Long spaceshipId, @PathVariable String pickUpOrDeliver,
 			@PathVariable Long planetId, @RequestParam(required = true) Long metal,
 			@RequestParam(required = true) Long crystal, @RequestParam(required = true) Long hydrogen) {
+
 		if (!spaceshipRepository.existsById(spaceshipId)) {
 			return new ResponseEntity<>("Das Raumschiff existiert nicht", HttpStatus.NOT_FOUND);
 		} else if (!planetRepository.existsById(planetId)) {
@@ -151,20 +159,47 @@ public class SpaceshipController {
 		try {
 			Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
 			Planet planetFound = planetRepository.findById(planetId).get();
-
-			if (pickUpOrDeliver.equals("pickup")) {
-				// TODO zum Planeten fliegen
+			ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+			if (spaceshipFound.getFlightDuration() > 0) {
+				return new ResponseEntity<>("Das Raumschiff fliegt bereits", HttpStatus.BAD_REQUEST);
+			} else if (pickUpOrDeliver.equals("pickup")) {
 				if (!spaceshipFound.getUser().getPlanets().contains(planetFound)) {
 					throw new Exception("Das Abholen von Ressourcen von einem fremden Planete ist nicht erlaubt");
 				} else {
-					// TODO zum Planeten fliegen
-					resourceHandler.pickUpOrDeliverResources(spaceshipFound, planetFound, metal, crystal, hydrogen,
-							true);
-					return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+					// TODO: Hydrogen berechnen
+					Long flightDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound, planetFound.getCoordinates()); //getCoordniates zu coordinatesystem ändern
+					spaceshipFound.setFlightDuration(flightDuration * 2);
+					spaceshipRepository.save(spaceshipFound);
+
+					@SuppressWarnings("unused")
+					ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
+						public Object call() throws Exception {
+							resourceHandler.pickUpOrDeliverResources(spaceshipFound.getId(), planetFound.getId(), metal,
+									crystal, hydrogen, true);
+							spaceshipHandler.flyBack(spaceshipFound.getId(), flightDuration);
+							return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+						}
+					}, flightDuration, TimeUnit.SECONDS);
+					executorService.shutdown();
+					return new ResponseEntity<>(HttpStatus.ACCEPTED);
 				}
 			} else if (pickUpOrDeliver.equals("deliver")) {
-				resourceHandler.pickUpOrDeliverResources(spaceshipFound, planetFound, metal, crystal, hydrogen, false);
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				// TODO: Hydrogen berechnen
+				Long flightDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound); 
+				spaceshipFound.setFlightDuration(flightDuration * 2);
+				spaceshipRepository.save(spaceshipFound);
+
+				@SuppressWarnings("unused")
+				ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
+					public Object call() throws Exception {
+						resourceHandler.pickUpOrDeliverResources(spaceshipFound.getId(), planetFound.getId(), metal,
+								crystal, hydrogen, false);
+						spaceshipHandler.flyBack(spaceshipFound.getId(), flightDuration);
+						return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+					}
+				}, flightDuration, TimeUnit.SECONDS); 
+				executorService.shutdown();
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			} else {
 				throw new Exception("Funktion nicht bekannt");
 			}

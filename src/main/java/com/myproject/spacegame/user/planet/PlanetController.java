@@ -64,7 +64,7 @@ public class PlanetController {
 				Planet createdPlanet = setupPlanet(userId, galaxy, system, position);
 				planetRepository.save(createdPlanet);
 				CoordinateSystem coordinate = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position);
-				coordinate.setPlanetId(createdPlanet.getId());
+				coordinate.setPlanet(createdPlanet);
 				coordinateSystemRepository.save(coordinate);
 				return new ResponseEntity<>(createdPlanet, HttpStatus.CREATED);
 			}
@@ -88,7 +88,7 @@ public class PlanetController {
 			throw new Exception("Die Koordinate gibt es nicht");
 		} else if (position == 0) {
 			throw new Exception("Die Position kann nicht besiedelt werden");
-		} else if (!(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position).getPlanetId() == null)) {
+		} else if (!(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position) == null)) {
 				throw new Exception("Der Planet ist schon besiedelt");
 		} else {
 			return true;
@@ -176,7 +176,7 @@ public class PlanetController {
 		Planet planet = planetRepository.findById(id).get();
 		CoordinateSystem coordinate = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(planet.getCoordinates().getGalaxy(), planet
 				.getCoordinates().getSystem(), planet.getCoordinates().getPosition());
-		coordinate.setPlanetId(null);
+		coordinate.setPlanet(null);
 		coordinateSystemRepository.save(coordinate);
 		planetRepository.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
