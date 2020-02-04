@@ -55,7 +55,7 @@ public class Spaceship {
 	private Long remainingBuildingDuration = 0L;
 	private Long remainingResearchDuration = 0L;
 
-	private double hydrogenConsumption;
+	private double hydrogenConsumption = 10;
 
 	private double reduceBuildingDuration = 1.0;
 	private double reduceResearchDuration = 1.0;

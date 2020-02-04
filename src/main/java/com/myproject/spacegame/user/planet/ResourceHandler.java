@@ -1,5 +1,7 @@
 package com.myproject.spacegame.user.planet;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.user.spaceship.Spaceship;
@@ -61,15 +63,15 @@ public class ResourceHandler {
 		}
 	}
 
-	public void pickUpOrDeliverResources(Long spaceshipId, Long planetId, Long metal, Long crystal, Long hydrogen,
+	public ResponseEntity<?> pickUpOrDeliverResources(Long spaceshipId, Long planetId, Long metal, Long crystal, Long hydrogen,
 			boolean pickUpOrDeliver) throws Exception {
 		
 		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
 		Planet planetFound = planetRepository.findById(planetId).get();
-		
+		System.out.println("In Funktion");
 		if (pickUpOrDeliver) {
 			if (!proofPlanetRessourcesEnough(planetFound, metal, crystal, hydrogen)) {
-				throw new Exception("Du hast nicht so viele Rohstoffe auf dem Planeten");
+				return new ResponseEntity<>("Du hast nicht so viele Rohstoffe auf dem Planeten", HttpStatus.BAD_REQUEST);
 			} else {
 				spaceshipFound.setMetal(spaceshipFound.getMetal() + metal);
 				spaceshipFound.setCrystal(spaceshipFound.getCrystal() + crystal);
@@ -80,7 +82,7 @@ public class ResourceHandler {
 			}
 		} else {
 			if (!proofSpaceshipRessourcesEnough(spaceshipFound, metal, crystal, hydrogen, 0L)) {
-				throw new Exception("Du hast nicht so viele Rohstoffe auf dem Raumschiff");
+				return new ResponseEntity<>("Du hast nicht so viele Rohstoffe auf dem Raumschiff", HttpStatus.BAD_REQUEST);
 			} else {
 				spaceshipFound.setMetal(spaceshipFound.getMetal() - metal);
 				spaceshipFound.setCrystal(spaceshipFound.getCrystal() - crystal);
@@ -92,6 +94,6 @@ public class ResourceHandler {
 		}
 		spaceshipRepository.save(spaceshipFound);
 		planetRepository.save(planetFound);
-
+		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}
 }
