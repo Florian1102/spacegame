@@ -43,4 +43,6 @@ public class BuildingStats {
 
 	private double reduceBuildingDuration;
 	private double reduceResearchDuration;
+	
+	private double hydrogenConsumption;
 }

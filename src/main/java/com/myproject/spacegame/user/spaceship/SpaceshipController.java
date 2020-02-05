@@ -140,7 +140,7 @@ public class SpaceshipController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
-		if (spaceshipFound.getSpaceshipLvl() < 5) {
+		if (spaceshipFound.getSpaceshipLvl() < 1) { //TODO: von 1 auf 5 ändern
 			return new ResponseEntity<>("Dein Raumschiff hat noch nicht das erforderliche Level",
 					HttpStatus.BAD_REQUEST);
 		}
@@ -150,16 +150,17 @@ public class SpaceshipController {
 				if (spaceshipFound.isFighterSpaceship()) {
 					throw new Exception("Das Raumschiff ist bereits auf Kampf spezialisert");
 				}
-				changePropertiesOfSpaceship(spaceshipFound, true, false);
-				// TODO Function increaseResourceProduction and changeSpeedOfSpaceship
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				Spaceship spaceshipWithUpdatedSpecialization = changePropertiesOfSpaceship(spaceshipFound, true, false);
+				Spaceship spaceshipWithUpdatedStats = spaceshipHandler.calculateAndSaveSpaceshipStats(spaceshipWithUpdatedSpecialization);
+				return new ResponseEntity<>(spaceshipWithUpdatedStats, HttpStatus.NO_CONTENT);
 			} else if (fighterOrMerchant.equals("merchant")) {
 				if (spaceshipFound.isMerchantSpaceship()) {
 					throw new Exception("Das Raumschiff ist bereits auf Handel spezialisert");
 				}
-				changePropertiesOfSpaceship(spaceshipFound, false, true);
-				// TODO Function changeAttackpowerOfSpaceship and changeSpeedOfSpaceship
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				Spaceship spaceshipWithUpdatedSpecialization = changePropertiesOfSpaceship(spaceshipFound, false, true);
+				Spaceship spaceshipWithUpdatedStats = spaceshipHandler.calculateAndSaveSpaceshipStats(spaceshipWithUpdatedSpecialization);
+
+				return new ResponseEntity<>(spaceshipWithUpdatedStats, HttpStatus.NO_CONTENT);
 			} else {
 				throw new Exception("Spezialisierung nicht bekannt");
 			}
@@ -168,7 +169,7 @@ public class SpaceshipController {
 		}
 	}
 
-	private void changePropertiesOfSpaceship(Spaceship spaceshipFound, boolean isFighter, boolean isMerchant)
+	private Spaceship changePropertiesOfSpaceship(Spaceship spaceshipFound, boolean isFighter, boolean isMerchant)
 			throws Exception {
 		Long necessaryMetal = 10L * (spaceshipFound.getCounterOfChangedSpecialization() + 1);
 		Long necessaryCrystal = 10L * (spaceshipFound.getCounterOfChangedSpecialization() + 1);
@@ -180,9 +181,10 @@ public class SpaceshipController {
 		spaceshipFound.setCounterOfChangedSpecialization(spaceshipFound.getCounterOfChangedSpecialization() + 1);
 		Spaceship updatedSpaceship = resourceHandler.calculateNewSpaceshipRessources(spaceshipFound, necessaryMetal,
 				necessaryCrystal, necessaryHydrogen, necessaryEnergy);
-		spaceshipRepository.save(updatedSpaceship);
+//		spaceshipRepository.save(updatedSpaceship);
 		calculatePointsOfPlayer.calculateAndSaveNewPoints(spaceshipFound.getUser().getId(), necessaryMetal,
 				necessaryCrystal, necessaryHydrogen);
+		return updatedSpaceship;
 	}
 
 	@PutMapping("/{spaceshipId}/{pickUpOrDeliver}/{planetId}/resources") //

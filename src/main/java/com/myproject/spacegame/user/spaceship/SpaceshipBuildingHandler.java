@@ -22,6 +22,7 @@ public class SpaceshipBuildingHandler {
 
 	private final SpaceshipRepository spaceshipRepository;
 	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
+	private final SpaceshipHandler spaceshipHandler;
 
 	public boolean proofBuildPossible(Spaceship spaceship) throws Exception {
 		if (spaceship.getRemainingBuildingDuration() > 0) {
@@ -65,18 +66,18 @@ public class SpaceshipBuildingHandler {
 		if (!spaceshipRepository.existsById(id)) {
 			throw new Exception("Raumschiff existiert nicht");
 		}
-		Spaceship foundSpaceship = spaceshipRepository.findById(id).get();
+		Spaceship spaceshipFound = spaceshipRepository.findById(id).get();
 
-		foundSpaceship = setSomeStatsDependentOnWhichBuilding(foundSpaceship, statsOfBuildingNextLvl);
-		foundSpaceship.setRemainingBuildingDuration(0L);
+		spaceshipFound = increaseLvlOfSpecificBuilding(spaceshipFound, statsOfBuildingNextLvl);
+		spaceshipFound.setRemainingBuildingDuration(0L);
+		spaceshipFound = spaceshipHandler.calculateAndSaveSpaceshipStats(spaceshipFound);
 
-		spaceshipRepository.save(foundSpaceship);
-		calculatePointsOfPlayer.calculateAndSaveNewPoints(foundSpaceship.getUser().getId(), statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(), statsOfBuildingNextLvl.getNecessaryHydrogen());
+		calculatePointsOfPlayer.calculateAndSaveNewPoints(spaceshipFound.getUser().getId(), statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(), statsOfBuildingNextLvl.getNecessaryHydrogen());
 
-		return foundSpaceship;
+		return spaceshipFound;
 	}
 
-	private Spaceship setSomeStatsDependentOnWhichBuilding(Spaceship foundSpaceship,
+	private Spaceship increaseLvlOfSpecificBuilding(Spaceship foundSpaceship,
 			BuildingStats statsOfBuildingNextLvl) throws Exception {
 
 		String nameOfBuilding = statsOfBuildingNextLvl.getNameOfBuildingOTechnology();
@@ -84,9 +85,9 @@ public class SpaceshipBuildingHandler {
 		if (nameOfBuilding.equalsIgnoreCase(NamesOfSpaceshipBuildings.SPACESHIP.toString())) {
 			foundSpaceship.setSpaceshipLvl(statsOfBuildingNextLvl.getLevel());
 			foundSpaceship.setEnergy(foundSpaceship.getEnergy() - statsOfBuildingNextLvl.getNecessaryEnergy());
-			foundSpaceship.setAttackPower(foundSpaceship.getAttackPower() + statsOfBuildingNextLvl.getAttackPower());
-			foundSpaceship.setDefense(foundSpaceship.getDefense() + statsOfBuildingNextLvl.getDefense());
-			foundSpaceship.setSpeed(foundSpaceship.getSpeed() + statsOfBuildingNextLvl.getSpeed());
+//			foundSpaceship.setAttackPower(foundSpaceship.getAttackPower() + statsOfBuildingNextLvl.getAttackPower());
+//			foundSpaceship.setDefense(foundSpaceship.getDefense() + statsOfBuildingNextLvl.getDefense());
+//			foundSpaceship.setSpeed(foundSpaceship.getSpeed() + statsOfBuildingNextLvl.getSpeed());
 			foundSpaceship.setReduceBuildingDuration(statsOfBuildingNextLvl.getReduceBuildingDuration());
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfSpaceshipBuildings.RESEARCHLABORATORY.toString())) {
 			foundSpaceship.setResearchLaboratoryLvl(statsOfBuildingNextLvl.getLevel());
