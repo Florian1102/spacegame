@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myproject.spacegame.user.planet.Planet;
@@ -35,9 +36,12 @@ public class User {
 	
 	@NotNull
 	@NotBlank
+	@Size(min = 3, max = 12)
 	@Column(nullable = false)
 	private String username;
 	
+	@NotNull
+	@Column(nullable = false)
 	private double points = 0;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -54,5 +58,7 @@ public class User {
 	@JsonManagedReference
 	private List<Planet> planets;
 	
-	private int daysLoggedIn;
+	@NotNull
+	@Column(nullable = false)
+	private int daysLoggedIn = 0;
 }
