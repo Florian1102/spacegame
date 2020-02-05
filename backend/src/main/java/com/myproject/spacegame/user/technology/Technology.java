@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.user.User;
 
 import lombok.Getter;
@@ -30,4 +31,13 @@ public class Technology {
 	
 	private int resourceResearchLvl = 0;
 	private double resourceResearchFactor = 1;
+	//TODO: Weitere Forschungen hinzufügen
+	public void setEnergyResearchLvl(BuildingStats statsOfEnergyReserach) {
+		this.energyResearchLvl = statsOfEnergyReserach.getLevel();
+		this.energyResearchFactor = statsOfEnergyReserach.getEnergyResearchFactor();
+	}
+	public void setResourceResearchLvl(BuildingStats statsOfResourceReserach) {
+		this.resourceResearchLvl = statsOfResourceReserach.getLevel();
+		this.resourceResearchFactor = statsOfResourceReserach.getResourceResearchFactor();
+	}
 }

@@ -68,17 +68,20 @@ public class ResourceHandler {
 		
 		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
 		Planet planetFound = planetRepository.findById(planetId).get();
-		System.out.println("In Funktion");
 		if (pickUpOrDeliver) {
 			if (!proofPlanetRessourcesEnough(planetFound, metal, crystal, hydrogen)) {
 				return new ResponseEntity<>("Du hast nicht so viele Rohstoffe auf dem Planeten", HttpStatus.BAD_REQUEST);
 			} else {
-				spaceshipFound.setMetal(spaceshipFound.getMetal() + metal);
-				spaceshipFound.setCrystal(spaceshipFound.getCrystal() + crystal);
-				spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() + hydrogen);
-				planetFound.setMetal(planetFound.getMetal() - metal);
-				planetFound.setCrystal(planetFound.getCrystal() - crystal);
-				planetFound.setHydrogen(planetFound.getHydrogen() - hydrogen);
+				double deltaMetal = spaceshipFound.getMetalStore() - spaceshipFound.getMetal();
+				double deltaCrystal = spaceshipFound.getCrystalStore() - spaceshipFound.getCrystal();
+				double deltaHydrogen = spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen();
+				
+				spaceshipFound.setMetal(spaceshipFound.getMetal() + deltaMetal);
+				spaceshipFound.setCrystal(spaceshipFound.getCrystal() + deltaCrystal);
+				spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() + deltaHydrogen);
+				planetFound.setMetal(planetFound.getMetal() - deltaMetal);
+				planetFound.setCrystal(planetFound.getCrystal() - deltaCrystal);
+				planetFound.setHydrogen(planetFound.getHydrogen() - deltaHydrogen);
 			}
 		} else {
 			if (!proofSpaceshipRessourcesEnough(spaceshipFound, metal, crystal, hydrogen, 0L)) {

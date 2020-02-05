@@ -14,6 +14,7 @@ import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.buildingStats.NamesOfTechnologies;
 import com.myproject.spacegame.services.CalculatePointsOfPlayer;
 import com.myproject.spacegame.user.spaceship.Spaceship;
+import com.myproject.spacegame.user.spaceship.SpaceshipHandler;
 import com.myproject.spacegame.user.spaceship.SpaceshipRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,26 +26,32 @@ public class TechnologyResearchHandler {
 	private final TechnologyRepository technologyRepository;
 	private final SpaceshipRepository spaceshipRepository;
 	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
-	
+	private final SpaceshipHandler spaceshipHandler;
+
 	public boolean proofBuildPossible(Spaceship spaceship) throws Exception {
 		if (spaceship.getRemainingResearchDuration() > 0) {
 			throw new Exception("Es wird schon etwas erforscht");
 		} else {
-			//TODO: Hier müssen weitere Einschränkungen eingefügt werden. Manche Forschungen sollen erst ab einem bestimmten Lvl vom Spaceship oder Forschungslabor möglich sein.
+			// TODO: Hier müssen weitere Einschränkungen eingefügt werden. Manche
+			// Forschungen sollen erst ab einem bestimmten Lvl vom Spaceship oder
+			// Forschungslabor möglich sein.
 			return true;
 		}
 	}
+
 	public int getCurrentLvlOfSpecificTechnology(Technology technology, String nameOfTechnology) throws Exception {
 		if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.ENERGYRESEARCH.toString())) {
 			return technology.getEnergyResearchLvl();
-		//TODO: Weitere Technologien ergänzen
+		} else if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.RESOURCERESEARCH.toString())) {
+			return technology.getResourceResearchLvl();
+			// TODO: Weitere Technologien ergänzen
 		} else {
 			throw new Exception("Es liegen keine Informationen über das aktuelle Level der Technologie vor");
 		}
 	}
 
-	public void prepareBuild(Spaceship spaceshipWithUpdatedRessources, Technology technologyFound, BuildingStats statsOfTechnologyNextLvl)
-			throws Exception {
+	public void prepareBuild(Spaceship spaceshipWithUpdatedRessources, Technology technologyFound,
+			BuildingStats statsOfTechnologyNextLvl) throws Exception {
 
 		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -61,7 +68,8 @@ public class TechnologyResearchHandler {
 		executorService.shutdown();
 	}
 
-	private Technology build(Long spaceshipId, Long technologyId, BuildingStats statsOfTechnologyNextLvl) throws Exception {
+	private Technology build(Long spaceshipId, Long technologyId, BuildingStats statsOfTechnologyNextLvl)
+			throws Exception {
 		if (!spaceshipRepository.existsById(spaceshipId)) {
 			throw new Exception("Raumschiff existiert nicht");
 		}
@@ -71,13 +79,15 @@ public class TechnologyResearchHandler {
 
 		Spaceship foundSpaceship = spaceshipRepository.findById(spaceshipId).get();
 		foundSpaceship.setRemainingResearchDuration(0L);
-		//TODO Auswirkungen von erhöhter Forschung hier einfügen
+//		spaceshipHandler.calculateAndSaveSpaceshipStats(foundSpaceship);
+		// TODO Auswirkungen von erhöhter Forschung auf Raumschiff und Planeten hier einfügen
 		spaceshipRepository.save(foundSpaceship);
-		
 		Technology foundTechnology = technologyRepository.findById(technologyId).get();
 		foundTechnology = setSomeStatsDependentOnWhichTechnology(foundTechnology, statsOfTechnologyNextLvl);
 		technologyRepository.save(foundTechnology);
-		calculatePointsOfPlayer.calculateAndSaveNewPoints(foundSpaceship.getUser().getId(), statsOfTechnologyNextLvl.getNecessaryMetal(), statsOfTechnologyNextLvl.getNecessaryCrystal(), statsOfTechnologyNextLvl.getNecessaryHydrogen());
+		calculatePointsOfPlayer.calculateAndSaveNewPoints(foundSpaceship.getUser().getId(),
+				statsOfTechnologyNextLvl.getNecessaryMetal(), statsOfTechnologyNextLvl.getNecessaryCrystal(),
+				statsOfTechnologyNextLvl.getNecessaryHydrogen());
 
 		return foundTechnology;
 	}
@@ -88,8 +98,10 @@ public class TechnologyResearchHandler {
 		String nameOfTechnology = statsOfTechnologyNextLvl.getNameOfBuildingOTechnology();
 
 		if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.ENERGYRESEARCH.toString())) {
-			foundTechnology.setEnergyResearchLvl(statsOfTechnologyNextLvl.getLevel());
-			//TODO Weitere Forschungen hinzufügen
+			foundTechnology.setEnergyResearchLvl(statsOfTechnologyNextLvl);
+		} else if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.RESOURCERESEARCH.toString())) {
+			foundTechnology.setResourceResearchLvl(statsOfTechnologyNextLvl);
+			// TODO Weitere Forschungen hinzufügen
 		} else {
 			throw new Exception("Das erhöhen des Gebäudelevels ist fehlgeschlagen");
 		}

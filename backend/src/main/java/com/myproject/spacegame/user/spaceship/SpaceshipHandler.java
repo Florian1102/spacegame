@@ -39,7 +39,7 @@ public class SpaceshipHandler {
 			BuildingStats spaceshipStats = getStatsOfBuildingsAndTechnologies
 					.getBuildingOrTechnologyStats(spaceshipFound.getSpaceshipLvl(), "spaceship");
 			// TODO: alle Buildings und Forschungen vom Rauschiff berücksichtigen
-			attackPower = attackPower + spaceshipStats.getAttackPower();
+			attackPower = attackPower + spaceshipStats.getAttackPower(); // und hier addieren
 			defense = defense + spaceshipStats.getDefense();
 			speed = speed + spaceshipStats.getSpeed();
 			hydrogenConsumption = hydrogenConsumption + spaceshipStats.getHydrogenConsumption();
