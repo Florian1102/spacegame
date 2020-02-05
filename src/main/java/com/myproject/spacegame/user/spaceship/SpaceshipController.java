@@ -181,7 +181,6 @@ public class SpaceshipController {
 		spaceshipFound.setCounterOfChangedSpecialization(spaceshipFound.getCounterOfChangedSpecialization() + 1);
 		Spaceship updatedSpaceship = resourceHandler.calculateNewSpaceshipRessources(spaceshipFound, necessaryMetal,
 				necessaryCrystal, necessaryHydrogen, necessaryEnergy);
-//		spaceshipRepository.save(updatedSpaceship);
 		calculatePointsOfPlayer.calculateAndSaveNewPoints(spaceshipFound.getUser().getId(), necessaryMetal,
 				necessaryCrystal, necessaryHydrogen);
 		return updatedSpaceship;

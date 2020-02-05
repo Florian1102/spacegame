@@ -106,7 +106,7 @@ public class PlanetController {
 		planet.setMetal(500);
 		planet.setCrystal(500);
 		planet.setHydrogen(0);
-		planet.setEnergy(0);
+		planet.setEnergy(0.0);
 		planet.setMetalProductionEveryHour(10);
 		planet.setCrystalProductionEveryHour(10);
 		planet.setHydrogenProductionEveryHour(0);

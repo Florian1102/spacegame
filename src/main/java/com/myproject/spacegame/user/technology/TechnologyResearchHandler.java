@@ -35,8 +35,8 @@ public class TechnologyResearchHandler {
 		}
 	}
 	public int getCurrentLvlOfSpecificTechnology(Technology technology, String nameOfTechnology) throws Exception {
-		if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.ENERGYTECHNOLOGY.toString())) {
-			return technology.getEnergyTechnologyLvl();
+		if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.ENERGYRESEARCH.toString())) {
+			return technology.getEnergyResearchLvl();
 		//TODO: Weitere Technologien ergänzen
 		} else {
 			throw new Exception("Es liegen keine Informationen über das aktuelle Level der Technologie vor");
@@ -87,8 +87,8 @@ public class TechnologyResearchHandler {
 
 		String nameOfTechnology = statsOfTechnologyNextLvl.getNameOfBuildingOTechnology();
 
-		if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.ENERGYTECHNOLOGY.toString())) {
-			foundTechnology.setEnergyTechnologyLvl(statsOfTechnologyNextLvl.getLevel());
+		if (nameOfTechnology.equalsIgnoreCase(NamesOfTechnologies.ENERGYRESEARCH.toString())) {
+			foundTechnology.setEnergyResearchLvl(statsOfTechnologyNextLvl.getLevel());
 			//TODO Weitere Forschungen hinzufügen
 		} else {
 			throw new Exception("Das erhöhen des Gebäudelevels ist fehlgeschlagen");

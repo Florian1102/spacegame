@@ -25,5 +25,9 @@ public class Technology {
 	@JsonBackReference(value = "userToTechnologyReference")
 	private User user;
 	
-	private int energyTechnologyLvl = 0;
+	private int energyResearchLvl = 0;
+	private double energyResearchFactor = 1;
+	
+	private int resourceResearchLvl = 0;
+	private double resourceResearchFactor = 1;
 }

@@ -14,6 +14,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.user.User;
 
@@ -121,4 +122,27 @@ public class Planet {
 	@Column(nullable = false)
 	private double reduceBuildingDuration;
 
+	public void setMetalMineLvl(Planet foundPlanet, BuildingStats statsOfMetalMine) {
+		this.metalMineLvl = statsOfMetalMine.getLevel();
+		this.metalProductionEveryHour = statsOfMetalMine.getProductionMetal() * foundPlanet.getUser().getTechnology().getResourceResearchFactor();
+		this.energy -= statsOfMetalMine.getNecessaryEnergy(); //TODO: Wenn eine Stufe erhöht wird, muss die Energy für die alte Stufe wieder addiert werden
+	}
+	public void setCrystalMineLvl(Planet foundPlanet, BuildingStats statsOfCrystalMine) {
+		this.crystalMineLvl = statsOfCrystalMine.getLevel();
+		this.crystalProductionEveryHour = statsOfCrystalMine.getProductionCrystal() * foundPlanet.getUser().getTechnology().getResourceResearchFactor();
+		this.energy -= statsOfCrystalMine.getNecessaryEnergy(); //TODO: Wenn eine Stufe erhöht wird, muss die Energy für die alte Stufe wieder addiert werden
+	}
+	public void setHydrogenPlantLvl(Planet foundPlanet, BuildingStats statsOfHydrogenPlant) {
+		this.hydrogenPlantLvl = statsOfHydrogenPlant.getLevel();
+		this.hydrogenProductionEveryHour = statsOfHydrogenPlant.getProductionHydrogen() * foundPlanet.getUser().getTechnology().getResourceResearchFactor();
+		this.energy -= statsOfHydrogenPlant.getNecessaryEnergy(); //TODO: Wenn eine Stufe erhöht wird, muss die Energy für die alte Stufe wieder addiert werden
+	}
+	public void setSolarPowerPlantLvl(Planet foundPlanet, BuildingStats statsOfSolarPowerPlant) {
+		this.solarPowerPlantLvl = statsOfSolarPowerPlant.getLevel();
+		this.energy = (statsOfSolarPowerPlant.getProductionEnergy() + (foundPlanet.getSolarSatellite() * 20)) * foundPlanet.getUser().getTechnology().getEnergyResearchFactor();
+	}
+	public void setSolarSatellite(Planet foundPlanet, BuildingStats statsOfSolarSatellite) {
+		this.solarSatellite += 1;
+		this.energy = (foundPlanet.getEnergy() + (statsOfSolarSatellite.getProductionEnergy() * foundPlanet.getUser().getTechnology().getEnergyResearchFactor()));
+	}
 }
