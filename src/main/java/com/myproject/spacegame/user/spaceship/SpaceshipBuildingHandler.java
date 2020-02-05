@@ -69,7 +69,6 @@ public class SpaceshipBuildingHandler {
 		Spaceship spaceshipFound = spaceshipRepository.findById(id).get();
 
 		spaceshipFound = increaseLvlOfSpecificBuilding(spaceshipFound, statsOfBuildingNextLvl);
-		spaceshipFound.setRemainingBuildingDuration(0L);
 		spaceshipFound = spaceshipHandler.calculateAndSaveSpaceshipStats(spaceshipFound);
 
 		calculatePointsOfPlayer.calculateAndSaveNewPoints(spaceshipFound.getUser().getId(), statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(), statsOfBuildingNextLvl.getNecessaryHydrogen());
@@ -85,9 +84,6 @@ public class SpaceshipBuildingHandler {
 		if (nameOfBuilding.equalsIgnoreCase(NamesOfSpaceshipBuildings.SPACESHIP.toString())) {
 			foundSpaceship.setSpaceshipLvl(statsOfBuildingNextLvl.getLevel());
 			foundSpaceship.setEnergy(foundSpaceship.getEnergy() - statsOfBuildingNextLvl.getNecessaryEnergy());
-//			foundSpaceship.setAttackPower(foundSpaceship.getAttackPower() + statsOfBuildingNextLvl.getAttackPower());
-//			foundSpaceship.setDefense(foundSpaceship.getDefense() + statsOfBuildingNextLvl.getDefense());
-//			foundSpaceship.setSpeed(foundSpaceship.getSpeed() + statsOfBuildingNextLvl.getSpeed());
 			foundSpaceship.setReduceBuildingDuration(statsOfBuildingNextLvl.getReduceBuildingDuration());
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfSpaceshipBuildings.RESEARCHLABORATORY.toString())) {
 			foundSpaceship.setResearchLaboratoryLvl(statsOfBuildingNextLvl.getLevel());
@@ -97,6 +93,7 @@ public class SpaceshipBuildingHandler {
 		} else {
 			throw new Exception("Das erhöhen des Gebäudelevels ist fehlgeschlagen");
 		}
+		foundSpaceship.setRemainingBuildingDuration(0L);
 		return foundSpaceship;
 	}
 }
