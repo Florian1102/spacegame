@@ -207,7 +207,7 @@ public class SpaceshipController {
 					throw new Exception("Das Abholen von Ressourcen von einem fremden Planete ist nicht erlaubt");
 				} else {
 					double hydrogenConsumptionForTheFlight = spaceshipHandler.calculateHydrogenConsumption(spaceshipFound, planetFound.getCoordinates());
-					if (hydrogenConsumptionForTheFlight >= spaceshipFound.getHydrogen()) {
+					if (hydrogenConsumptionForTheFlight > spaceshipFound.getHydrogen()) {
 						throw new Exception("Du hast nicht ausreichend Wasserstoff");
 					}
 					spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() - hydrogenConsumptionForTheFlight);
@@ -233,7 +233,7 @@ public class SpaceshipController {
 				}
 			} else if (pickUpOrDeliver.equals("deliver")) {
 				double hydrogenConsumptionForTheFlight = spaceshipHandler.calculateHydrogenConsumption(spaceshipFound, planetFound.getCoordinates());
-				if (hydrogenConsumptionForTheFlight >= spaceshipFound.getHydrogen()) {
+				if (hydrogenConsumptionForTheFlight > spaceshipFound.getHydrogen()) {
 					throw new Exception("Du hast nicht ausreichend Wasserstoff");
 				}
 				spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() - hydrogenConsumptionForTheFlight);

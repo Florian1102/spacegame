@@ -72,9 +72,9 @@ public class ResourceHandler {
 			if (!proofPlanetRessourcesEnough(planetFound, metal, crystal, hydrogen)) {
 				return new ResponseEntity<>("Du hast nicht so viele Rohstoffe auf dem Planeten", HttpStatus.BAD_REQUEST);
 			} else {
-				double deltaMetal = spaceshipFound.getMetalStore() - spaceshipFound.getMetal();
-				double deltaCrystal = spaceshipFound.getCrystalStore() - spaceshipFound.getCrystal();
-				double deltaHydrogen = spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen();
+				double deltaMetal = (metal > (spaceshipFound.getMetalStore() - spaceshipFound.getMetal())) ? (spaceshipFound.getMetalStore() - spaceshipFound.getMetal()) : metal;
+				double deltaCrystal = (crystal > (spaceshipFound.getCrystalStore() - spaceshipFound.getCrystal())) ? (spaceshipFound.getCrystalStore() - spaceshipFound.getCrystal()) : crystal;
+				double deltaHydrogen = (metal > (spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen())) ? (spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen()) : hydrogen;
 				
 				spaceshipFound.setMetal(spaceshipFound.getMetal() + deltaMetal);
 				spaceshipFound.setCrystal(spaceshipFound.getCrystal() + deltaCrystal);

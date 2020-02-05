@@ -96,7 +96,6 @@ public class PlanetBuildingHandler {
 		String nameOfBuilding = specificBuildingStatsOfNextLvl.getNameOfBuildingOTechnology();
 
 		if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.METALMINE.toString())) {
-			System.out.println("Start");
 			foundPlanet.setMetalMineLvl(foundPlanet, specificBuildingStatsOfNextLvl);
 			foundPlanet.setRemainingFields(foundPlanet.getRemainingFields() - 1);
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfPlanetBuildings.CRYSTALMINE.toString())) {
