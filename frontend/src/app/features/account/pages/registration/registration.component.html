@@ -1,1 +1,12 @@
-<p>registration works!</p>
+<h1>Registrierung</h1>
+
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+
+    <input formControlName="name" type="text" placeholder="Name eingeben" />
+
+    <div *ngIf="form.controls.name.invalid && (form.controls.name.touched || form.controls.name.dirty)">
+        Der Name muss mindestens 3 Zeichen haben!
+    </div>
+
+    <button type="submit">Registrieren</button>
+</form>

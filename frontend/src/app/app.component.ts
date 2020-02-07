@@ -5,6 +5,14 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
+
 export class AppComponent {
-  title = 'frontend';
+  title = 'Spacegame';
+
+  userIsLoggedIn: boolean = false;
+
+  handleChangeUserStatus(userStatus: boolean){
+    this.userIsLoggedIn = userStatus;
+  }
 }
