@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,9 +51,13 @@ public class PlanetController {
 		return ResponseEntity.of(planetRepository.findById(id));
 	}
 
-	@PostMapping("/{userId}/planets/add/{galaxy}/{system}/{position}")
+	@PostMapping("/{userId}/planets/add")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> create(@PathVariable Long userId, @PathVariable int galaxy, @PathVariable int system, @PathVariable int position) {
+	public ResponseEntity<?> create(
+			@PathVariable Long userId, 
+			@RequestParam(required = true) int galaxy, 
+			@RequestParam(required = true) int system,
+			@RequestParam(required = true) int position) {
 		try {
 			if (!userRepository.existsById(userId)) {
 				return new ResponseEntity<>("Spieler wurde nicht gefunden", HttpStatus.NOT_FOUND);
@@ -77,7 +82,7 @@ public class PlanetController {
 
 		if (planetRepository.countByUserId(userId) >= 3) {
 			throw new Exception("Du kannst keinen weiteren Planeten kolonisieren");
-			//TODO: Abhängig von einer Forschung machen
+			// TODO: Abhängig von einer Forschung machen
 		} else {
 			return true;
 		}
@@ -88,13 +93,14 @@ public class PlanetController {
 			throw new Exception("Die Koordinate gibt es nicht");
 		} else if (position == 0) {
 			throw new Exception("Die Position kann nicht besiedelt werden");
-		} else if ((coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position).getPlanet() != null)) {
-				throw new Exception("Der Planet ist schon besiedelt");
+		} else if ((coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position)
+				.getPlanet() != null)) {
+			throw new Exception("Der Planet ist schon besiedelt");
 		} else {
 			return true;
 		}
 	}
-	
+
 	private Planet setupPlanet(Long userId, int galaxy, int system, int position) {
 		Planet planet = new Planet();
 		planet.setId(null);
@@ -156,8 +162,10 @@ public class PlanetController {
 				Planet planetWithUpdatedRessources = resourceHandler.calculateNewPlanetRessources(planetFound,
 						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
 						statsOfBuildingNextLvl.getNecessaryHydrogen());
-				
-				planetWithUpdatedRessources.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration() * planetWithUpdatedRessources.getReduceBuildingDuration()));
+
+				planetWithUpdatedRessources
+						.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()
+								* planetWithUpdatedRessources.getReduceBuildingDuration()));
 				planetRepository.save(planetWithUpdatedRessources);
 				planetBuildingHandler.prepareBuild(planetWithUpdatedRessources, statsOfBuildingNextLvl);
 				return new ResponseEntity<>(HttpStatus.OK);
@@ -174,8 +182,9 @@ public class PlanetController {
 			return new ResponseEntity<>("Der Planet existiert nicht", HttpStatus.NOT_FOUND);
 		}
 		Planet planet = planetRepository.findById(id).get();
-		CoordinateSystem coordinate = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(planet.getCoordinates().getGalaxy(), planet
-				.getCoordinates().getSystem(), planet.getCoordinates().getPosition());
+		CoordinateSystem coordinate = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(
+				planet.getCoordinates().getGalaxy(), planet.getCoordinates().getSystem(),
+				planet.getCoordinates().getPosition());
 		coordinate.setPlanet(null);
 		coordinateSystemRepository.save(coordinate);
 		planetRepository.deleteById(id);

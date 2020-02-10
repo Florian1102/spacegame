@@ -35,7 +35,5 @@ export class UserService {
   public getHighscore(): Observable<User>{
     return this.http.get<User>(baseUrl + "/highscore");
   }
-
-  
-  
+    
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 
-	List<User> findByUsernameContains(String username);
+	User findByNameEquals(String username);
+	boolean existsByNameEquals(String username);
 	List<User> findAllByOrderByPointsDesc();
 }

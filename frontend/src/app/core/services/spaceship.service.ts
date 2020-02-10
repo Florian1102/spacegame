@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Spaceship } from '../models/spaceship.model';
 import { Observable } from 'rxjs';
 
-const baseUrl = 'http://localhost:8080/users';
+const baseUrl = 'http://localhost:8080/spaceships';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +16,24 @@ export class SpaceshipService {
     return this.http.get<Spaceship>(baseUrl + "/" + id);
   }
 
-  public editSpaceshipById(id: number, spaceship: Spaceship): Observable<Spaceship>{
-    return this.http.put<Spaceship>(baseUrl + "/" + id, spaceship);
+  public showFlightDurationToCoordinate(id: number, galaxy: number, system: number, position: number): Observable<Spaceship>{
+    return this.http.get<Spaceship>(baseUrl + "/" + id + "/calculatedurationtocoordinates?galaxy=" + galaxy + "&system=" + system + "&position=" + position);
+  }
+  
+  public showHydrogenConsumptionToCoordinate(id: number, galaxy: number, system: number, position: number): Observable<Spaceship>{
+    return this.http.get<Spaceship>(baseUrl + "/" + id + "/calculatehydrogenconsumption?galaxy=" + galaxy + "&system=" + system + "&position=" + position);
+  }
+  
+  public levelUpSpaceshipBuilding(id: number, nameOfBuilding: string): Observable<Spaceship>{
+    return this.http.put<Spaceship>(baseUrl + "/" + id + "/" + nameOfBuilding + "/build", null);
+  }
+  
+  public changeToFighterOrMerchant(id: number, fighterOrMerchant: string): Observable<Spaceship>{
+    return this.http.put<Spaceship>(baseUrl + "/" + id + "/choosefighterormerchant/" + fighterOrMerchant, null);
+  }
+  
+  public pickUpOrDeliverResources(id: number, pickUpOrDeliver: string, planetId: number, metal: number, crystal: number, hydrogen: number): Observable<Spaceship>{
+    return this.http.put<Spaceship>(baseUrl + "/" + id + "/" + pickUpOrDeliver + "/" + planetId + "/resources?metal=" + metal + "&crystal=" + crystal + "&hydrogen=" + hydrogen, null);
   }
 
- 
 }

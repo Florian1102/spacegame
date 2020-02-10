@@ -33,27 +33,31 @@ public class UserController {
 
 	private final UserRepository userRepository;
 	private final CoordinateSystemRepository coordinateSystemRepository;
-	
+
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<User> showUsers(@RequestParam(required = false) String username) {
-		
-		if (username != null) {
-			return userRepository.findByUsernameContains(username);
+	public ResponseEntity<?> showUserByName(@RequestParam(required = false) String username) {
+
+		if (username == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else if (!userRepository.existsByNameEquals(username)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			User user = userRepository.findByNameEquals(username);
+			return new ResponseEntity<>(user, HttpStatus.OK);
 		}
-		return userRepository.findAll();
 	}
-	
+
 	@GetMapping("/highscore")
 	@ResponseStatus(HttpStatus.OK)
 	public List<User> showHighscore() {
-		
+
 		return userRepository.findAllByOrderByPointsDesc();
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> showUser(@PathVariable Long id) {
-		
+
 		return ResponseEntity.of(userRepository.findById(id));
 	}
 
@@ -63,14 +67,22 @@ public class UserController {
 
 		user.setId(null);
 		user.setPlanets(new ArrayList<Planet>());
-		
+
 		Spaceship spaceship = new Spaceship();
 		Random random = new Random();
-		int galaxy = random.nextInt(2) + 1; //TODO auf 10 setzen
+		int galaxy = random.nextInt(2) + 1; // TODO auf 10 setzen
 		int system = random.nextInt(2) + 1; // auf 100 setzen
-		spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, 0)); //Zahlen kann man noch abhängig von dem CoordinateRepository machen
+		spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, 0)); // Zahlen
+																														// kann
+																														// man
+																														// noch
+																														// abhängig
+																														// von
+																														// dem
+																														// CoordinateRepository
+																														// machen
 		user.setSpaceship(spaceship);
-		
+
 		Technology technology = new Technology();
 		user.setTechnology(technology);
 		return userRepository.save(user);
@@ -78,11 +90,11 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid User user) {
-		
+
 		if (!userRepository.existsById(id)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+		// TODO Hier muss evtl noch ein User gefunden und dann geädert werden
 		user.setId(id);
 		userRepository.save(user);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -90,7 +102,7 @@ public class UserController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
-		
+
 		if (!userRepository.existsById(id)) {
 			return new ResponseEntity<>("Der User existiert nicht", HttpStatus.NOT_FOUND);
 		}

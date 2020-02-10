@@ -1,1 +1,8 @@
-<p>login works!</p>
+<h1>Login</h1>
+
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+
+    <input formControlName="name" type="text" placeholder="Name eingeben" />
+
+    <button type="submit">Login</button>
+</form>

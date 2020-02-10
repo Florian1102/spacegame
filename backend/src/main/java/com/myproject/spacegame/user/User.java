@@ -38,7 +38,7 @@ public class User {
 	@NotBlank
 	@Size(min = 3, max = 12)
 	@Column(nullable = false)
-	private String username;
+	private String name;
 	
 	@NotNull
 	@Column(nullable = false)

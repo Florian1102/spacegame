@@ -43,12 +43,12 @@ public class TechnologyController {
 		return ResponseEntity.of(technologyRepository.findById(id));
 	}
 	
-	@PutMapping("/{technologyFromPlayerWithId}/{technologyName}/research")
-	public ResponseEntity<?> researchTechnology(@PathVariable Long technologyFromPlayerWithId, @PathVariable String technologyName) {
-		if (!technologyRepository.existsById(technologyFromPlayerWithId)) {
+	@PutMapping("/{technologyIdOfUser}/{technologyName}/research")
+	public ResponseEntity<?> researchTechnology(@PathVariable Long technologyIdOfUser, @PathVariable String technologyName) {
+		if (!technologyRepository.existsById(technologyIdOfUser)) {
 			return new ResponseEntity<>("Die Technologien des Spielers nicht gefunden", HttpStatus.NOT_FOUND);
 		}
-		Technology technologyFound = technologyRepository.findById(technologyFromPlayerWithId).get();
+		Technology technologyFound = technologyRepository.findById(technologyIdOfUser).get();
 		if (!spaceshipRepository.existsById(technologyFound.getUser().getSpaceship().getId())) {
 			return new ResponseEntity<>("Das Raumschiff des Spieler nicht gefunden", HttpStatus.NOT_FOUND);
 		}
