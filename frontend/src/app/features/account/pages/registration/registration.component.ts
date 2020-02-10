@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/core/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
+              private authService: AuthService,
               private router: Router) {
   }
 
@@ -30,7 +32,10 @@ export class RegistrationComponent implements OnInit {
       let user: User = {
         name: this.form.value.name
       }
-      this.userService.createUser(user).subscribe(newUserCreated => this.router.navigate(['profile']));
+      this.userService.createUser(user).subscribe(newUserCreated => {
+        this.authService.loginUser(newUserCreated),
+        this.router.navigate(['profile'])
+      })
     } else {
         alert("Eingabe ungültig");
     }

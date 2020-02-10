@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { User } from './core/models/user.model';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +12,16 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Spacegame';
 
-  userIsLoggedIn: boolean = false;
+  user: User;
 
-  handleChangeUserStatus(userStatus: boolean){
-    this.userIsLoggedIn = userStatus;
+  constructor(private authService: AuthService) { 
+    this.user = this.authService.user;
+    authService.changeUser$.subscribe((value) => { 
+      this.user = value; 
+    });
   }
+
+  ngOnInit() {
+  }
+  
 }

@@ -1,4 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { User } from '../../models/user.model';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar-user',
@@ -7,21 +10,16 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class NavbarUserComponent implements OnInit {
 
-  @Input() userIsLoggedIn: boolean;
-  @Output() changeUserStatus = new EventEmitter();
+  @Input() user: User;
   
-  constructor() { }
+  constructor(private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
   }
 
-  loginUser(){
-    this.userIsLoggedIn = true;
-    this.changeUserStatus.emit(this.userIsLoggedIn);
-  }
-
   logoutUser(){
-    this.userIsLoggedIn = false;
-    this.changeUserStatus.emit(this.userIsLoggedIn);
+    this.authService.logoutUser();
+    this.router.navigate(['start']);
   }
 }

@@ -1,14 +1,15 @@
+<h1>{{user?.name}}</h1>
 <div class="container">
     <div class="row">
       <div class="col-sm-2"><app-header></app-header></div>
-      <div *ngIf="userIsLoggedIn" class="col-sm-7">Spaceship Recources</div>
-      <div *ngIf="!userIsLoggedIn" class="col-sm-7">Herzlich Willkommen</div>
-      <div class="col-sm-3"><app-navbar-user [userIsLoggedIn]="userIsLoggedIn" (changeUserStatus)="handleChangeUserStatus($event)"></app-navbar-user></div>
+      <div *ngIf="!user" class="col-sm-7">Herzlich Willkommen</div>
+      <div *ngIf="user" class="col-sm-7">Spaceship Recources</div>
+      <div class="col-sm-3"><app-navbar-user [user]="user"></app-navbar-user></div>
     </div>
     <div class="row">
-      <div class="col-sm-2"><app-navbar [userIsLoggedIn]="userIsLoggedIn"></app-navbar></div>
+      <div class="col-sm-2"><app-navbar [user]="user"></app-navbar></div>
       <div class="col-sm-7"><router-outlet></router-outlet></div>
-      <div *ngIf="userIsLoggedIn" class="col-sm-3">Planet resources</div>
+      <div *ngIf="user" class="col-sm-3">Planet resources</div>
     </div>
     <div class="row">
       <div class="col"><app-footer></app-footer></div>

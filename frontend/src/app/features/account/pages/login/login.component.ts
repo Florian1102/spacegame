@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from 'src/app/core/services/user.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/core/models/user.model';
+import { AuthService } from 'src/app/core/services/auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -12,11 +14,11 @@ import { User } from 'src/app/core/models/user.model';
 export class LoginComponent implements OnInit {
 
   form: FormGroup;
-  user: User;
 
   constructor(private fb: FormBuilder,
-    private userService: UserService,
-    private router: Router) { }
+              private userService: UserService,
+              private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -27,7 +29,7 @@ export class LoginComponent implements OnInit {
   handleSubmit() {
 
     this.userService.findUserByName(this.form.value.name).subscribe(foundUser => {
-      this.user = foundUser;
+      this.authService.loginUser(foundUser);
       this.router.navigate(['profile']);
     })
   }

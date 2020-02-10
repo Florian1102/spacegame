@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-navbar',
@@ -7,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  @Input() userIsLoggedIn: boolean;
+  @Input() user: User;
 
   constructor() { }
 

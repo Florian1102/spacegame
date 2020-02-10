@@ -1,7 +1,5 @@
-<!-- <a *ngIf="!userIsLoggedIn" routerLink="/login">Login</a> -->
-<a *ngIf="!userIsLoggedIn" routerLink="/registration">Registrierung</a>
-<a *ngIf="!userIsLoggedIn" routerLink="/login">Login</a>
-<a *ngIf="userIsLoggedIn" routerLink="/profile">Profil</a>
-<button *ngIf="!userIsLoggedIn" (click)="loginUser()">Login</button>
-<button *ngIf="userIsLoggedIn" (click)="logoutUser()">Logout</button>
+<a *ngIf="!user" routerLink="/registration">Registrierung</a>
+<a *ngIf="!user" routerLink="/login">Login</a>
+<a *ngIf="user" routerLink="/profile">Profil</a>
+<button *ngIf="user" (click)="logoutUser()">Logout</button>
 
