@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { ContentModule } from './features/content/content.module';
+import { SpaceshipModule } from './features/spaceship/spaceship.module';
+import { SharedModule } from './shared/shared.module';
+import { PlanetModule } from './features/planet/planet.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +17,10 @@ import { ContentModule } from './features/content/content.module';
     BrowserModule,
     AppRoutingModule,
     CoreModule,
-    ContentModule
+    ContentModule,
+    SpaceshipModule,
+    PlanetModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

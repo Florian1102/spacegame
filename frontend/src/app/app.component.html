@@ -1,15 +1,15 @@
-<h1>{{user?.name}}</h1>
 <div class="container">
     <div class="row">
-      <div class="col-sm-2"><app-header></app-header></div>
-      <div *ngIf="!user" class="col-sm-7">Herzlich Willkommen</div>
-      <div *ngIf="user" class="col-sm-7">Spaceship Recources</div>
+      <div class="col-sm-2"><app-logo></app-logo></div>
+      <div class="col-sm-7" *ngIf="!user; else elseBlockHeader"><app-header></app-header></div>
+      <ng-template #elseBlockHeader><app-spaceship-resources [user]="user"></app-spaceship-resources></ng-template>
       <div class="col-sm-3"><app-navbar-user [user]="user"></app-navbar-user></div>
     </div>
     <div class="row">
       <div class="col-sm-2"><app-navbar [user]="user"></app-navbar></div>
       <div class="col-sm-7"><router-outlet></router-outlet></div>
-      <div *ngIf="user" class="col-sm-3">Planet resources</div>
+      <div class="col-sm-3" *ngIf="!user; else elseBlockRight"><app-advertisement></app-advertisement></div>
+      <ng-template #elseBlockRight><app-planet-resources [user]="user"></app-planet-resources></ng-template>
     </div>
     <div class="row">
       <div class="col"><app-footer></app-footer></div>

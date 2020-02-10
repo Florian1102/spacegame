@@ -12,11 +12,11 @@ export class PlanetService {
 
   constructor(private http: HttpClient) { }
 
-  public findAllSpaceships(): Observable<Planet[]>{
-    return this.http.get<Planet[]>(baseUrl + "/planets");
+  public findAllPlanetsOfUser(userId: number): Observable<Planet[]>{
+    return this.http.get<Planet[]>(baseUrl + "/planetsofuser/" + userId);
   }
 
-  public findSpaceshipById(id: number): Observable<Planet>{
+  public findPlanetById(id: number): Observable<Planet>{
     return this.http.get<Planet>(baseUrl + "/planets/" + id);
   }
 

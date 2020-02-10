@@ -9,9 +9,10 @@ import { NavbarExternalComponent } from './components/navbar/navbar-external/nav
 import { RouterModule } from '@angular/router';
 import { AccountModule } from '../features/account/account.module';
 import { NavbarUserComponent } from './components/navbar-user/navbar-user.component';
+import { LogoComponent } from './components/logo/logo.component';
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent, NavbarComponent, NavbarInternalComponent, NavbarExternalComponent, NavbarUserComponent],
+  declarations: [HeaderComponent, FooterComponent, NavbarComponent, NavbarInternalComponent, NavbarExternalComponent, NavbarUserComponent, LogoComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -22,7 +23,8 @@ import { NavbarUserComponent } from './components/navbar-user/navbar-user.compon
     HeaderComponent,
     FooterComponent,
     NavbarComponent,
-    NavbarUserComponent
+    NavbarUserComponent,
+    LogoComponent
   ]
 })
 export class CoreModule { }

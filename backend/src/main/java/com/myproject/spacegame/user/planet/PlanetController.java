@@ -50,6 +50,13 @@ public class PlanetController {
 
 		return ResponseEntity.of(planetRepository.findById(id));
 	}
+	
+	@GetMapping("/planetsofuser/{userId}")
+	public ResponseEntity<?> showPlanetsOfUser(@PathVariable Long userId) {
+		
+		List<Planet> planets = planetRepository.findAllByUserId(userId);
+		return new ResponseEntity<>(planets, HttpStatus.OK);
+	}
 
 	@PostMapping("/{userId}/planets/add")
 	@ResponseStatus(HttpStatus.CREATED)

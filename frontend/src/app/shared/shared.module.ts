@@ -2,23 +2,22 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from './components/button/button.component';
-import { FormGroup } from '@angular/forms';
-
+import { AdvertisementComponent } from './components/advertisement/advertisement.component';
 
 
 @NgModule({
-  declarations: [ButtonComponent],
+  declarations: [ButtonComponent, AdvertisementComponent],
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ButtonComponent,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
+    AdvertisementComponent
   ]
 })
 export class SharedModule { }

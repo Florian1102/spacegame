@@ -1,5 +1,5 @@
-<a *ngIf="!user" routerLink="/registration">Registrierung</a>
 <a *ngIf="!user" routerLink="/login">Login</a>
+<a *ngIf="!user" routerLink="/registration">Registrierung</a>
 <a *ngIf="user" routerLink="/profile">Profil</a>
 <button *ngIf="user" (click)="logoutUser()">Logout</button>
 

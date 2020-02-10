@@ -8,5 +8,5 @@ public interface PlanetRepository extends JpaRepository<Planet, Long> {
 
 	Long countByUserId(Long id);
 	
-	List<Planet> findByUserId(Long id);
+	List<Planet> findAllByUserId(Long id);
 }
