@@ -1,0 +1,19 @@
+<h1>Übersicht</h1>
+<table>
+    <tr>
+        <td>ID: {{user?.spaceship?.id}}</td>
+        <td>Level: {{user?.spaceship?.spaceshipLvl}}</td>
+    </tr>
+    <tr>
+        <td>Position: {{user?.spaceship?.currentPosition?.galaxy}}:{{user?.spaceship?.currentPosition?.system}}:{{user?.spaceship?.currentPosition?.position}} </td>
+        <td *ngIf="spaceship?.merchantSpaceship">Spezialisierung: Handelsschiff</td><td *ngIf="spaceship?.fighterSpaceship">Spezialisierung: Kampfschiff</td><td *ngIf="!spaceship?.fighterSpaceship && !spaceship?.merchantSpaceship">Spezialisierung Noch keine</td>
+    </tr>
+    <tr>
+        <td>
+            Angriffskraft: {{user?.spaceship?.attackPower}}<br>
+            Verteidigung: {{user?.spaceship?.defense}}<br>
+            Geschwindigkeit: {{user?.spaceship?.speed}}
+        </td>
+        <td>Punkte: {{user?.points}}</td>
+    </tr>
+</table>

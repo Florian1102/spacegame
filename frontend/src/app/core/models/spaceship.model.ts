@@ -5,7 +5,7 @@ export interface Spaceship {
 
     id: number;
     user: User;
-    coordinateSystem: CoordinateSystem
+    currentPosition: CoordinateSystem
     spaceshipLvl: number;
     attackPower: number;
     defense: number;

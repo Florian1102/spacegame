@@ -1,1 +1,16 @@
-<p>spaceship-buildings works!</p>
+<h1>Raumschiff-Ausbau</h1>
+
+<div *ngIf="user.spaceship.remainingBuildingDuration > 0">
+    <p>Es befindet sich noch etwas im Ausbau. Verbleibende Zeit: {{user?.spaceship?.remainingBuildingDuration}}</p>
+</div>
+
+<div>
+    <h2>Raumschiff - Aktuelles Level {{user?.spaceship?.spaceshipLvl}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="user.spaceship.remainingBuildingDuration == 0" (click)="increaseLvl('spaceship')">Ausbauen</button>
+</div>
+<div>
+    <h2>Forschungslabor - Aktuelles Level {{user?.spaceship?.researchLaboratoryLvl}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="user.spaceship.remainingBuildingDuration == 0" (click)="increaseLvl('researchlaboratory')">Ausbauen</button>
+</div>

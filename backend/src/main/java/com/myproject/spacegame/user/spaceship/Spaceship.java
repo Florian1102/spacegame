@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.user.User;
 
@@ -32,7 +33,7 @@ public class Spaceship {
 	
 	@ManyToOne
 	@JoinColumn(name = "currentPosition_id", nullable = false)
-	@JsonBackReference(value = "listOfSpaceshipsInThisSystemReference")
+	@JsonManagedReference(value = "listOfSpaceshipsInThisSystemReference")
 	private CoordinateSystem currentPosition;
 	
 	@NotNull

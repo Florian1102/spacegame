@@ -70,8 +70,8 @@ public class UserController {
 
 		Spaceship spaceship = new Spaceship();
 		Random random = new Random();
-		int galaxy = random.nextInt(2) + 1; // TODO auf 10 setzen
-		int system = random.nextInt(2) + 1; // auf 100 setzen
+		int galaxy = random.nextInt(10) + 1;
+		int system = random.nextInt(100) + 1; 
 		spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, 0)); // Zahlen
 																														// kann
 																														// man

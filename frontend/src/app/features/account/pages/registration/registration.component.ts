@@ -34,7 +34,7 @@ export class RegistrationComponent implements OnInit {
       }
       this.userService.createUser(user).subscribe(newUserCreated => {
         this.authService.loginUser(newUserCreated),
-        this.router.navigate(['profile'])
+        this.router.navigate(['overview'])
       })
     } else {
         alert("Eingabe ungültig");
