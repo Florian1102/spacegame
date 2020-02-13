@@ -10,6 +10,7 @@ import { OverviewComponent } from './features/spaceship/pages/overview/overview.
 import { SpaceshipBuildingsComponent } from './features/spaceship/pages/spaceship-buildings/spaceship-buildings.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NoAuthGuard } from './core/guards/no-auth.guard';
+import { PlanetOverviewComponent } from './features/planet/planet-overview/planet-overview.component';
 
 
 const routes: Routes = [
@@ -19,10 +20,10 @@ const routes: Routes = [
   { path: 'imprint', component: ImprintComponent},
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard]},
   { path: 'registration', component: RegistrationComponent, canActivate: [NoAuthGuard]},
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  { path: 'overview', component: OverviewComponent, canActivate: [AuthGuard]},
-  { path: 'spaceship-buildings', component: SpaceshipBuildingsComponent, canActivate: [AuthGuard]},
-  // { path: 'users/:id', component: ActivityDetailPageComponent},
+  { path: 'user/:userId/profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/overview', component: OverviewComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/spaceship/:spaceshipId/buildings', component: SpaceshipBuildingsComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/planet/:planetId', component: PlanetOverviewComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

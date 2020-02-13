@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
     this.userService.findUserByName(this.form.value.name).subscribe(foundUser => {
       this.authService.loginUser(foundUser);
-      this.router.navigate(['overview']);
+      this.router.navigate(['user/' + foundUser.id + '/overview']);
     })
   }
 

@@ -1,2 +1,11 @@
 <h1>Planeten</h1>
-<div *ngFor="let planet of planets">{{planet.id}}<br>{{planet.metal}}<br>{{planet.crystal}}<br>{{planet.hydrogen}}<br>{{planet.energy}}<br></div>
+<div *ngFor="let planet of planets">
+    <a [routerLink]="'/user/' + user.id + '/planet/' + planet.id">{{planet.id}}</a><br>
+    Metall: {{planet.metal | number: '1.0-0'}}/{{planet.metalStorehouse}}<br>
+    Aktuelle Produktion: {{planet.metalProductionEveryHour | number: '1.0-0'}}<br>
+    Kristall: {{planet.crystal | number: '1.0-0'}}/{{planet.crystalStorehouse}}<br>
+    Aktuelle Produktion: {{planet.crystalProductionEveryHour | number: '1.0-0'}}<br>
+    Wasserstoff: {{planet.hydrogen | number: '1.0-0'}}/{{planet.hydrogenTank}}<br>
+    Aktuelle Produktion: {{planet.hydrogenProductionEveryHour | number: '1.0-0'}}<br>
+    Energie: {{planet.energy | number: '1.0-0'}}<br>
+</div>

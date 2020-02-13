@@ -1,2 +1,2 @@
 <app-navbar-external *ngIf="!user"></app-navbar-external>
-<app-navbar-internal *ngIf="user"></app-navbar-internal>
+<app-navbar-internal *ngIf="user" [user]="user"></app-navbar-internal>

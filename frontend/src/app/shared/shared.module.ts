@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from './components/button/button.component';
 import { AdvertisementComponent } from './components/advertisement/advertisement.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -11,13 +12,15 @@ import { AdvertisementComponent } from './components/advertisement/advertisement
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     ButtonComponent,
     ReactiveFormsModule,
-    AdvertisementComponent
+    AdvertisementComponent,
+    RouterModule
   ]
 })
 export class SharedModule { }

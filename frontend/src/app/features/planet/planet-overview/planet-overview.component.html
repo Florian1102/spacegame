@@ -1,0 +1,47 @@
+<h1>Planet {{planet?.id}}</h1>
+<h2>Position: {{planet?.coordinateSystem?.galaxy}}:{{planet?.coordinateSystem?.system}}:{{planet?.coordinateSystem?.position}}</h2>
+<h2>Größe: {{planet?.fields}} - Noch verfügbar: {{planet?.remainingFields}}</h2>
+<div *ngIf="planet?.remainingBuildingDuration > 0">
+    <p>Es befindet sich noch etwas im Ausbau. Verbleibende Zeit: {{planet?.remainingBuildingDuration}}</p>
+</div>
+
+<div>
+    <h2>Kommandozentrale - Aktuelles Level {{planet?.commandCentralLvl}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('commandcentral')">Ausbauen</button>
+</div>
+<div>
+    <h2>Metallmine - Aktuelles Level {{planet?.metalMineLvl}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('metalmine')">Ausbauen</button>
+</div>
+<div>
+    <h2>Kristallmine - Aktuelles Level {{planet?.crystalMineLvl}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('crystalmine')">Ausbauen</button>
+</div>
+<div>
+    <h2>Wasserstoff-Anlage - Aktuelles Level {{planet?.hydrogenPlantLvl}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('hydrogenplant')">Ausbauen</button>
+</div>
+<div>
+    <h2>Metallspeicher - Aktuelles Level {{planet?.metalStorehouseLvl}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('metalstorehouse')">Ausbauen</button>
+</div>
+<div>
+    <h2>Kristallspeicher - Aktuelles Level {{planet?.crystalStorehouseLvl}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('crystalstorehouse')">Ausbauen</button>
+</div>
+<div>
+    <h2>Wasserstofftank - Aktuelles Level {{planet?.hydrogenTankLvl}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('hydrogentank')">Ausbauen</button>
+</div>
+<div>
+    <h2>Solarsatellit - Anzahl: {{planet?.solarSatellite}}</h2>
+    <p>Benötigte Ressourcen: </p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('solarsatellite')">Ausbauen</button>
+</div>

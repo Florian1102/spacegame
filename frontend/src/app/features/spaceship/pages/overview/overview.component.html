@@ -1,7 +1,7 @@
 <h1>Übersicht</h1>
 <table>
     <tr>
-        <td>ID: {{user?.spaceship?.id}}</td>
+        <td>Name: {{user?.name}}</td>
         <td>Level: {{user?.spaceship?.spaceshipLvl}}</td>
     </tr>
     <tr>
@@ -10,10 +10,10 @@
     </tr>
     <tr>
         <td>
-            Angriffskraft: {{user?.spaceship?.attackPower}}<br>
-            Verteidigung: {{user?.spaceship?.defense}}<br>
-            Geschwindigkeit: {{user?.spaceship?.speed}}
+            Angriffskraft: {{user?.spaceship?.attackPower | number: '1.0-0'}}<br>
+            Verteidigung: {{user?.spaceship?.defense | number: '1.0-0'}}<br>
+            Geschwindigkeit: {{user?.spaceship?.speed | number: '1.0-0'}}
         </td>
-        <td>Punkte: {{user?.points}}</td>
+        <td>Punkte: {{user?.points | number: '1.0-0'}}</td>
     </tr>
 </table>

@@ -26,7 +26,7 @@ export class PlanetResourcesComponent implements OnInit {
   }
     
   getPlanetData(userId: number){
-    this.planetService.findAllPlanetsOfUser(this.user.id).subscribe(foundPlanets => this.planets = foundPlanets);
+    this.planetService.findAllPlanetsOfUser(userId).subscribe(foundPlanets => this.planets = foundPlanets);
     
   }
 
