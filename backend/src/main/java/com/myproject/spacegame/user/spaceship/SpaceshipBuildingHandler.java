@@ -54,7 +54,6 @@ public class SpaceshipBuildingHandler {
 			public Object call() throws Exception {
 				Spaceship spacehipWithFinishedBuilding = build(spaceshipWithUpdatedRessources.getId(),
 						statsOfBuildingNextLvl);
-
 				return new ResponseEntity<>(spacehipWithFinishedBuilding, HttpStatus.OK);
 			}
 		}, (long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()
@@ -67,10 +66,8 @@ public class SpaceshipBuildingHandler {
 			throw new Exception("Raumschiff existiert nicht");
 		}
 		Spaceship spaceshipFound = spaceshipRepository.findById(id).get();
-
 		spaceshipFound = increaseLvlOfSpecificBuilding(spaceshipFound, statsOfBuildingNextLvl);
 		spaceshipFound = spaceshipHandler.calculateAndSaveSpaceshipStats(spaceshipFound);
-
 		calculatePointsOfPlayer.calculateAndSaveNewPoints(spaceshipFound.getUser().getId(), statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(), statsOfBuildingNextLvl.getNecessaryHydrogen());
 
 		return spaceshipFound;

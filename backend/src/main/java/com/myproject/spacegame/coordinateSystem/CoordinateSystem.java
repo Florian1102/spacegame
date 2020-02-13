@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.spaceship.Spaceship;
 
@@ -34,7 +33,7 @@ public class CoordinateSystem {
 	
 	@OneToOne
 	@JoinColumn(name = "planet_id")
-	@JsonManagedReference(value = "spaceshipToCoordinatesReference")
+	@JsonBackReference(value = "planetToCoordinatesReference")
 	private Planet planet;
 	
 	@OneToMany(mappedBy = "currentPosition")

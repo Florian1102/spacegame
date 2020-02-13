@@ -15,7 +15,6 @@ public class CalculatePointsOfPlayer {
 
 	public void calculateAndSaveNewPoints(Long userId, Long necessaryMetal, Long necessaryCrystal,
 			Long necessaryHydrogen) throws Exception {
-
 		if (!userRepository.existsById(userId)) {
 			throw new Exception("Punkte berechnen nicht möglich, da es den Spieler nicht gibt");
 		} else {

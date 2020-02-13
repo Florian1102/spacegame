@@ -14,6 +14,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.user.User;
@@ -33,11 +34,11 @@ public class Planet {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	@JsonBackReference
+	@JsonManagedReference
 	private User user;
 	
 	@OneToOne(mappedBy = "planet")
-	@JsonBackReference(value = "spaceshipToCoordinatesReference")
+	@JsonManagedReference(value = "planetToCoordinatesReference")
 	private CoordinateSystem coordinates;
 	
 	@NotNull

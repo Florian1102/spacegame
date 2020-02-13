@@ -16,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.spaceship.Spaceship;
@@ -55,7 +56,7 @@ public class User {
 	private Technology technology;
 	
 	@OneToMany(mappedBy = "user")
-	@JsonManagedReference
+	@JsonBackReference
 	private List<Planet> planets;
 	
 	@NotNull
