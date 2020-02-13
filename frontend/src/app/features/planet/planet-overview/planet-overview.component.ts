@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PlanetService } from 'src/app/core/services/planet.service';
 import { Planet } from 'src/app/core/models/planet.model';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -15,12 +15,15 @@ export class PlanetOverviewComponent implements OnInit {
   planetId: number;
   planet: Planet;
 
-  constructor(private route: ActivatedRoute, private planetService: PlanetService, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private planetService: PlanetService, private authService: AuthService) { 
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       this.userId = +paramMap.get('userId')
       this.planetId = +paramMap.get('planetId')
+      
     });
     this.findPlanet();
   }

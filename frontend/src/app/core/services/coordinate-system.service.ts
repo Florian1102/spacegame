@@ -12,7 +12,7 @@ export class CoordinateSystemService {
 
   constructor(private http: HttpClient) { }
 
-  public showCoordinateSystem(galaxy: number, system: number): Observable<CoordinateSystem>{
-    return this.http.get<CoordinateSystem>(baseUrl + "?galaxy=" + galaxy + "&system=" + system);
+  public showCoordinateSystem(galaxy: number, system: number): Observable<CoordinateSystem[]>{
+    return this.http.get<CoordinateSystem[]>(baseUrl + "?galaxy=" + galaxy + "&system=" + system);
   }
 }

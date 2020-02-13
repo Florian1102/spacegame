@@ -5,7 +5,7 @@ export interface Planet {
 
     id: number;
     user: User;
-    coordinateSystem: CoordinateSystem;
+    coordinates: CoordinateSystem;
     fields: number;
     remainingFields: number;
     metal: number;

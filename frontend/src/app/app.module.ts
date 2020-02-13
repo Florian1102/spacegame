@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -8,7 +7,7 @@ import { ContentModule } from './features/content/content.module';
 import { SpaceshipModule } from './features/spaceship/spaceship.module';
 import { SharedModule } from './shared/shared.module';
 import { PlanetModule } from './features/planet/planet.module';
-import { OverviewComponent } from './features/spaceship/pages/overview/overview.component';
+import { GalaxyModule } from './features/galaxy/galaxy.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +20,7 @@ import { OverviewComponent } from './features/spaceship/pages/overview/overview.
     ContentModule,
     SpaceshipModule,
     PlanetModule,
+    GalaxyModule,
     SharedModule
   ],
   providers: [],

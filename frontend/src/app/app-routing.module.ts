@@ -11,6 +11,7 @@ import { SpaceshipBuildingsComponent } from './features/spaceship/pages/spaceshi
 import { AuthGuard } from './core/guards/auth.guard';
 import { NoAuthGuard } from './core/guards/no-auth.guard';
 import { PlanetOverviewComponent } from './features/planet/planet-overview/planet-overview.component';
+import { CoordinateSystemViewComponent } from './features/galaxy/coordinate-system-view/coordinate-system-view.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'user/:userId/overview', component: OverviewComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/spaceship/:spaceshipId/buildings', component: SpaceshipBuildingsComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/:planetId', component: PlanetOverviewComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/coordinatesystem', component: CoordinateSystemViewComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

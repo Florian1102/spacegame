@@ -1,5 +1,5 @@
 <h1>Planet {{planet?.id}}</h1>
-<h2>Position: {{planet?.coordinateSystem?.galaxy}}:{{planet?.coordinateSystem?.system}}:{{planet?.coordinateSystem?.position}}</h2>
+<h2><a [routerLink]="'/user/' + userId + '/coordinatesystem'" [queryParams]="{galaxy: planet?.coordinates?.galaxy, system: planet?.coordinates?.system}">Position: {{planet?.coordinates?.galaxy}}:{{planet?.coordinates?.system}}:{{planet?.coordinates?.position}}</a></h2>
 <h2>Größe: {{planet?.fields}} - Noch verfügbar: {{planet?.remainingFields}}</h2>
 <div *ngIf="planet?.remainingBuildingDuration > 0">
     <p>Es befindet sich noch etwas im Ausbau. Verbleibende Zeit: {{planet?.remainingBuildingDuration}}</p>

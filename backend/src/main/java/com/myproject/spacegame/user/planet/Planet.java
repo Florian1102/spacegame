@@ -34,7 +34,7 @@ public class Planet {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	@JsonManagedReference
+	@JsonBackReference(value = "userToPlanetReference")
 	private User user;
 	
 	@OneToOne(mappedBy = "planet")
