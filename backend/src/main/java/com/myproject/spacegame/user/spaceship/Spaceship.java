@@ -11,7 +11,8 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.user.User;
 
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Spaceship {
 
 	@Id
@@ -34,7 +36,6 @@ public class Spaceship {
 	
 	@ManyToOne
 	@JoinColumn(name = "currentPosition_id", nullable = false)
-	@JsonManagedReference(value = "listOfSpaceshipsInThisSystemReference")
 	private CoordinateSystem currentPosition;
 	
 	@NotNull

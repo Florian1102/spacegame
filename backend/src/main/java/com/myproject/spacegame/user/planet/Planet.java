@@ -14,7 +14,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.user.User;
@@ -26,6 +27,7 @@ import lombok.Setter;
 @Table(name="planets")
 @Getter
 @Setter
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Planet {
 
 	@Id
@@ -38,7 +40,6 @@ public class Planet {
 	private User user;
 	
 	@OneToOne(mappedBy = "planet")
-	@JsonManagedReference(value = "planetToCoordinatesReference")
 	private CoordinateSystem coordinates;
 	
 	@NotNull

@@ -10,8 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.spaceship.Spaceship;
 
@@ -22,6 +22,7 @@ import lombok.Getter;
 @Entity
 @Getter
 @Setter
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class CoordinateSystem {
 
 	@Id
@@ -34,10 +35,8 @@ public class CoordinateSystem {
 	
 	@OneToOne
 	@JoinColumn(name = "planet_id")
-	@JsonBackReference(value = "planetToCoordinatesReference")
 	private Planet planet;
 	
 	@OneToMany(mappedBy = "currentPosition")
-	@JsonBackReference(value = "listOfSpaceshipsInThisSystemReference")
 	private List<Spaceship> listOfSpaceshipsInThisSystem;
 }
