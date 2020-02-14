@@ -30,4 +30,9 @@ export class PlanetResourcesComponent implements OnInit {
     
   }
 
+  deletePlanet(planetId: number){
+    this.planetService.deletePlanet(planetId).subscribe(() => this.getPlanetData(this.user.id));
+
+  }
+
 }

@@ -35,7 +35,7 @@ export class PlanetOverviewComponent implements OnInit {
   levelUpPlanetBuilding(nameOfBuilding: string){
     this.planetService.levelUpPlanetBuilding(this.planetId, nameOfBuilding).subscribe(() => {
       this.findPlanet();
-      this.authService.updateUser(this.planet.user.id);
+      this.authService.updateUser(this.userId);
 
     })
   }

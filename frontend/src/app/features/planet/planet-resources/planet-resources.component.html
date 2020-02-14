@@ -1,4 +1,5 @@
 <h1>Planeten</h1>
+<a [routerLink]="'/user/' + user.id + '/planet/colonize'">Planet kolonisieren</a><br>
 <div *ngFor="let planet of planets">
     <a [routerLink]="'/user/' + user.id + '/planet/' + planet.id">{{planet.id}}</a><br>
     Metall: {{planet.metal | number: '1.0-0'}}/{{planet.metalStorehouse}}<br>
@@ -8,4 +9,5 @@
     Wasserstoff: {{planet.hydrogen | number: '1.0-0'}}/{{planet.hydrogenTank}}<br>
     Aktuelle Produktion: {{planet.hydrogenProductionEveryHour | number: '1.0-0'}}<br>
     Energie: {{planet.energy | number: '1.0-0'}}<br>
+    <button (click)="deletePlanet(planet.id)">Planet löschen</button>
 </div>

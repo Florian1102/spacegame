@@ -1,0 +1,9 @@
+<h1>Welchen Planeten möchtest du kolonisieren?</h1>
+
+<form [formGroup]="form" (ngSubmit)="colonize()">
+
+    <input formControlName="galaxy" type="number" />
+    <input formControlName="system" type="number" />
+    <input formControlName="position" type="number" />
+    <button type="submit">Planet kolonisieren</button>
+</form>
