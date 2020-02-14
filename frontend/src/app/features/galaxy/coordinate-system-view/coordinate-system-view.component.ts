@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CoordinateSystemService } from 'src/app/core/services/coordinate-system.service';
-import { CoordinateSystem } from 'src/app/core/models/coordinate.model';
+import { CoordinateSystem } from 'src/app/core/models/coordinate-system.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -33,7 +33,14 @@ export class CoordinateSystemViewComponent implements OnInit {
   }
 
   findCoordinateSystem(galaxy: number, system: number){
-    this.coordinateSystemService.showCoordinateSystem(galaxy, system).subscribe(foundCoordinateSystem => this.coordinateSystem = foundCoordinateSystem);
+    this.coordinateSystemService.showCoordinateSystem(galaxy, system).subscribe(foundCoordinateSystem => {
+      this.coordinateSystem = foundCoordinateSystem;
+      this.sortByPositionAsc();
+    });
+  }
+
+  sortByPositionAsc() {
+    return this.coordinateSystem.sort((a, b) => a['position'] > b['position'] ? 1 : a['position'] === b['position'] ? 0 : -1);
   }
 
   search() {

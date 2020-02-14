@@ -1,4 +1,4 @@
-import { CoordinateSystem } from './coordinate.model';
+import { CoordinateSystem } from './coordinate-system.model';
 import { User } from './user.model';
 
 export interface Spaceship {

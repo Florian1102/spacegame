@@ -1,5 +1,5 @@
 import { User } from './user.model';
-import { CoordinateSystem } from './coordinate.model';
+import { CoordinateSystem } from './coordinate-system.model';
 
 export interface Planet {
 
