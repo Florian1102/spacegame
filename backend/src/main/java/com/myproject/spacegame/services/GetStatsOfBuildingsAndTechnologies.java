@@ -15,7 +15,6 @@ public class GetStatsOfBuildingsAndTechnologies {
 
 	public BuildingStats getBuildingOrTechnologyStatsOfNextLvl(int currentBuildingOrTechnologyLvl,
 			String nameOfBuildingOrTechnology) throws Exception {
-
 		int nextLvl = currentBuildingOrTechnologyLvl + 1;
 		if (!buildingStatsRepository.existsByNameOfBuildingOTechnology(nameOfBuildingOrTechnology)) {
 			throw new Exception("Das Gebäude existiert nicht.");

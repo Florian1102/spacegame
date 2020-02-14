@@ -25,7 +25,7 @@ public class SpaceshipHandler {
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 
 	public void flyToPlanet(Spaceship spaceship, Planet planet) {
-		// Zeit berechnen
+		// TODO: Zeit berechnen
 	}
 
 	public Spaceship calculateAndSaveSpaceshipStats(Spaceship spaceshipFound) throws Exception {
