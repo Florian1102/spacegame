@@ -26,13 +26,18 @@ export class PlanetResourcesComponent implements OnInit {
   }
     
   getPlanetData(userId: number){
-    this.planetService.findAllPlanetsOfUser(userId).subscribe(foundPlanets => this.planets = foundPlanets);
-    
+    this.planetService.findAllPlanetsOfUser(userId).subscribe(foundPlanets => {
+      this.planets = foundPlanets;
+      this.sortByPlanetsById();
+    });
+  }
+
+  sortByPlanetsById() {
+    return this.planets.sort((a, b) => a['id'] > b['id'] ? 1 : a['id'] === b['id'] ? 0 : -1);
   }
 
   deletePlanet(planetId: number){
     this.planetService.deletePlanet(planetId).subscribe(() => this.getPlanetData(this.user.id));
-
   }
 
 }
