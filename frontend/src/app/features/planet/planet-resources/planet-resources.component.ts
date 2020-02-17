@@ -17,7 +17,9 @@ export class PlanetResourcesComponent implements OnInit {
   constructor(private planetService: PlanetService, private authService: AuthService) {
     authService.changeUser$.subscribe((value) => { 
       this.user = value; 
-      this.getPlanetData(this.user.id);
+      if (this.user){
+        this.getPlanetData(this.user.id);
+      }
     });
   }
   

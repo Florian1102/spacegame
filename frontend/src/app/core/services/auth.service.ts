@@ -15,10 +15,6 @@ export class AuthService {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  ngOnInit() {
-    
-  }
-
   public loginUser(user: User): void{
     this.user = user;
     this.changeUser$.next(this.user);
@@ -27,8 +23,8 @@ export class AuthService {
 
   public logoutUser(): void{
     this.user = null;
-    this.changeUser$.next(this.user);
     localStorage.removeItem("user");
+    this.changeUser$.next(this.user);
   }
 
   public updateUser(userId: number){
