@@ -65,7 +65,7 @@ public class TechnologyController {
 						statsOfTechnologyNextLvl.getNecessaryMetal(), statsOfTechnologyNextLvl.getNecessaryCrystal(),
 						statsOfTechnologyNextLvl.getNecessaryHydrogen(), statsOfTechnologyNextLvl.getNecessaryEnergy());
 				
-				spaceshipWithUpdatedRessources.setRemainingResearchDuration((long) (statsOfTechnologyNextLvl.getBuildingOrResearchDuration() * spaceshipWithUpdatedRessources.getReduceResearchDuration()));
+				spaceshipWithUpdatedRessources.setRemainingResearchDuration(statsOfTechnologyNextLvl.getBuildingOrResearchDuration());
 
 				spaceshipRepository.save(spaceshipWithUpdatedRessources);
 

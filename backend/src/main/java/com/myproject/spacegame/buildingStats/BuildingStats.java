@@ -48,4 +48,5 @@ public class BuildingStats {
 	
 	private double energyResearchFactor;
 	private double resourceResearchFactor;
+	
 }

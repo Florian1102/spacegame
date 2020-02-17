@@ -123,6 +123,7 @@ public class PlanetController {
 		planet.setMetalProductionEveryHour(10);
 		planet.setCrystalProductionEveryHour(10);
 		planet.setHydrogenProductionEveryHour(0);
+		planet.setCommandCentralLvl(0);
 		planet.setMetalMineLvl(0);
 		planet.setCrystalMineLvl(0);
 		planet.setHydrogenPlantLvl(0);
@@ -133,7 +134,6 @@ public class PlanetController {
 		planet.setMetalStorehouse(5000);
 		planet.setCrystalStorehouse(5000);
 		planet.setHydrogenTank(1000);
-		planet.setCommandCentralLvl(1);
 		planet.setRemainingBuildingDuration(0L);
 		planet.setReduceBuildingDuration(1.0);
 		return planet;
@@ -170,9 +170,7 @@ public class PlanetController {
 						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
 						statsOfBuildingNextLvl.getNecessaryHydrogen());
 
-				planetWithUpdatedRessources
-						.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()
-								* planetWithUpdatedRessources.getReduceBuildingDuration()));
+				planetWithUpdatedRessources.setRemainingBuildingDuration(statsOfBuildingNextLvl.getBuildingOrResearchDuration());
 				planetRepository.save(planetWithUpdatedRessources);
 				planetBuildingHandler.prepareBuild(planetWithUpdatedRessources, statsOfBuildingNextLvl);
 				return new ResponseEntity<>(HttpStatus.OK);

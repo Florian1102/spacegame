@@ -147,4 +147,12 @@ public class Planet {
 		this.solarSatellite += 1;
 		this.energy = (foundPlanet.getEnergy() + (statsOfSolarSatellite.getProductionEnergy() * foundPlanet.getUser().getTechnology().getEnergyResearchFactor()));
 	}
+	public void setRemainingBuildingDuration(Long buildingOrResearchDuration) {
+		this.remainingBuildingDuration = (long) (buildingOrResearchDuration * this.reduceBuildingDuration);
+	}
+//	public void setResearchDuration(Long buildingOrResearchDuration) {
+//		this.buildingOrResearchDuration = (long) (buildingOrResearchDuration * this.reduceResearchDuration);
+//	}
+	
+	
 }

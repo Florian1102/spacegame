@@ -7,10 +7,12 @@
 <div>
     <h2>Raumschiff - Aktuelles Level {{spaceship?.spaceshipLvl}}</h2>
     <p>Benötigte Ressourcen: Metall: {{buildingStatsOfSpaceship?.necessaryMetal}} Kristall: {{buildingStatsOfSpaceship?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfSpaceship?.necessaryHydrogen}} Energie: {{buildingStatsOfSpaceship?.necessaryEnergy}}</p>
+    <p>Dauer: {{buildingStatsOfSpaceship?.buildingOrResearchDuration * spaceship?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
     <button *ngIf="spaceship?.remainingBuildingDuration == 0" (click)="increaseLvl('spaceship')">Ausbauen</button>
 </div>
 <div>
     <h2>Forschungslabor - Aktuelles Level {{spaceship?.researchLaboratoryLvl}}</h2>
     <p>Benötigte Ressourcen: Metall: {{buildingStatsOfResearchLaboratory?.necessaryMetal}} Kristall: {{buildingStatsOfResearchLaboratory?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfResearchLaboratory?.necessaryHydrogen}} Energie: {{buildingStatsOfResearchLaboratory?.necessaryEnergy}}</p>
+    <p>Dauer: {{buildingStatsOfResearchLaboratory?.buildingOrResearchDuration * spaceship?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
     <button *ngIf="spaceship?.remainingBuildingDuration == 0" (click)="increaseLvl('researchlaboratory')">Ausbauen</button>
 </div>

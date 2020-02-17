@@ -11,5 +11,6 @@ export interface Buildingstats {
     productionCrystal: number;
     productionHydrogen: number;
     productionEnergy: number;
+    buildingOrResearchDuration: number;
 
 }

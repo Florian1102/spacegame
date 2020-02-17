@@ -56,8 +56,7 @@ public class SpaceshipBuildingHandler {
 						statsOfBuildingNextLvl);
 				return new ResponseEntity<>(spacehipWithFinishedBuilding, HttpStatus.OK);
 			}
-		}, (long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()
-				* spaceshipWithUpdatedRessources.getReduceBuildingDuration()), TimeUnit.SECONDS);
+		}, spaceshipWithUpdatedRessources.getRemainingBuildingDuration(), TimeUnit.SECONDS);
 		executorService.shutdown();
 	}
 

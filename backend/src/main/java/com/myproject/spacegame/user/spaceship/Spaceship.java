@@ -129,4 +129,10 @@ public class Spaceship {
 	@Column(nullable = false)
 	private Long flightDuration = 0L;
 	
+	public void setRemainingBuildingDuration(Long buildingOrResearchDuration) {
+		this.remainingBuildingDuration = (long) (buildingOrResearchDuration * this.reduceBuildingDuration);
+	}
+	public void setRemainingResearchDuration(Long buildingOrResearchDuration) {
+		this.remainingResearchDuration = (long) (buildingOrResearchDuration * this.reduceResearchDuration);
+	}
 }

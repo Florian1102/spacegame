@@ -26,7 +26,6 @@ public class TechnologyResearchHandler {
 	private final TechnologyRepository technologyRepository;
 	private final SpaceshipRepository spaceshipRepository;
 	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
-	private final SpaceshipHandler spaceshipHandler;
 
 	public boolean proofBuildPossible(Spaceship spaceship) throws Exception {
 		if (spaceship.getRemainingResearchDuration() > 0) {
@@ -63,8 +62,7 @@ public class TechnologyResearchHandler {
 
 				return new ResponseEntity<>(researchFinished, HttpStatus.OK);
 			}
-		}, (long) (statsOfTechnologyNextLvl.getBuildingOrResearchDuration()
-				* spaceshipWithUpdatedRessources.getReduceResearchDuration()), TimeUnit.SECONDS);
+		}, spaceshipWithUpdatedRessources.getRemainingResearchDuration(), TimeUnit.SECONDS);
 		executorService.shutdown();
 	}
 

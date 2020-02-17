@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { ButtonComponent } from './components/button/button.component';
 import { AdvertisementComponent } from './components/advertisement/advertisement.component';
 import { RouterModule } from '@angular/router';
+import { RounddownPipe } from './pipes/rounddown.pipe';
 
 
 @NgModule({
-  declarations: [ButtonComponent, AdvertisementComponent],
+  declarations: [ButtonComponent, AdvertisementComponent, RounddownPipe],
   imports: [
     CommonModule,
     FormsModule,
@@ -20,7 +21,8 @@ import { RouterModule } from '@angular/router';
     ButtonComponent,
     ReactiveFormsModule,
     AdvertisementComponent,
-    RouterModule
+    RouterModule,
+    RounddownPipe
   ]
 })
 export class SharedModule { }

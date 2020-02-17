@@ -8,37 +8,54 @@
 <div>
     <h2>Kommandozentrale - Aktuelles Level {{planet?.commandCentralLvl}}</h2>
     <p>Benötigte Ressourcen: Metall: {{buildingStatsOfCommandCentral?.necessaryMetal}} Kristall: {{buildingStatsOfCommandCentral?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfCommandCentral?.necessaryHydrogen}} Energie: {{buildingStatsOfCommandCentral?.necessaryEnergy}}</p>
+    <p>Dauer: {{buildingStatsOfCommandCentral?.buildingOrResearchDuration * planet?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
     <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('commandcentral')">Ausbauen</button>
 </div>
 <div>
     <h2>Metallmine - Aktuelles Level {{planet?.metalMineLvl}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfMetalMine?.necessaryMetal}} Kristall: {{buildingStatsOfMetalMine?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfMetalMine?.necessaryHydrogen}} Energie: {{buildingStatsOfMetalMine?.necessaryEnergy}}</p>    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('metalmine')">Ausbauen</button>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfMetalMine?.necessaryMetal}} Kristall: {{buildingStatsOfMetalMine?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfMetalMine?.necessaryHydrogen}} Energie: {{buildingStatsOfMetalMine?.necessaryEnergy}}</p>
+    <p>Dauer: {{buildingStatsOfMetalMine?.buildingOrResearchDuration * planet?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('metalmine')">Ausbauen</button>
 </div>
 <div>
     <h2>Kristallmine - Aktuelles Level {{planet?.crystalMineLvl}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfCrystalMine?.necessaryMetal}} Kristall: {{buildingStatsOfCrystalMine?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfCrystalMine?.necessaryHydrogen}} Energie: {{buildingStatsOfCrystalMine?.necessaryEnergy}}</p>    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('crystalmine')">Ausbauen</button>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfCrystalMine?.necessaryMetal}} Kristall: {{buildingStatsOfCrystalMine?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfCrystalMine?.necessaryHydrogen}} Energie: {{buildingStatsOfCrystalMine?.necessaryEnergy}}</p>    
+    <p>Dauer: {{buildingStatsOfCrystalMine?.buildingOrResearchDuration * planet?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('crystalmine')">Ausbauen</button>
 </div>
 <div>
     <h2>Wasserstoff-Anlage - Aktuelles Level {{planet?.hydrogenPlantLvl}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfHydrogenPlant?.necessaryMetal}} Kristall: {{buildingStatsOfHydrogenPlant?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfHydrogenPlant?.necessaryHydrogen}} Energie: {{buildingStatsOfHydrogenPlant?.necessaryEnergy}}</p>    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('hydrogenplant')">Ausbauen</button>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfHydrogenPlant?.necessaryMetal}} Kristall: {{buildingStatsOfHydrogenPlant?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfHydrogenPlant?.necessaryHydrogen}} Energie: {{buildingStatsOfHydrogenPlant?.necessaryEnergy}}</p>    
+    <p>Dauer: {{buildingStatsOfHydrogenPlant?.buildingOrResearchDuration * planet?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('hydrogenplant')">Ausbauen</button>
 </div>
 <div>
     <h2>Solarkraftwerk - Aktuelles Level {{planet?.solarPowerPlantLvl}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfSolarPowerPlant?.necessaryMetal}} Kristall: {{buildingStatsOfSolarPowerPlant?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfSolarPowerPlant?.necessaryHydrogen}} Energie: {{buildingStatsOfSolarPowerPlant?.necessaryEnergy}}</p>    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('solarpowerplant')">Ausbauen</button>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfSolarPowerPlant?.necessaryMetal}} Kristall: {{buildingStatsOfSolarPowerPlant?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfSolarPowerPlant?.necessaryHydrogen}} Energie: {{buildingStatsOfSolarPowerPlant?.necessaryEnergy}}</p>    
+    <p>Dauer: {{buildingStatsOfSolarPowerPlant?.buildingOrResearchDuration * planet?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('solarpowerplant')">Ausbauen</button>
 </div>
 <div>
     <h2>Metallspeicher - Aktuelles Level {{planet?.metalStorehouseLvl}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfMetalStorehouse?.necessaryMetal}} Kristall: {{buildingStatsOfMetalStorehouse?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfMetalStorehouse?.necessaryHydrogen}} Energie: {{buildingStatsOfMetalStorehouse?.necessaryEnergy}}</p>    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('metalstorehouse')">Ausbauen</button>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfMetalStorehouse?.necessaryMetal}} Kristall: {{buildingStatsOfMetalStorehouse?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfMetalStorehouse?.necessaryHydrogen}} Energie: {{buildingStatsOfMetalStorehouse?.necessaryEnergy}}</p>    
+    <p>Dauer: {{buildingStatsOfMetalStorehouse?.buildingOrResearchDuration * planet?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('metalstorehouse')">Ausbauen</button>
 </div>
 <div>
     <h2>Kristallspeicher - Aktuelles Level {{planet?.crystalStorehouseLvl}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfCrystalStorehouse?.necessaryMetal}} Kristall: {{buildingStatsOfCrystalStorehouse?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfCrystalStorehouse?.necessaryHydrogen}} Energie: {{buildingStatsOfCrystalStorehouse?.necessaryEnergy}}</p>    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('crystalstorehouse')">Ausbauen</button>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfCrystalStorehouse?.necessaryMetal}} Kristall: {{buildingStatsOfCrystalStorehouse?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfCrystalStorehouse?.necessaryHydrogen}} Energie: {{buildingStatsOfCrystalStorehouse?.necessaryEnergy}}</p>    
+    <p>Dauer: {{buildingStatsOfCrystalStorehouse?.buildingOrResearchDuration * planet?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('crystalstorehouse')">Ausbauen</button>
 </div>
 <div>
     <h2>Wasserstofftank - Aktuelles Level {{planet?.hydrogenTankLvl}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfHydrogenTank?.necessaryMetal}} Kristall: {{buildingStatsOfHydrogenTank?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfHydrogenTank?.necessaryHydrogen}} Energie: {{buildingStatsOfHydrogenTank?.necessaryEnergy}}</p>    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('hydrogentank')">Ausbauen</button>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfHydrogenTank?.necessaryMetal}} Kristall: {{buildingStatsOfHydrogenTank?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfHydrogenTank?.necessaryHydrogen}} Energie: {{buildingStatsOfHydrogenTank?.necessaryEnergy}}</p>    
+    <p>Dauer: {{buildingStatsOfHydrogenTank?.buildingOrResearchDuration * planet?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('hydrogentank')">Ausbauen</button>
 </div>
 <div>
     <h2>Solarsatellit - Anzahl: {{planet?.solarSatellite}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfSolarsatellite?.necessaryMetal}} Kristall: {{buildingStatsOfSolarsatellite?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfSolarsatellite?.necessaryHydrogen}} Energie: {{buildingStatsOfSolarsatellite?.necessaryEnergy}}</p>    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('solarsatellite')">Ausbauen</button>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfSolarsatellite?.necessaryMetal}} Kristall: {{buildingStatsOfSolarsatellite?.necessaryCrystal}} Wasserstoff: {{buildingStatsOfSolarsatellite?.necessaryHydrogen}} Energie: {{buildingStatsOfSolarsatellite?.necessaryEnergy}}</p>    
+    <p>Dauer: {{buildingStatsOfSolarsatellite?.buildingOrResearchDuration * planet?.reduceBuildingDuration | rounddown | number: '1.0-0'}}</p>
+    <button *ngIf="planet?.remainingBuildingDuration == 0" (click)="levelUpPlanetBuilding('solarsatellite')">Ausbauen</button>
 </div>

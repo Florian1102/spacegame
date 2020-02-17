@@ -117,8 +117,7 @@ public class SpaceshipController {
 						spaceshipFound, statsOfBuildingNextLvl.getNecessaryMetal(),
 						statsOfBuildingNextLvl.getNecessaryCrystal(), statsOfBuildingNextLvl.getNecessaryHydrogen(),
 						statsOfBuildingNextLvl.getNecessaryEnergy());
-				spaceshipWithUpdatedRessources.setRemainingBuildingDuration((long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()
-								* spaceshipWithUpdatedRessources.getReduceBuildingDuration()));
+				spaceshipWithUpdatedRessources.setRemainingBuildingDuration(statsOfBuildingNextLvl.getBuildingOrResearchDuration());
 				spaceshipRepository.save(spaceshipWithUpdatedRessources);
 
 				spaceshipBuildingHandler.prepareBuild(spaceshipWithUpdatedRessources, statsOfBuildingNextLvl);

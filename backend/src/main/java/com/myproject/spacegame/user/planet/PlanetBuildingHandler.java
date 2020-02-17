@@ -69,8 +69,7 @@ public class PlanetBuildingHandler {
 
 				return new ResponseEntity<>(planetWithFinishedBuilding, HttpStatus.OK);
 			}
-		}, (long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()
-				* planetWithUpdatedRessources.getReduceBuildingDuration()), TimeUnit.SECONDS);
+		}, planetWithUpdatedRessources.getRemainingBuildingDuration(), TimeUnit.SECONDS);
 
 		executorService.shutdown();
 	}
