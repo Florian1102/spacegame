@@ -33,8 +33,9 @@ export class RegistrationComponent implements OnInit {
         name: this.form.value.name
       }
       this.userService.createUser(user).subscribe(newUserCreated => {
-        this.authService.loginUser(newUserCreated),
-        this.router.navigate(['user/' + newUserCreated.id + '/overview'])
+        this.authService.loginUser(newUserCreated);
+        localStorage.setItem("user", JSON.stringify(newUserCreated))
+        this.router.navigate(['user/' + newUserCreated.id + '/overview']);
       })
     } else {
         alert("Eingabe ungültig");

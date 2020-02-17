@@ -22,6 +22,8 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    
   }
   
 }

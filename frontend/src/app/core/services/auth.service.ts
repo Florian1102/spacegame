@@ -11,16 +11,24 @@ export class AuthService {
   user: User;
   readonly changeUser$ = new Subject<User>();
   
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) { 
+    this.user = JSON.parse(localStorage.getItem('user'));
+  }
+
+  ngOnInit() {
+    
+  }
 
   public loginUser(user: User): void{
     this.user = user;
     this.changeUser$.next(this.user);
+    localStorage.setItem("user", JSON.stringify(this.user))
   }
 
   public logoutUser(): void{
     this.user = null;
     this.changeUser$.next(this.user);
+    localStorage.removeItem("user");
   }
 
   public updateUser(userId: number){
@@ -28,6 +36,7 @@ export class AuthService {
       foundUser => {
       this.user = foundUser;
       this.changeUser$.next(this.user);
+      localStorage.setItem("user", JSON.stringify(this.user));
       })
   }
 }
