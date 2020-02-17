@@ -8,5 +8,5 @@ export interface CoordinateSystem {
     system: number;
     position: number;
     planet: Planet;
-    spaceships: Spaceship[];
+    listOfSpaceshipsInThisSystem: Spaceship[];
 }

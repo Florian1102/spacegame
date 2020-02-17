@@ -1,8 +1,8 @@
 <h1>Galaxie</h1>
 <form [formGroup]="form" (ngSubmit)="search()">
 
-    <input formControlName="galaxy" type="number" />
-    <input formControlName="system" type="number" />
+    <input formControlName="galaxy" type="number" placeholder="Galaxie" />
+    <input formControlName="system" type="number" placeholder="System"/>
     <button type="submit">Suchen</button>
 </form>
 
@@ -15,12 +15,18 @@
         <td>
             Planet
         </td>
+        <td>
+            Raumschiffe in diesem System
+        </td>
     </tr>
     <tr *ngFor="let coordinateSystemRow of coordinateSystem">
         <td>
             {{coordinateSystemRow?.position}}
         </td>
         <td>
+            <div *ngFor="let spaceship of coordinateSystemRow.listOfSpaceshipsInThisSystem">
+                {{spaceship.id}}
+            </div>
             {{coordinateSystemRow?.planet?.id}}
         </td>
     </tr>
