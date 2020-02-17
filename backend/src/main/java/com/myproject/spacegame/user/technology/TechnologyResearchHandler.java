@@ -14,7 +14,6 @@ import com.myproject.spacegame.buildingStats.BuildingStats;
 import com.myproject.spacegame.buildingStats.NamesOfTechnologies;
 import com.myproject.spacegame.services.CalculatePointsOfPlayer;
 import com.myproject.spacegame.user.spaceship.Spaceship;
-import com.myproject.spacegame.user.spaceship.SpaceshipHandler;
 import com.myproject.spacegame.user.spaceship.SpaceshipRepository;
 
 import lombok.RequiredArgsConstructor;

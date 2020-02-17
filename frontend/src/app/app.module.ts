@@ -8,6 +8,10 @@ import { SpaceshipModule } from './features/spaceship/spaceship.module';
 import { SharedModule } from './shared/shared.module';
 import { PlanetModule } from './features/planet/planet.module';
 import { GalaxyModule } from './features/galaxy/galaxy.module';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+registerLocaleData(localeDe);
+
 
 @NgModule({
   declarations: [
@@ -21,7 +25,7 @@ import { GalaxyModule } from './features/galaxy/galaxy.module';
     SpaceshipModule,
     PlanetModule,
     GalaxyModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
