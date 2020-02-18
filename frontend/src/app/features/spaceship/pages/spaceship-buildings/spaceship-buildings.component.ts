@@ -38,7 +38,7 @@ export class SpaceshipBuildingsComponent implements OnInit {
 
   findSpaceship(){
     this.spaceshipService.findSpaceshipById(this.spaceshipId).subscribe(foundSpaceship => {
-      this.spaceship = foundSpaceship
+      this.spaceship = foundSpaceship;
       this.getBuildingStats();
     });
   }

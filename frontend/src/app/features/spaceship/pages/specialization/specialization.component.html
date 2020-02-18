@@ -1,0 +1,7 @@
+<h1>Spezialisierung</h1>
+<p *ngIf="spaceship?.merchantSpaceship">Deine Spezialiserung ist: Handelsschiff</p>
+<p *ngIf="spaceship?.fighterSpaceship">Deine Spezialiserung ist: Kampfschiff</p>
+<p *ngIf="spaceship?.spaceshipLvl < 5">Spezialisierung erst ab Level 5 möglich</p>
+<p *ngIf="spaceship?.spaceshipLvl >=5 && !spaceship?.fighterSpaceship && !spaceship?.merchantSpaceship">Wähle eine Spezialisierung aus</p>
+<p *ngIf="spaceship?.spaceshipLvl >=5 && spaceship?.fighterSpaceship || spaceship?.merchantSpaceship">Möchtest du deine Spezialisierung ändern?</p>
+<button *ngIf="!spaceship?.merchantSpaceship" (click)="chooseSpecialization('merchant')">Handelsschiff</button><button *ngIf="!spaceship?.fighterSpaceship" (click)="chooseSpecialization('fighter')">Kampfschiff</button>

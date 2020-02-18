@@ -13,6 +13,7 @@ import { NoAuthGuard } from './core/guards/no-auth.guard';
 import { PlanetOverviewComponent } from './features/planet/planet-overview/planet-overview.component';
 import { CoordinateSystemViewComponent } from './features/galaxy/coordinate-system-view/coordinate-system-view.component';
 import { ColonizePlanetComponent } from './features/planet/colonize-planet/colonize-planet.component';
+import { SpecializationComponent } from './features/spaceship/pages/specialization/specialization.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'user/:userId/profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/overview', component: OverviewComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/spaceship/:spaceshipId/buildings', component: SpaceshipBuildingsComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/spaceship/:spaceshipId/specialization', component: SpecializationComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/colonize', component: ColonizePlanetComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/:planetId', component: PlanetOverviewComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/coordinatesystem', component: CoordinateSystemViewComponent, canActivate: [AuthGuard]},

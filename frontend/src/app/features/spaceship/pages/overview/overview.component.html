@@ -6,7 +6,10 @@
     </tr>
     <tr>
         <td>Position: {{user?.spaceship?.currentPosition?.galaxy}}:{{user?.spaceship?.currentPosition?.system}}:{{user?.spaceship?.currentPosition?.position}} </td>
-        <td *ngIf="spaceship?.merchantSpaceship">Spezialisierung: Handelsschiff</td><td *ngIf="spaceship?.fighterSpaceship">Spezialisierung: Kampfschiff</td><td *ngIf="!spaceship?.fighterSpaceship && !spaceship?.merchantSpaceship">Spezialisierung Noch keine</td>
+        <td *ngIf="user?.spaceship?.spaceshipLvl < 5"><a>Spezialisierung erst ab Level 5 möglich</a></td>
+        <td *ngIf="user?.spaceship?.merchantSpaceship">Spezialisierung: Handelsschiff</td>
+        <td *ngIf="user?.spaceship?.fighterSpaceship">Spezialisierung: Kampfschiff</td>
+        <td *ngIf="user?.spaceship?.spaceshipLvl >=5 && !user?.spaceship?.fighterSpaceship && !user?.spaceship?.merchantSpaceship"><a [routerLink]="'/user/' + user.id + '/spaceship/' + user.spaceship.id + '/specialization'">Jetzt Spezialisierung auswählen</a></td>
     </tr>
     <tr>
         <td>

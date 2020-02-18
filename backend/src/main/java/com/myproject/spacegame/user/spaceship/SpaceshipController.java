@@ -136,7 +136,7 @@ public class SpaceshipController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
-		if (spaceshipFound.getSpaceshipLvl() < 1) { //TODO: von 1 auf 5 ändern
+		if (spaceshipFound.getSpaceshipLvl() < 5) { 
 			return new ResponseEntity<>("Dein Raumschiff hat noch nicht das erforderliche Level",
 					HttpStatus.BAD_REQUEST);
 		}

@@ -1,18 +1,35 @@
 <h1>Raumschiff-Ausbau</h1>
 
+<div *ngIf="spaceship?.spaceshipLvl >=5 && spaceship?.merchantSpaceship || spaceship?.fighterSpaceship">
+    <p *ngIf="spaceship?.merchantSpaceship">Deine Spezialiserung ist: Handelsschiff</p>
+    <p *ngIf="spaceship?.fighterSpaceship">Deine Spezialiserung ist: Kampfschiff</p>
+    <a [routerLink]="'/user/' + userId + '/spaceship/' + spaceship.id + '/specialization'">Spezialisierung ändern</a>
+</div>
+
 <div *ngIf="spaceship?.remainingBuildingDuration > 0">
     <p>Es befindet sich noch etwas im Ausbau. Verbleibende Zeit: {{spaceship?.remainingBuildingDuration}}</p>
 </div>
 
 <div>
     <h2>Raumschiff - Aktuelles Level {{spaceship?.spaceshipLvl}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfSpaceship?.necessaryMetal | number: '1.0-0':'de-DE'}} Kristall: {{buildingStatsOfSpaceship?.necessaryCrystal | number: '1.0-0':'de-DE'}} Wasserstoff: {{buildingStatsOfSpaceship?.necessaryHydrogen | number: '1.0-0':'de-DE'}} Energie: {{buildingStatsOfSpaceship?.necessaryEnergy | number: '1.0-0':'de-DE'}}</p>
-    <p>Dauer: {{buildingStatsOfSpaceship?.buildingOrResearchDuration * spaceship?.reduceBuildingDuration | rounddown | number: '1.0-0':'de-DE'}}</p>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfSpaceship?.necessaryMetal | number: '1.0-0':'de-DE'}} Kristall:
+        {{buildingStatsOfSpaceship?.necessaryCrystal | number: '1.0-0':'de-DE'}} Wasserstoff:
+        {{buildingStatsOfSpaceship?.necessaryHydrogen | number: '1.0-0':'de-DE'}} Energie:
+        {{buildingStatsOfSpaceship?.necessaryEnergy | number: '1.0-0':'de-DE'}}</p>
+    <p>Dauer:
+        {{buildingStatsOfSpaceship?.buildingOrResearchDuration * spaceship?.reduceBuildingDuration | rounddown | number: '1.0-0':'de-DE'}}
+    </p>
     <button *ngIf="spaceship?.remainingBuildingDuration == 0" (click)="increaseLvl('spaceship')">Ausbauen</button>
 </div>
 <div>
     <h2>Forschungslabor - Aktuelles Level {{spaceship?.researchLaboratoryLvl}}</h2>
-    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfResearchLaboratory?.necessaryMetal | number: '1.0-0':'de-DE'}} Kristall: {{buildingStatsOfResearchLaboratory?.necessaryCrystal | number: '1.0-0':'de-DE'}} Wasserstoff: {{buildingStatsOfResearchLaboratory?.necessaryHydrogen | number: '1.0-0':'de-DE'}} Energie: {{buildingStatsOfResearchLaboratory?.necessaryEnergy | number: '1.0-0':'de-DE'}}</p>
-    <p>Dauer: {{buildingStatsOfResearchLaboratory?.buildingOrResearchDuration * spaceship?.reduceBuildingDuration | rounddown | number: '1.0-0':'de-DE'}}</p>
-    <button *ngIf="spaceship?.remainingBuildingDuration == 0" (click)="increaseLvl('researchlaboratory')">Ausbauen</button>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfResearchLaboratory?.necessaryMetal | number: '1.0-0':'de-DE'}}
+        Kristall: {{buildingStatsOfResearchLaboratory?.necessaryCrystal | number: '1.0-0':'de-DE'}} Wasserstoff:
+        {{buildingStatsOfResearchLaboratory?.necessaryHydrogen | number: '1.0-0':'de-DE'}} Energie:
+        {{buildingStatsOfResearchLaboratory?.necessaryEnergy | number: '1.0-0':'de-DE'}}</p>
+    <p>Dauer:
+        {{buildingStatsOfResearchLaboratory?.buildingOrResearchDuration * spaceship?.reduceBuildingDuration | rounddown | number: '1.0-0':'de-DE'}}
+    </p>
+    <button *ngIf="spaceship?.remainingBuildingDuration == 0"
+        (click)="increaseLvl('researchlaboratory')">Ausbauen</button>
 </div>
