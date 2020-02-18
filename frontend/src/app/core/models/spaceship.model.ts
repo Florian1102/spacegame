@@ -14,9 +14,9 @@ export interface Spaceship {
     crystal: number;
     hydrogen: number;
     energy: number;
-    metalStoreLvl: number;
-    crystalStoreLvl: number;
-    hydrogenTankLvl: number;
+    // metalStoreLvl: number;
+    // crystalStoreLvl: number;
+    // hydrogenTankLvl: number;
     metalStore: number;
     crystalStore: number;
     hydrogenTank: number;

@@ -70,17 +70,17 @@ public class Spaceship {
 	@Column(nullable = false)
 	private double energy = 0;
 	
-	@NotNull
-	@Column(nullable = false)
-	private int metalStoreLvl = 0;
-	
-	@NotNull
-	@Column(nullable = false)
-	private int crystalStoreLvl = 0;
-	
-	@NotNull
-	@Column(nullable = false)
-	private int hydrogenTankLvl = 0;
+//	@NotNull
+//	@Column(nullable = false)
+//	private int metalStoreLvl = 0;
+//	
+//	@NotNull
+//	@Column(nullable = false)
+//	private int crystalStoreLvl = 0;
+//	
+//	@NotNull
+//	@Column(nullable = false)
+//	private int hydrogenTankLvl = 0;
 	
 	@NotNull
 	@Column(nullable = false)

@@ -81,6 +81,9 @@ public class SpaceshipBuildingHandler {
 			foundSpaceship.setSpaceshipLvl(statsOfBuildingNextLvl.getLevel());
 			foundSpaceship.setEnergy(foundSpaceship.getEnergy() - statsOfBuildingNextLvl.getNecessaryEnergy());
 			foundSpaceship.setReduceBuildingDuration(statsOfBuildingNextLvl.getReduceBuildingDuration());
+			foundSpaceship.setMetalStore(statsOfBuildingNextLvl.getMetalStorehouse());
+			foundSpaceship.setCrystalStore(statsOfBuildingNextLvl.getCrystalStorehouse());
+			foundSpaceship.setHydrogenTank(statsOfBuildingNextLvl.getHydrogenTank());
 		} else if (nameOfBuilding.equalsIgnoreCase(NamesOfSpaceshipBuildings.RESEARCHLABORATORY.toString())) {
 			foundSpaceship.setResearchLaboratoryLvl(statsOfBuildingNextLvl.getLevel());
 			foundSpaceship.setReduceResearchDuration(statsOfBuildingNextLvl.getReduceResearchDuration());
