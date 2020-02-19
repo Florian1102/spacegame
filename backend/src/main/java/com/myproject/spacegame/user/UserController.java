@@ -91,6 +91,19 @@ public class UserController {
 		userRepository.save(user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@PutMapping("/{userId}/rename")
+	public ResponseEntity<?> renameUser(@PathVariable Long userId, @RequestBody String name) {
+		
+		if (!userRepository.existsById(userId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		User userFound = userRepository.findById(userId).get();
+		
+		userFound.setName(name);
+		userRepository.save(userFound);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {

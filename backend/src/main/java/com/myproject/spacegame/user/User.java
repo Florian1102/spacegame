@@ -33,7 +33,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+		
 	@NotNull
 	@NotBlank
 	@Size(min = 3, max = 12)

@@ -28,6 +28,10 @@ export class UserService {
     return this.http.put<User>(baseUrl + "/" + id, user);
   }
 
+  public renameUser(id: number, name: string): Observable<User>{
+    return this.http.put<User>(baseUrl + "/" + id + "/rename", name);
+  }
+
   public deleteUserById(id: number): Observable<User>{
     return this.http.delete<User>(baseUrl + "/" + id);
   }
