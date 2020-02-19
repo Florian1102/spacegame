@@ -3,8 +3,6 @@ package com.myproject.spacegame.user.planet;
 import java.util.List;
 import java.util.Random;
 
-import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -140,17 +138,17 @@ public class PlanetController {
 		return planet;
 	}
 
-	@PutMapping("/planets/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid Planet planet) {
-
-		if (!planetRepository.existsById(id)) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-		planet.setId(id);
-		planetRepository.save(planet);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+//	@PutMapping("/planets/{id}")
+//	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid Planet planet) {
+//
+//		if (!planetRepository.existsById(id)) {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}
+//
+//		planet.setId(id);
+//		planetRepository.save(planet);
+//		return new ResponseEntity<>(HttpStatus.OK);
+//	}
 	
 	@PutMapping("/planets/{planetId}/rename")
 	public ResponseEntity<?> renamePlanet(@PathVariable Long planetId, @RequestBody String name) {

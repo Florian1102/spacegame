@@ -9,5 +9,6 @@
     Wasserstoff: {{planet.hydrogen | number: '1.0-0':'de-DE'}}/{{planet.hydrogenTank | number: '1.0-0':'de-DE'}}<br>
     Aktuelle Produktion: {{planet.hydrogenProductionEveryHour | number: '1.0-0':'de-DE'}}<br>
     Energie: {{planet.energy | number: '1.0-0':'de-DE'}}<br>
-    <button (click)="deletePlanet(planet.id)">Planet löschen</button>
+    <button (click)="deletePlanet(planet.id)">Planet löschen</button><br>
+    <a [routerLink]="'/user/' + user.id + '/spaceship/' + user.spaceship.id + '/planet/' + planet.id + '/fly'">Rohstoffe abholen/liefern</a><br>
 </div>

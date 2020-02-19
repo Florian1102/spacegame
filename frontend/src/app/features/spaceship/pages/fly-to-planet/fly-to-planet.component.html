@@ -1,0 +1,29 @@
+<h1>Rohsteoffe abholen/liefern</h1>
+
+<p>Von {{planet?.name}} - {{planet?.coordinates?.galaxy}}:{{planet?.coordinates?.system}}:{{planet?.coordinates?.position}}</p>
+<button *ngIf="!takeOrDeliverState" (click)="changeState()">Rohstoffe abholen</button>
+<button *ngIf="takeOrDeliverState" (click)="changeState()">Rohstoffe liefern</button>
+
+<form *ngIf="takeOrDeliverState" [formGroup]="form" (ngSubmit)="takeResources()">
+    <p>Wie viele Rohstoffe möchtest du von deinem Planeten abholen?</p>
+    <input formControlName="metal" type="number" placeholder="Metall" />
+    <input formControlName="crystal" type="number" placeholder="Kristall" />
+    <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" />
+    <!-- <div *ngIf="form.controls.name.invalid && (form.controls.name.touched || form.controls.name.dirty)">
+        Der Name muss mindestens 3 Zeichen haben!
+    </div> -->
+    <button type="submit">Rohstoffe abholen</button>
+</form>
+
+<form *ngIf="!takeOrDeliverState" [formGroup]="form" (ngSubmit)="deliverResources()">
+
+    <p>Wie viele Rohstoffe möchtest du liefern?</p>
+    <input formControlName="metal" type="number" placeholder="Metall" />
+    <input formControlName="crystal" type="number" placeholder="Kristall" />
+    <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" />
+    <!-- <div *ngIf="form.controls.name.invalid && (form.controls.name.touched || form.controls.name.dirty)">
+        Der Name muss mindestens 3 Zeichen haben!
+    </div> -->
+    <button type="submit">Rohstoffe liefern</button>
+</form>
+<p *ngIf="message">{{message}}</p>

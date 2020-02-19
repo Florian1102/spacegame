@@ -15,6 +15,7 @@ import { CoordinateSystemViewComponent } from './features/galaxy/coordinate-syst
 import { ColonizePlanetComponent } from './features/planet/colonize-planet/colonize-planet.component';
 import { SpecializationComponent } from './features/spaceship/pages/specialization/specialization.component';
 import { RenamePlanetComponent } from './features/planet/rename-planet/rename-planet.component';
+import { FlyToPlanetComponent } from './features/spaceship/pages/fly-to-planet/fly-to-planet.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'user/:userId/spaceship/:spaceshipId/specialization', component: SpecializationComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/colonize', component: ColonizePlanetComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/:planetId/rename', component: RenamePlanetComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/spaceship/:spaceshipId/planet/:planetId/fly', component: FlyToPlanetComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/:planetId', component: PlanetOverviewComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/coordinatesystem', component: CoordinateSystemViewComponent, canActivate: [AuthGuard]},
 ];

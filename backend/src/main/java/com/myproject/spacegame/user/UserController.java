@@ -80,17 +80,17 @@ public class UserController {
 		return userRepository.save(user);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid User user) {
-
-		if (!userRepository.existsById(id)) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		// TODO Hier muss evtl noch ein User gefunden und dann geädert werden
-		user.setId(id);
-		userRepository.save(user);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+//	@PutMapping("/{id}")
+//	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid User user) {
+//
+//		if (!userRepository.existsById(id)) {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}
+//		// TODO Hier muss evtl noch ein User gefunden und dann geädert werden
+//		user.setId(id);
+//		userRepository.save(user);
+//		return new ResponseEntity<>(HttpStatus.OK);
+//	}
 	
 	@PutMapping("/{userId}/rename")
 	public ResponseEntity<?> renameUser(@PathVariable Long userId, @RequestBody String name) {
