@@ -4,14 +4,14 @@
 <button *ngIf="!takeOrDeliverState" (click)="changeState()">Rohstoffe abholen</button>
 <button *ngIf="takeOrDeliverState" (click)="changeState()">Rohstoffe liefern</button>
 
-<form *ngIf="takeOrDeliverState" [formGroup]="form" (ngSubmit)="takeResources()">
+<form *ngIf="takeOrDeliverState" [formGroup]="form" (ngSubmit)="pickupResources()">
     <p>Wie viele Rohstoffe möchtest du von deinem Planeten abholen?</p>
     <input formControlName="metal" type="number" placeholder="Metall" />
     <input formControlName="crystal" type="number" placeholder="Kristall" />
     <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" />
-    <!-- <div *ngIf="form.controls.name.invalid && (form.controls.name.touched || form.controls.name.dirty)">
-        Der Name muss mindestens 3 Zeichen haben!
-    </div> -->
+    <div *ngIf="form.controls.metal.invalid && (form.controls.metal.touched || form.controls.metal.dirty) || form.controls.crystal.invalid && (form.controls.crystal.touched || form.controls.crystal.dirty) || form.controls.hydrogen.invalid && (form.controls.hydrogen.touched || form.controls.hydrogen.dirty)">
+        Es müssen alle Felder ausgefüllt sein!
+    </div>
     <button type="submit">Rohstoffe abholen</button>
 </form>
 
@@ -21,9 +21,8 @@
     <input formControlName="metal" type="number" placeholder="Metall" />
     <input formControlName="crystal" type="number" placeholder="Kristall" />
     <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" />
-    <!-- <div *ngIf="form.controls.name.invalid && (form.controls.name.touched || form.controls.name.dirty)">
-        Der Name muss mindestens 3 Zeichen haben!
-    </div> -->
+    <div *ngIf="form.controls.metal.invalid && (form.controls.metal.touched || form.controls.metal.dirty) || form.controls.crystal.invalid && (form.controls.crystal.touched || form.controls.crystal.dirty) || form.controls.hydrogen.invalid && (form.controls.hydrogen.touched || form.controls.hydrogen.dirty)">        Es müssen alle Felder ausgefüllt sein!
+    </div>
     <button type="submit">Rohstoffe liefern</button>
 </form>
 <p *ngIf="message">{{message}}</p>

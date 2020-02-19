@@ -5,7 +5,10 @@
         <td>Level: {{user?.spaceship?.spaceshipLvl}}</td>
     </tr>
     <tr>
-        <td>Position: {{user?.spaceship?.currentPosition?.galaxy}}:{{user?.spaceship?.currentPosition?.system}}:{{user?.spaceship?.currentPosition?.position}} </td>
+        <td *ngIf="!user?.spaceship?.currentPosition">
+            Raumschiff ist unterwegs: {{user?.spaceship?.flightDuration}} Sekunden
+        </td>
+        <td *ngIf="user?.spaceship?.currentPosition"> Position: {{user?.spaceship?.currentPosition?.galaxy}}:{{user?.spaceship?.currentPosition?.system}}:{{user?.spaceship?.currentPosition?.position}} </td>
         <td *ngIf="user?.spaceship?.spaceshipLvl < 5"><a>Spezialisierung erst ab Level 5 möglich</a></td>
         <td *ngIf="user?.spaceship?.merchantSpaceship">Spezialisierung: Handelsschiff</td>
         <td *ngIf="user?.spaceship?.fighterSpaceship">Spezialisierung: Kampfschiff</td>
@@ -18,5 +21,13 @@
             Geschwindigkeit: {{user?.spaceship?.speed | number: '1.0-0':'de-DE'}}
         </td>
         <td>Punkte: {{user?.points | number: '1.0-0':'de-DE'}}</td>
+    </tr>
+    <tr>
+        <td *ngIf="user?.spaceship?.flightDuration > 0">
+            Raumschiff ist unterwegs: {{user?.spaceship?.flightDuration}}
+        </td>
+        <td *ngIf="user?.spaceship?.flightDuration == 0">
+            Raumschiff ist nicht unterwegs
+        </td>
     </tr>
 </table>

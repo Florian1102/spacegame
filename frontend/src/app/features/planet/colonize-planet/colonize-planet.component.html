@@ -2,8 +2,8 @@
 
 <form [formGroup]="form" (ngSubmit)="colonize()">
 
-    <input formControlName="galaxy" type="number" />
-    <input formControlName="system" type="number" />
-    <input formControlName="position" type="number" />
+    <input formControlName="galaxy" type="number" placeholder="Galaxie" />
+    <input formControlName="system" type="number" placeholder="System" />
+    <input formControlName="position" type="number" placeholder="Position" />
     <button type="submit">Planet kolonisieren</button>
 </form>

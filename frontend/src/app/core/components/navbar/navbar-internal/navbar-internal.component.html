@@ -1,5 +1,5 @@
 <a [routerLink]="'/user/' + user.id + '/overview'">Übersicht</a><br>
 <a [routerLink]="'/user/' + user.id + '/spaceship/' + user.spaceship.id + '/buildings'">Raumschiff-Ausbau</a><br>
 <!-- <a [routerLink]="">Technologie</a><br> -->
-<a [routerLink]="'/user/' + user.id + '/coordinatesystem'" [queryParams]="{galaxy: user.spaceship.currentPosition.galaxy, system: user.spaceship.currentPosition.system}">Galaxie</a><br>
+<a [routerLink]="'/user/' + user.id + '/coordinatesystem'" [queryParams]="{galaxy: user?.spaceship?.currentPosition?.galaxy, system: user?.spaceship?.currentPosition?.system}">Galaxie</a><br>
 <!-- <a [routerLink]="">Highscore</a><br> -->

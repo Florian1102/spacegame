@@ -65,7 +65,6 @@ public class ResourceHandler {
 
 	public ResponseEntity<?> pickUpOrDeliverResources(Long spaceshipId, Long planetId, Long metal, Long crystal, Long hydrogen,
 			boolean pickUpOrDeliver) throws Exception {
-		
 		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
 		Planet planetFound = planetRepository.findById(planetId).get();
 		if (pickUpOrDeliver) {

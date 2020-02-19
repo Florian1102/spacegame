@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Planet } from 'src/app/core/models/planet.model';
 import { PlanetService } from 'src/app/core/services/planet.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpaceshipService } from 'src/app/core/services/spaceship.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -18,9 +18,9 @@ export class FlyToPlanetComponent implements OnInit {
   spaceshipId: number;
   planet: Planet;
 
-  metal: number;
-  crystal: number;
-  hydrogen: number;
+  metal: number = 0;
+  crystal: number = 0;
+  hydrogen: number = 0;
 
   message: string;
 
@@ -40,9 +40,9 @@ export class FlyToPlanetComponent implements OnInit {
     
     this.findPlanet();
     this.form = this.fb.group({
-      metal: [''],
-      crystal: [''],
-      hydrogen: ['']
+      metal: ['', [Validators.required, Validators.min(0)]],
+      crystal: ['', [Validators.required, Validators.min(0)]],
+      hydrogen: ['', [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -56,12 +56,12 @@ export class FlyToPlanetComponent implements OnInit {
     this.takeOrDeliverState = !this.takeOrDeliverState;
   }
 
-  takeResources(){
+  pickupResources(){
     this.metal = this.form.value.metal;
     this.crystal = this.form.value.crystal;
     this.hydrogen = this.form.value.hydrogen;
     if (this.form.valid) {
-      this.spaceshipService.pickUpOrDeliverResources(this.spaceshipId, "pickup", this.planetId, this.metal, this.crystal, this.hydrogen).subscribe(()=> {
+      this.spaceshipService.pickUpResources(this.spaceshipId, this.planetId, this.metal, this.crystal, this.hydrogen).subscribe(()=> {
         this.message = "Das Raumschiff ist losgeflogen";
         this.authService.updateUser(this.userId);
         this.form = this.fb.group({
@@ -75,8 +75,23 @@ export class FlyToPlanetComponent implements OnInit {
     }
   }
 
-  deliverResources(){
-
-  }
+  // deliverResources(){
+  //   this.metal = this.form.value.metal;
+  //   this.crystal = this.form.value.crystal;
+  //   this.hydrogen = this.form.value.hydrogen;
+  //   if (this.form.valid) {
+  //     this.spaceshipService.pickUpOrDeliverResources(this.spaceshipId, "deliver", this.planetId, this.metal, this.crystal, this.hydrogen).subscribe(()=> {
+  //       this.message = "Das Raumschiff ist losgeflogen";
+  //       this.authService.updateUser(this.userId);
+  //       this.form = this.fb.group({
+  //         metal: [''],
+  //         crystal: [''],
+  //         hydrogen: ['']
+  //       });
+  //     })
+  //   } else {
+  //       alert("Eingabe ungültig");
+  //   }
+  // }
 
 }

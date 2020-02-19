@@ -32,8 +32,8 @@ export class SpaceshipService {
     return this.http.put<Spaceship>(baseUrl + "/" + id + "/choosefighterormerchant/" + fighterOrMerchant, null);
   }
   
-  public pickUpOrDeliverResources(id: number, pickUpOrDeliver: string, planetId: number, metal: number, crystal: number, hydrogen: number): Observable<Spaceship>{
-    return this.http.put<Spaceship>(baseUrl + "/" + id + "/" + pickUpOrDeliver + "/" + planetId + "/resources?metal=" + metal + "&crystal=" + crystal + "&hydrogen=" + hydrogen, null);
+  public pickUpResources(id: number, planetId: number, metal: number, crystal: number, hydrogen: number): Observable<Spaceship>{
+    return this.http.put<Spaceship>(baseUrl + "/" + id + "/pickup/" + planetId + "/resources?metal=" + metal + "&crystal=" + crystal + "&hydrogen=" + hydrogen, null);
   }
 
 }

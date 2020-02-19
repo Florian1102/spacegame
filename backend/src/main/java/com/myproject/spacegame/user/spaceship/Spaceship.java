@@ -35,7 +35,7 @@ public class Spaceship {
 	private User user;
 	
 	@ManyToOne
-	@JoinColumn(name = "currentPosition_id", nullable = false)
+	@JoinColumn(name = "currentPosition_id")
 	private CoordinateSystem currentPosition;
 	
 	@NotNull

@@ -80,12 +80,10 @@ public class SpaceshipHandler {
 	}
 
 	public double calculateHydrogenConsumption(Spaceship spaceship, CoordinateSystem coordinates) {
-
 		double hydrogenConsumption = spaceship.getHydrogenConsumption();
 		Long galaxyDistance = (long) Math.abs((spaceship.getCurrentPosition().getGalaxy() - coordinates.getGalaxy()));
 		Long systemDistance = (long) Math.abs((spaceship.getCurrentPosition().getSystem() - coordinates.getSystem()));
-		Long positionDistance = (long) Math
-				.abs((spaceship.getCurrentPosition().getPosition() - coordinates.getPosition()));
+		Long positionDistance = (long) Math.abs((spaceship.getCurrentPosition().getPosition() - coordinates.getPosition()));
 
 		Long timeForDistance = (galaxyDistance * 300) + (systemDistance * 15) + (positionDistance * 10); // TODO: evtl.
 																											// Werte
@@ -94,13 +92,14 @@ public class SpaceshipHandler {
 		return flightDuration;
 	}
 
-	public void flyBack(Long spaceshipId, Long flightDuration) {
+	public void flyBack(Long spaceshipId, Long flightDuration, CoordinateSystem lastPosition) {
 		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 		@SuppressWarnings("unused")
 		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
 			public Object call() throws Exception {
 				Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
 				spaceshipFound.setFlightDuration(0L);
+				spaceshipFound.setCurrentPosition(lastPosition);
 				spaceshipRepository.save(spaceshipFound);
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
