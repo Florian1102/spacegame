@@ -22,12 +22,5 @@
         </td>
         <td>Punkte: {{user?.points | number: '1.0-0':'de-DE'}}</td>
     </tr>
-    <tr>
-        <td *ngIf="user?.spaceship?.flightDuration > 0">
-            Raumschiff ist unterwegs: {{user?.spaceship?.flightDuration}}
-        </td>
-        <td *ngIf="user?.spaceship?.flightDuration == 0">
-            Raumschiff ist nicht unterwegs
-        </td>
-    </tr>
+
 </table>

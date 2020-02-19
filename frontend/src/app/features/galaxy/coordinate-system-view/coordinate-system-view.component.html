@@ -24,10 +24,11 @@
             {{coordinateSystemRow?.position}}
         </td>
         <td>
-            <div *ngFor="let spaceship of coordinateSystemRow.listOfSpaceshipsInThisSystem">
-                {{spaceship.id}}
-            </div>
-            {{coordinateSystemRow?.planet?.id}}
+            <div *ngIf="coordinateSystemRow.planet">Name: {{coordinateSystemRow?.planet?.name}}</div>
+            
+        </td>
+        <td>
+            <div *ngFor="let spaceship of coordinateSystemRow.listOfSpaceshipsInThisSystem">Id: {{spaceship?.id}}</div>
         </td>
     </tr>
 </table> 
