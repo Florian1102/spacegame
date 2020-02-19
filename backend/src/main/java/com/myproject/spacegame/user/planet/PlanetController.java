@@ -113,6 +113,7 @@ public class PlanetController {
 		planet.setId(null);
 		planet.setUser(userRepository.findById(userId).get());
 		planet.setCoordinates(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position));
+		planet.setName("Planet");
 		Random random = new Random();
 		planet.setFields(100 + random.nextInt(200 - 100 + 1));
 		planet.setRemainingFields(planet.getFields());
@@ -148,6 +149,19 @@ public class PlanetController {
 
 		planet.setId(id);
 		planetRepository.save(planet);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping("/planets/{planetId}/rename")
+	public ResponseEntity<?> renamePlanet(@PathVariable Long planetId, @RequestBody String name) {
+		
+		if (!planetRepository.existsById(planetId)) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		Planet planetFound = planetRepository.findById(planetId).get();
+		
+		planetFound.setName(name);
+		planetRepository.save(planetFound);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

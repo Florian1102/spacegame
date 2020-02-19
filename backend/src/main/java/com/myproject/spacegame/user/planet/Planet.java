@@ -50,6 +50,10 @@ public class Planet {
 	
 	@NotNull
 	@Column(nullable = false)
+	private String name;
+	
+	@NotNull
+	@Column(nullable = false)
 	private int remainingFields;
 	
 	@NotNull

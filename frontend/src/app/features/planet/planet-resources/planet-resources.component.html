@@ -1,7 +1,7 @@
 <h1>Planeten</h1>
 <a [routerLink]="'/user/' + user.id + '/planet/colonize'">Planet kolonisieren</a><br>
 <div *ngFor="let planet of planets">
-    <a [routerLink]="'/user/' + user.id + '/planet/' + planet.id">{{planet.id}}</a><br>
+    <a [routerLink]="'/user/' + user.id + '/planet/' + planet.id">{{planet.name}}</a><br>
     Metall: {{planet.metal | number: '1.0-0':'de-DE'}}/{{planet.metalStorehouse | number: '1.0-0':'de-DE'}}<br>
     Aktuelle Produktion: {{planet.metalProductionEveryHour | number: '1.0-0':'de-DE'}}<br>
     Kristall: {{planet.crystal | number: '1.0-0':'de-DE'}}/{{planet.crystalStorehouse | number: '1.0-0':'de-DE'}}<br>

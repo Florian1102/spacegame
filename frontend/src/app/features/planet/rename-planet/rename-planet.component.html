@@ -1,0 +1,12 @@
+<h1>Planet umbenennen</h1>
+
+<h2>Aktueller Name: {{planet?.name}}</h2>
+
+<form [formGroup]="form" (ngSubmit)="renamePlanet()">
+
+    <input formControlName="name" type="text" placeholder="Neuen Namen eingeben" />
+    <div *ngIf="form.controls.name.invalid && (form.controls.name.touched || form.controls.name.dirty)">
+        Der Name muss mindestens 3 Zeichen haben!
+    </div>
+    <button type="submit">Umbenennen</button>
+</form>

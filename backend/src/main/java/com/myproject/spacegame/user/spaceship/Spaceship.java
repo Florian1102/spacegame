@@ -84,15 +84,15 @@ public class Spaceship {
 	
 	@NotNull
 	@Column(nullable = false)
-	private double metalStore = 0.0;
+	private double metalStore = 10000;
 	
 	@NotNull
 	@Column(nullable = false)
-	private double crystalStore = 0.0;
+	private double crystalStore = 10000;
 	
 	@NotNull
 	@Column(nullable = false)
-	private double hydrogenTank = 0.0;
+	private double hydrogenTank = 5000;
 	
 	@NotNull
 	@Column(nullable = false)

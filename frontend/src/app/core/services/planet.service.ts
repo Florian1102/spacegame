@@ -28,6 +28,10 @@ export class PlanetService {
     return this.http.put<Planet>(baseUrl + "/planets/" + id + "/" + nameOfBuilding + "/build", null);
   }
 
+  public renamePlanet(id: number, name: string): Observable<Planet>{
+    return this.http.put<Planet>(baseUrl + "/planets/" + id + "/rename", name);
+  }
+
   public deletePlanet(id: number): Observable<void>{
     return this.http.delete<void>(baseUrl + "/planets/" + id);
   }
