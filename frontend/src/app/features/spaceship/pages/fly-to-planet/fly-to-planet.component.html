@@ -1,10 +1,10 @@
 <h1>Rohsteoffe abholen/liefern</h1>
 
 <p>Von {{planet?.name}} - {{planet?.coordinates?.galaxy}}:{{planet?.coordinates?.system}}:{{planet?.coordinates?.position}}</p>
-<button *ngIf="!takeOrDeliverState" (click)="changeState()">Rohstoffe abholen</button>
-<button *ngIf="takeOrDeliverState" (click)="changeState()">Rohstoffe liefern</button>
+<button *ngIf="!pickupOrDeliverState" (click)="changeState()">Rohstoffe abholen</button>
+<button *ngIf="pickupOrDeliverState" (click)="changeState()">Rohstoffe liefern</button>
 
-<form *ngIf="takeOrDeliverState" [formGroup]="form" (ngSubmit)="pickupResources()">
+<form *ngIf="pickupOrDeliverState" [formGroup]="form" (ngSubmit)="pickupResources()">
     <p>Wie viele Rohstoffe möchtest du von deinem Planeten abholen?</p>
     <input formControlName="metal" type="number" placeholder="Metall" />
     <input formControlName="crystal" type="number" placeholder="Kristall" />
@@ -12,15 +12,19 @@
     <div *ngIf="form.controls.metal.invalid && (form.controls.metal.touched || form.controls.metal.dirty) || form.controls.crystal.invalid && (form.controls.crystal.touched || form.controls.crystal.dirty) || form.controls.hydrogen.invalid && (form.controls.hydrogen.touched || form.controls.hydrogen.dirty)">
         Es müssen alle Felder ausgefüllt sein!
     </div>
+    <!-- <button type="button" (click)="maxResources()">Maximale Menge mitnehmen</button> -->
     <button type="submit">Rohstoffe abholen</button>
 </form>
 
-<form *ngIf="!takeOrDeliverState" [formGroup]="form" (ngSubmit)="deliverResources()">
+<form *ngIf="!pickupOrDeliverState" [formGroup]="form" (ngSubmit)="deliverResources()">
 
     <p>Wie viele Rohstoffe möchtest du liefern?</p>
     <input formControlName="metal" type="number" placeholder="Metall" />
     <input formControlName="crystal" type="number" placeholder="Kristall" />
-    <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" />
+    <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" /><br>
+    <input formControlName="galaxy" type="number" placeholder="Galaxie" />
+    <input formControlName="system" type="number" placeholder="System" />
+    <input formControlName="position" type="number" placeholder="Position" />
     <div *ngIf="form.controls.metal.invalid && (form.controls.metal.touched || form.controls.metal.dirty) || form.controls.crystal.invalid && (form.controls.crystal.touched || form.controls.crystal.dirty) || form.controls.hydrogen.invalid && (form.controls.hydrogen.touched || form.controls.hydrogen.dirty)">        Es müssen alle Felder ausgefüllt sein!
     </div>
     <button type="submit">Rohstoffe liefern</button>

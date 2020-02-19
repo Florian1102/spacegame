@@ -36,4 +36,8 @@ export class SpaceshipService {
     return this.http.put<Spaceship>(baseUrl + "/" + id + "/pickup/" + planetId + "/resources?metal=" + metal + "&crystal=" + crystal + "&hydrogen=" + hydrogen, null);
   }
 
+  public deliverResources(id: number, metal: number, crystal: number, hydrogen: number, galaxy: number, system: number, position: number): Observable<Spaceship>{
+    return this.http.put<Spaceship>(baseUrl + "/" + id + "/deliver?metal=" + metal + "&crystal=" + crystal + "&hydrogen=" + hydrogen + '&galaxy=' + galaxy + '&system=' + system + '&position=' + position, null);
+  }
+
 }
