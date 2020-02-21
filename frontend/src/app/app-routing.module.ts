@@ -16,6 +16,7 @@ import { ColonizePlanetComponent } from './features/planet/colonize-planet/colon
 import { SpecializationComponent } from './features/spaceship/pages/specialization/specialization.component';
 import { RenamePlanetComponent } from './features/planet/rename-planet/rename-planet.component';
 import { FlyToPlanetComponent } from './features/spaceship/pages/fly-to-planet/fly-to-planet.component';
+import { HighscoreComponent } from './features/account/pages/highscore/highscore.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'aboutus', component: AboutusComponent},
   { path: 'imprint', component: ImprintComponent},
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard]},
+  { path: 'highscore', component: HighscoreComponent, canActivate: [AuthGuard]},
   { path: 'registration', component: RegistrationComponent, canActivate: [NoAuthGuard]},
   { path: 'user/:userId/profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/overview', component: OverviewComponent, canActivate: [AuthGuard]},
