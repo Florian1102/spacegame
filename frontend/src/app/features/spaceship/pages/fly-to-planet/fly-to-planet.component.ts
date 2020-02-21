@@ -5,6 +5,7 @@ import { PlanetService } from 'src/app/core/services/planet.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpaceshipService } from 'src/app/core/services/spaceship.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { Spaceship } from 'src/app/core/models/spaceship.model';
 
 @Component({
   selector: 'app-fly-to-planet',
@@ -16,6 +17,7 @@ export class FlyToPlanetComponent implements OnInit {
   userId: number;
   planetId: number;
   spaceshipId: number;
+  spaceship: Spaceship;
   planet: Planet;
 
   metal: number = 0;
@@ -47,6 +49,8 @@ export class FlyToPlanetComponent implements OnInit {
     });
     
     this.findPlanet();
+    this.findSpaceship();
+
     this.form = this.fb.group({
       metal: ['', [Validators.required, Validators.min(0)]],
       crystal: ['', [Validators.required, Validators.min(0)]],
@@ -60,6 +64,12 @@ export class FlyToPlanetComponent implements OnInit {
   findPlanet(){
     this.planetService.findPlanetById(this.planetId).subscribe(foundPlanet => {
       this.planet = foundPlanet;
+    });
+  }
+
+  findSpaceship(){
+    this.spaceshipService.findSpaceshipById(this.spaceshipId).subscribe(foundSpaceship => {
+      this.spaceship = foundSpaceship;
     });
   }
 
@@ -86,13 +96,24 @@ export class FlyToPlanetComponent implements OnInit {
     }
   }
 
-  // maxResources(){ Funktioniert noch nicht, da er die Felder als String betrachtet
-  //   this.form = this.fb.group({
-  //     metal: [this.planet.metal],
-  //     crystal: [this.planet.crystal],
-  //     hydrogen: [this.planet.hydrogen]
-  //   });
-  // }
+  maxResourcesOfPlanet(){ 
+    this.form = this.fb.group({
+      metal: [Math.floor(this.planet.metal)],
+      crystal: [Math.floor(this.planet.crystal)],
+      hydrogen: [Math.floor(this.planet.hydrogen)]
+    });
+  }
+
+  maxResourcesOfSpaceship(){ 
+    this.form = this.fb.group({
+      metal: [Math.floor(this.spaceship.metal)],
+      crystal: [Math.floor(this.spaceship.crystal)],
+      hydrogen: [Math.floor(this.spaceship.hydrogen)],
+      galaxy: [''],
+      system: [''],
+      position: [''],
+    });
+  }
 
   deliverResources(){
     this.metal = this.form.value.metal;

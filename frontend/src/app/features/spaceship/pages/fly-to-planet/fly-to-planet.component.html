@@ -12,7 +12,7 @@
     <div *ngIf="form.controls.metal.invalid && (form.controls.metal.touched || form.controls.metal.dirty) || form.controls.crystal.invalid && (form.controls.crystal.touched || form.controls.crystal.dirty) || form.controls.hydrogen.invalid && (form.controls.hydrogen.touched || form.controls.hydrogen.dirty)">
         Es müssen alle Felder ausgefüllt sein!
     </div>
-    <!-- <button type="button" (click)="maxResources()">Maximale Menge mitnehmen</button> -->
+    <button type="button" (click)="maxResourcesOfPlanet()">Maximale Menge mitnehmen</button>
     <button type="submit">Rohstoffe abholen</button>
 </form>
 
@@ -27,6 +27,7 @@
     <input formControlName="position" type="number" placeholder="Position" />
     <div *ngIf="form.controls.metal.invalid && (form.controls.metal.touched || form.controls.metal.dirty) || form.controls.crystal.invalid && (form.controls.crystal.touched || form.controls.crystal.dirty) || form.controls.hydrogen.invalid && (form.controls.hydrogen.touched || form.controls.hydrogen.dirty)">        Es müssen alle Felder ausgefüllt sein!
     </div>
+    <button type="button" (click)="maxResourcesOfSpaceship()">Maximale Menge mitnehmen</button>
     <button type="submit">Rohstoffe liefern</button>
 </form>
 <p *ngIf="message">{{message}}</p>
