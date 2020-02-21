@@ -1,1 +1,13 @@
-<p>highscore works!</p>
+<h1>Highscore</h1>
+<table>
+    <tr>
+        <td>Platz</td>
+        <td>Spielername</td>
+        <td>Punkte</td>
+    </tr>
+    <tr *ngFor="let user of users; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.points}}</td>
+    </tr>
+</table>

@@ -36,8 +36,8 @@ export class UserService {
     return this.http.delete<User>(baseUrl + "/" + id);
   }
 
-  public getHighscore(): Observable<User>{
-    return this.http.get<User>(baseUrl + "/highscore");
+  public getHighscore(): Observable<User[]>{
+    return this.http.get<User[]>(baseUrl + "/highscore");
   }
     
 }
