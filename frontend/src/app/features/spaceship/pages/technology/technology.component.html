@@ -1,0 +1,29 @@
+<h1>Technologie</h1>
+
+<div *ngIf="spaceship?.remainingResearchDuration > 0">
+    <p>Es wird noch etwas erforscht. Verbleibende Zeit: {{spaceship?.remainingResearchDuration}}</p>
+</div>
+
+<div>
+    <h2>Energie-Forschung - Aktuelles Level {{technology?.energyResearchLvl}}</h2>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfEnergyResearch?.necessaryMetal | number: '1.0-0':'de-DE'}} Kristall:
+        {{buildingStatsOfEnergyResearch?.necessaryCrystal | number: '1.0-0':'de-DE'}} Wasserstoff:
+        {{buildingStatsOfEnergyResearch?.necessaryHydrogen | number: '1.0-0':'de-DE'}} Energie:
+        {{buildingStatsOfEnergyResearch?.necessaryEnergy | number: '1.0-0':'de-DE'}}</p>
+    <p>Dauer:
+        {{buildingStatsOfEnergyResearch?.buildingOrResearchDuration * spaceship?.reduceResearchDuration | rounddown | number: '1.0-0':'de-DE'}}
+    </p>
+    <button *ngIf="spaceship?.remainingResearchDuration == 0" (click)="increaseLvl('energyresearch')">Erforschen</button>
+</div>
+
+<div>
+    <h2>Ressourcen-Forschung - Aktuelles Level {{technology?.resourceResearchLvl}}</h2>
+    <p>Benötigte Ressourcen: Metall: {{buildingStatsOfResourceResearch?.necessaryMetal | number: '1.0-0':'de-DE'}} Kristall:
+        {{buildingStatsOfResourceResearch?.necessaryCrystal | number: '1.0-0':'de-DE'}} Wasserstoff:
+        {{buildingStatsOfResourceResearch?.necessaryHydrogen | number: '1.0-0':'de-DE'}} Energie:
+        {{buildingStatsOfResourceResearch?.necessaryEnergy | number: '1.0-0':'de-DE'}}</p>
+    <p>Dauer:
+        {{buildingStatsOfResourceResearch?.buildingOrResearchDuration * spaceship?.reduceResearchDuration | rounddown | number: '1.0-0':'de-DE'}}
+    </p>
+    <button *ngIf="spaceship?.remainingResearchDuration == 0" (click)="increaseLvl('resourceresearch')">Erforschen</button>
+</div>

@@ -5,11 +5,12 @@ import { SpaceshipBuildingsComponent } from './pages/spaceship-buildings/spacesh
 import { OverviewComponent } from './pages/overview/overview.component';
 import { SpecializationComponent } from './pages/specialization/specialization.component';
 import { FlyToPlanetComponent } from './pages/fly-to-planet/fly-to-planet.component';
+import { TechnologyComponent } from './pages/technology/technology.component';
 
 
 
 @NgModule({
-  declarations: [SpaceshipResourcesComponent, SpaceshipBuildingsComponent, OverviewComponent, SpecializationComponent, FlyToPlanetComponent],
+  declarations: [SpaceshipResourcesComponent, SpaceshipBuildingsComponent, OverviewComponent, SpecializationComponent, FlyToPlanetComponent, TechnologyComponent],
   imports: [
     SharedModule,
   ],
@@ -18,7 +19,8 @@ import { FlyToPlanetComponent } from './pages/fly-to-planet/fly-to-planet.compon
     SpaceshipBuildingsComponent,
     OverviewComponent,
     SpecializationComponent,
-    FlyToPlanetComponent
+    FlyToPlanetComponent,
+    TechnologyComponent
   ]
 })
 export class SpaceshipModule { }

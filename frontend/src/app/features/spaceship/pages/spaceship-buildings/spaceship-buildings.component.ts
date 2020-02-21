@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Spaceship } from 'src/app/core/models/spaceship.model';
 import { SpaceshipService } from 'src/app/core/services/spaceship.service';
-import { User } from 'src/app/core/models/user.model';
 import { ActivatedRoute } from '@angular/router';
 import { Buildingstats } from 'src/app/core/models/buildingstats.model';
 import { BuildingstatsService } from 'src/app/core/services/buildingstats.service';

@@ -17,6 +17,7 @@ import { SpecializationComponent } from './features/spaceship/pages/specializati
 import { RenamePlanetComponent } from './features/planet/rename-planet/rename-planet.component';
 import { FlyToPlanetComponent } from './features/spaceship/pages/fly-to-planet/fly-to-planet.component';
 import { HighscoreComponent } from './features/account/pages/highscore/highscore.component';
+import { TechnologyComponent } from './features/spaceship/pages/technology/technology.component';
 
 
 const routes: Routes = [
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'registration', component: RegistrationComponent, canActivate: [NoAuthGuard]},
   { path: 'user/:userId/profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/overview', component: OverviewComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/spaceship/:spaceshipId/technology/:technologyId', component: TechnologyComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/spaceship/:spaceshipId/buildings', component: SpaceshipBuildingsComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/spaceship/:spaceshipId/specialization', component: SpecializationComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/colonize', component: ColonizePlanetComponent, canActivate: [AuthGuard]},
