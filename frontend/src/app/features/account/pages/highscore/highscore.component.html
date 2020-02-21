@@ -8,6 +8,6 @@
     <tr *ngFor="let user of users; let i = index">
         <td>{{i + 1}}</td>
         <td>{{user.name}}</td>
-        <td>{{user.points}}</td>
+        <td>{{user.points | rounddown | number: '1.0-0':'de-DE'}}</td>
     </tr>
 </table>
