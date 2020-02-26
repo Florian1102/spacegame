@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.myproject.spacegame.tradeOffers.TradeOffer;
 import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.spaceship.Spaceship;
 import com.myproject.spacegame.user.technology.Technology;
@@ -57,6 +58,14 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	@JsonManagedReference(value = "userToPlanetReference")
 	private List<Planet> planets;
+	
+	@OneToMany(mappedBy = "tradeOfferOfUser")
+	@JsonManagedReference(value = "tradeOffersOfUser")
+	private List<TradeOffer> tradeOffersOfUser;
+
+	@OneToMany(mappedBy = "acceptedByUser")
+	@JsonManagedReference(value = "tradeOfferAcceptedByUser")
+	private List<TradeOffer> tradeOfferAcceptedByUser;
 	
 	@NotNull
 	@Column(nullable = false)
