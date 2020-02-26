@@ -18,6 +18,8 @@ import { RenamePlanetComponent } from './features/planet/rename-planet/rename-pl
 import { FlyToPlanetComponent } from './features/spaceship/pages/fly-to-planet/fly-to-planet.component';
 import { HighscoreComponent } from './features/account/pages/highscore/highscore.component';
 import { TechnologyComponent } from './features/spaceship/pages/technology/technology.component';
+import { OffersOverviewComponent } from './features/trade-offers/offers-overview/offers-overview.component';
+import { CreateOfferComponent } from './features/trade-offers/create-offer/create-offer.component';
 
 
 const routes: Routes = [
@@ -38,6 +40,8 @@ const routes: Routes = [
   { path: 'user/:userId/spaceship/:spaceshipId/planet/:planetId/fly', component: FlyToPlanetComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/:planetId', component: PlanetOverviewComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/coordinatesystem', component: CoordinateSystemViewComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/tradeoffers', component: OffersOverviewComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/tradeoffers/create', component: CreateOfferComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

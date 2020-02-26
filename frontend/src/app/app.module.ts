@@ -10,12 +10,13 @@ import { PlanetModule } from './features/planet/planet.module';
 import { GalaxyModule } from './features/galaxy/galaxy.module';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { TradeOffersModule } from './features/trade-offers/trade-offers.module';
 registerLocaleData(localeDe);
 
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +26,7 @@ registerLocaleData(localeDe);
     SpaceshipModule,
     PlanetModule,
     GalaxyModule,
+    TradeOffersModule,
     SharedModule,
   ],
   providers: [],
