@@ -12,16 +12,20 @@ export class TradeOfferService {
 
   constructor(private http: HttpClient) { }
 
-  public showTradeOffers(): Observable<TradeOffer[]>{
-    return this.http.get<TradeOffer[]>(baseUrl);
+  public showActiveTradeOffers(): Observable<TradeOffer[]>{
+    return this.http.get<TradeOffer[]>(baseUrl + "/active");
+  }
+
+  public showAcceptedTradeOffers(): Observable<TradeOffer[]>{
+    return this.http.get<TradeOffer[]>(baseUrl + "/accepted");
   }
 
   public showTradeOffer(id: number): Observable<TradeOffer>{
     return this.http.get<TradeOffer>(baseUrl + "/" + id);
   }
 
-  public showTradeOffersOfUser(userId: number): Observable<TradeOffer>{
-    return this.http.get<TradeOffer>(baseUrl + "/" + userId);
+  public showTradeOffersOfUser(userId: number): Observable<TradeOffer[]>{
+    return this.http.get<TradeOffer[]>(baseUrl + "/user/" + userId);
   }
 
   public createTradeOffer(tradeOffer: TradeOffer): Observable<TradeOffer>{

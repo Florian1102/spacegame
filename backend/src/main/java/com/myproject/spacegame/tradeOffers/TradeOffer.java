@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myproject.spacegame.user.User;
 
 import lombok.Getter;
@@ -38,12 +38,12 @@ public class TradeOffer {
 	
 	@ManyToOne
 	@JoinColumn(name = "tradeOfferOfUser_id", nullable = false)
-	@JsonBackReference(value = "tradeOffersOfUser")
+	@JsonManagedReference(value = "tradeOffersOfUser")
 	private User tradeOfferOfUser;
 	
 	@ManyToOne
 	@JoinColumn(name = "acceptedByUser_id")
-	@JsonBackReference(value = "tradeOfferAcceptedByUser")
+	@JsonManagedReference(value = "tradeOfferAcceptedByUser")
 	private User acceptedByUser;
 	
 	@NotNull

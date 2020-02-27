@@ -30,11 +30,18 @@ public class TradeOfferController {
 	private final TradeOfferRepository tradeOfferRepository;
 	private final UserRepository userRepository;
 	
-	@GetMapping()
+	@GetMapping("/active")
 	@ResponseStatus(HttpStatus.OK)
-	public List<TradeOffer> showTradeOffers() {
+	public List<TradeOffer> showActiveTradeOffers() {
 
-		return tradeOfferRepository.findAll();
+		return tradeOfferRepository.findAllByOfferActiveTrue();
+	}
+	
+	@GetMapping("/accepted")
+	@ResponseStatus(HttpStatus.OK)
+	public List<TradeOffer> showAcceptedTradeOffers() {
+		
+		return tradeOfferRepository.findAllByOfferActiveFalse();
 	}
 
 	@GetMapping("/{id}")
@@ -50,7 +57,7 @@ public class TradeOfferController {
 		if (userId == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
-			List<TradeOffer> tradeOffers = tradeOfferRepository.findAllByTradeOfferOfUserId(userId);
+			List<TradeOffer> tradeOffers = tradeOfferRepository.findAllByTradeOfferOfUserIdOrAcceptedByUserId(userId, userId);
 			return new ResponseEntity<>(tradeOffers, HttpStatus.OK);
 		}
 	}

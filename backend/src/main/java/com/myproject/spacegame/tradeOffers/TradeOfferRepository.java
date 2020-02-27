@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TradeOfferRepository extends JpaRepository<TradeOffer, Long>  {
 
-	List<TradeOffer> findAllByTradeOfferOfUserId(Long userId);
+	List<TradeOffer> findAllByTradeOfferOfUserIdOrAcceptedByUserId(Long userId, Long userIdTwo);
+	List<TradeOffer> findAllByOfferActiveTrue();
+	List<TradeOffer> findAllByOfferActiveFalse();
 }
