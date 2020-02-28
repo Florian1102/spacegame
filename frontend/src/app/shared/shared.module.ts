@@ -13,7 +13,8 @@ import { RounddownPipe } from './pipes/rounddown.pipe';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    
   ],
   exports: [
     CommonModule,
@@ -22,7 +23,8 @@ import { RounddownPipe } from './pipes/rounddown.pipe';
     ReactiveFormsModule,
     AdvertisementComponent,
     RouterModule,
-    RounddownPipe
+    RounddownPipe,
+    
   ]
 })
 export class SharedModule { }

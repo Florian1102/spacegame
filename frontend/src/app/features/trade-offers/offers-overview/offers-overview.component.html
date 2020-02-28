@@ -9,19 +9,20 @@
         <th>Suche/Biete</th>
         <th>Rohstoffe</th>
         <th>Kurs</th>
-        <th>Von</th>
         <th>Kommentar</th>
+        <th>Von</th>
         <th>Angenommen von</th>
     </tr>
     <tr *ngFor="let tradeOffer of tradeOffers">
-        <td *ngIf="tradeOffer.search">Suche</td>
-        <td *ngIf="tradeOffer.offer">Biete</td>
-        <td>Metall: {{tradeOffer.metal}}<br>Kristall: {{tradeOffer.crystal}}<br>Wasserstoff: {{tradeOffer.hydrogen}}</td>
-        <td>{{tradeOffer.course}}</td>
-        <td>{{tradeOffer.tradeOfferOfUser.name}}</td>
-        <td>{{tradeOffer.comment}}</td>
+        <td *ngIf="tradeOffer?.search">Suche</td>
+        <td *ngIf="tradeOffer?.offer">Biete</td>
+        <td>Metall: {{tradeOffer?.metal}}<br>Kristall: {{tradeOffer?.crystal}}<br>Wasserstoff: {{tradeOffer?.hydrogen}}</td>
+        <td>{{tradeOffer?.course}}</td>
+        <td>{{tradeOffer?.comment}}</td>
+        <td>{{tradeOffer?.tradeOfferOfUser?.name}}</td>
         <td *ngIf="tradeOffer.offerActive&&tradeOffer.tradeOfferOfUser.id !== userId"><button (click)="acceptTradeOfffer(tradeOffer.id)">Annehmen</button></td>
-        <td *ngIf="!tradeOffer.offerActive">{{tradeOffer.acceptedByUser?.name}}</td>
+        <td *ngIf="tradeOffer.offerActive&&tradeOffer.tradeOfferOfUser.id === userId">Offen</td>
+        <td *ngIf="tradeOffer?.acceptedByUser">{{tradeOffer?.acceptedByUser?.name}}</td>
     </tr>
 </table>
 <a [routerLink]="'/user/' + userId + '/tradeoffers/create'">Angebot erstellen</a>

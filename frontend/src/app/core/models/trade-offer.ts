@@ -2,13 +2,13 @@ import { User } from './user.model';
 
 export interface TradeOffer {
 
-    id: number;
+    id?: number;
     metal: number;
     crystal: number;
     hydrogen: number;
-    comment: string;
+    comment?: string;
     tradeOfferOfUser: User;
-    acceptedByUser: User;
+    acceptedByUser?: User;
     offerActive: boolean;
     search: boolean;
     offer: boolean;

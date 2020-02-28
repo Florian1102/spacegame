@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.myproject.spacegame.tradeOffers.TradeOffer;
 import com.myproject.spacegame.user.planet.Planet;
@@ -61,11 +62,13 @@ public class User {
 	private List<Planet> planets;
 	
 	@OneToMany(mappedBy = "tradeOfferOfUser")
-	@JsonBackReference(value = "tradeOffersOfUser")
+//	@JsonBackReference(value = "tradeOffersOfUser")
+	@JsonIgnore
 	private List<TradeOffer> tradeOffersOfUser;
 
 	@OneToMany(mappedBy = "acceptedByUser")
-	@JsonBackReference(value = "tradeOfferAcceptedByUser")
+//	@JsonBackReference(value = "tradeOfferAcceptedByUser")
+	@JsonIgnore
 	private List<TradeOffer> tradeOfferAcceptedByUser;
 	
 	@NotNull

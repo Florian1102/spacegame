@@ -1,3 +1,27 @@
 <h1>Angebot einstellen</h1>
 
+<form [formGroup]="form" (ngSubmit)="createTradeOffer()">
+
+    <select formControlName="searchOrOffer">
+        <option value='' disabled selected>Suche/Biete</option>
+        <option value='search'>Suche</option>
+        <option value='offer'>Biete</option>
+    </select>
+    <input formControlName="metal" type="number" placeholder="Metall" />
+    <input formControlName="crystal" type="number" placeholder="Kristall" />
+    <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" />
+    <input formControlName="course" type="text" placeholder="Kurs z.B. 3-2-1" />
+    <input formControlName="comment" type="number" placeholder="Kommentar" />
+    <div *ngIf="form.controls.metal.invalid && (form.controls.metal.touched || form.controls.metal.dirty) ||
+                form.controls.crystal.invalid && (form.controls.crystal.touched || form.controls.crystal.dirty) ||
+                form.controls.hydrogen.invalid && (form.controls.hydrogen.touched || form.controls.hydrogen.dirty) ||
+                form.controls.course.invalid && (form.controls.course.touched || form.controls.course.dirty) ||
+                form.controls.searchOrOffer.invalid && (form.controls.searchOrOffer.touched || form.controls.searchOrOffer.dirty)">
+        Bitte alle mit Stern gekennzeichneten Felder ausfüllen
+    </div>
+
+    <button type="submit">Speichern</button>
+</form>
+
+<div *ngIf="message">{{message}}</div>
 <a [routerLink]="'/user/' + userId + '/tradeoffers'">Zurück zur Übersicht</a>
