@@ -38,4 +38,12 @@ export class OffersOverviewComponent implements OnInit {
     this.tradeOfferService.acceptTradeOffer(id, this.userId).subscribe(()=> this.findActiveTradeOffers());
   }
 
+  declineTradeOfffer(id: number){
+    this.tradeOfferService.declineTradeOffer(id, this.userId).subscribe(()=> this.findTradeOffersOfUser());
+  }
+
+  deleteTradeOffer(id: number){
+    this.tradeOfferService.deleteTradeOffer(id, this.userId).subscribe(()=> this.findTradeOffersOfUser());
+  }
+
 }

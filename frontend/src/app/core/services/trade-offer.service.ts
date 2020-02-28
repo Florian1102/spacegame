@@ -36,8 +36,8 @@ export class TradeOfferService {
     return this.http.put<TradeOffer>(baseUrl + "/" + id, tradeOffer);
   }
   
-  public deleteTradeOffer(id: number): Observable<void>{
-    return this.http.delete<void>(baseUrl + "/" + id);
+  public deleteTradeOffer(id: number, userId: number): Observable<void>{
+    return this.http.delete<void>(baseUrl + "/" + id + "/" + userId);
   }
 
   public acceptTradeOffer(id: number, userId: number): Observable<TradeOffer>{

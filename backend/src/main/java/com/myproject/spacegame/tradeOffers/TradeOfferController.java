@@ -82,11 +82,17 @@ public class TradeOfferController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	@DeleteMapping("/{id}/{userId}")
+	public ResponseEntity<?> delete(@PathVariable Long id, @PathVariable Long userId) {
 
 		if (!tradeOfferRepository.existsById(id)) {
 			return new ResponseEntity<>("Das Angebot existiert nicht", HttpStatus.NOT_FOUND);
+		} else if (!userRepository.existsById(userId)) {
+			return new ResponseEntity<>("Der User existiert nicht", HttpStatus.NOT_FOUND);
+		} 
+		TradeOffer tradeOffer = tradeOfferRepository.findById(id).get();
+		if (tradeOffer.getTradeOfferOfUser().getId() != userId) {
+			return new ResponseEntity<>("Das Angebot ist nicht von dir", HttpStatus.NOT_FOUND);
 		}
 		tradeOfferRepository.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

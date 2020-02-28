@@ -2,7 +2,7 @@
 
 <button (click)="findActiveTradeOffers()">Offene Angebote</button>
 <button (click)="findAcceptedTradeOffers()">Vergangene Angebote</button>
-<button (click)="findTradeOffersOfUser()">Meine erstellten Angebote</button>
+<button (click)="findTradeOffersOfUser()">Meine Angebote</button>
 
 <table>
     <tr>
@@ -21,7 +21,7 @@
         <td>{{tradeOffer?.comment}}</td>
         <td>{{tradeOffer?.tradeOfferOfUser?.name}}</td>
         <td *ngIf="tradeOffer.offerActive&&tradeOffer.tradeOfferOfUser.id !== userId"><button (click)="acceptTradeOfffer(tradeOffer.id)">Annehmen</button></td>
-        <td *ngIf="tradeOffer.offerActive&&tradeOffer.tradeOfferOfUser.id === userId">Offen</td>
+        <td *ngIf="tradeOffer.offerActive&&tradeOffer.tradeOfferOfUser.id === userId">Offen <button (click)="deleteTradeOffer(tradeOffer.id)">Löschen</button></td>
         <td *ngIf="tradeOffer?.acceptedByUser">{{tradeOffer?.acceptedByUser?.name}}</td>
     </tr>
 </table>

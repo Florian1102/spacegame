@@ -10,8 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.myproject.spacegame.user.User;
 
@@ -42,12 +40,10 @@ public class TradeOffer {
 	
 	@ManyToOne
 	@JoinColumn(name = "tradeOfferOfUser_id", nullable = false)
-//	@JsonManagedReference(value = "userToPlanetReference")
 	private User tradeOfferOfUser;
 	
 	@ManyToOne
 	@JoinColumn(name = "acceptedByUser_id")
-//	@JsonManagedReference(value = "tradeOfferAcceptedByUser")
 	private User acceptedByUser;
 	
 	@NotNull
