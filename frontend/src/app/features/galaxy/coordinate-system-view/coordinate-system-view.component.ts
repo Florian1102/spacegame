@@ -36,6 +36,8 @@ export class CoordinateSystemViewComponent implements OnInit {
     this.coordinateSystemService.showCoordinateSystem(galaxy, system).subscribe(foundCoordinateSystem => {
       this.coordinateSystem = foundCoordinateSystem;
       this.sortByPositionAsc();
+    },
+    error => { alert(error.error) 
     });
   }
 
