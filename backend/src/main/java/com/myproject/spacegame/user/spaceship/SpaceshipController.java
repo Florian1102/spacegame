@@ -255,6 +255,8 @@ public class SpaceshipController {
 			Planet planetFound = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position).getPlanet();
 			if (spaceshipFound.getFlightDuration() > 0) {
 				return new ResponseEntity<>("Das Raumschiff fliegt bereits", HttpStatus.BAD_REQUEST);
+			} else if (!resourceHandler.proofSpaceshipRessourcesEnough(spaceshipFound, metal, crystal, hydrogen, 0L)){ 
+				return new ResponseEntity<>("Du hast nicht so viele Ressourcen auf dem Raumschiff", HttpStatus.BAD_REQUEST);
 			} else {
 				double hydrogenConsumptionForTheFlight = spaceshipHandler.calculateHydrogenConsumption(spaceshipFound, planetFound.getCoordinates());
 				if (hydrogenConsumptionForTheFlight > spaceshipFound.getHydrogen()) {

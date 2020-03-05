@@ -10,6 +10,10 @@
     <p>Es befindet sich noch etwas im Ausbau. Verbleibende Zeit: {{spaceship?.remainingBuildingDuration}}</p>
 </div>
 
+<div *ngIf="errors">
+    <p>{{errors}}</p>
+</div>
+
 <div>
     <h2>Raumschiff - Aktuelles Level {{spaceship?.spaceshipLvl}}</h2>
     <p>Benötigte Ressourcen: Metall: {{buildingStatsOfSpaceship?.necessaryMetal | number: '1.0-0':'de-DE'}} Kristall:

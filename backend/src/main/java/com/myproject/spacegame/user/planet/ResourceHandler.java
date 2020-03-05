@@ -53,7 +53,7 @@ public class ResourceHandler {
 		}
 	}
 
-	private boolean proofSpaceshipRessourcesEnough(Spaceship spaceship, Long necessaryMetal, Long necessaryCrystal,
+	public boolean proofSpaceshipRessourcesEnough(Spaceship spaceship, Long necessaryMetal, Long necessaryCrystal,
 			Long necessaryHydrogen, Long necessaryEnergy) throws Exception {
 		if (spaceship.getMetal() < necessaryMetal || spaceship.getCrystal() < necessaryCrystal
 				|| spaceship.getHydrogen() < necessaryHydrogen || spaceship.getEnergy() < necessaryEnergy) {

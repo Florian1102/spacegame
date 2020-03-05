@@ -90,6 +90,8 @@ export class FlyToPlanetComponent implements OnInit {
           crystal: [],
           hydrogen: []
         });
+      },
+      error => { alert(error.error) 
       })
     } else {
         alert("Eingabe ungültig");
@@ -134,6 +136,8 @@ export class FlyToPlanetComponent implements OnInit {
           system: [''],
           position: [''],
         });
+     },
+     error => { alert(error.error) 
      })
     } else {
          alert("Eingabe ungültig");

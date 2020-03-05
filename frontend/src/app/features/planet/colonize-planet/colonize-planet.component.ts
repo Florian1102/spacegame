@@ -30,7 +30,10 @@ export class ColonizePlanetComponent implements OnInit {
   }
 
   colonize(){
-    this.planetService.addPlanet(this.userId, this.form.value.galaxy, this.form.value.system, this.form.value.position).subscribe(() => this.authService.updateUser(this.userId))
+    this.planetService.addPlanet(this.userId, this.form.value.galaxy, this.form.value.system, this.form.value.position).subscribe(() => 
+    this.authService.updateUser(this.userId),
+     error => { alert(error.error) 
+     })
   }
 
 }

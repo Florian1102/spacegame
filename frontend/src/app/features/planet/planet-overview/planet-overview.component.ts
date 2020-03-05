@@ -55,7 +55,8 @@ export class PlanetOverviewComponent implements OnInit {
     this.planetService.levelUpPlanetBuilding(this.planetId, nameOfBuilding).subscribe(() => {
       this.findPlanet();
       this.authService.updateUser(this.userId);
-
+    },
+    error => { alert(error.error) 
     })
   }
   // @coach: Hast du hier einen Tipp, sodass man nicht immer so viele Abfragen auf einmal machen muss?

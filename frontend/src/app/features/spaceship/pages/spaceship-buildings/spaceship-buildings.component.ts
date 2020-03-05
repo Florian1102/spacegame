@@ -19,7 +19,6 @@ export class SpaceshipBuildingsComponent implements OnInit {
   buildingStatsOfSpaceship: Buildingstats;
   buildingStatsOfResearchLaboratory: Buildingstats;
 
-
   constructor(private route: ActivatedRoute, 
               private authService: AuthService, 
               private spaceshipService: SpaceshipService,
@@ -53,7 +52,10 @@ export class SpaceshipBuildingsComponent implements OnInit {
     } else {
       this.spaceshipService.levelUpSpaceshipBuilding(this.spaceship.id, nameOfBuilding).subscribe(() => {
         this.findSpaceship();
-        this.authService.updateUser(this.userId)})
+        this.authService.updateUser(this.userId)
+      },
+      error => { alert(error.error) 
+      })
     }
   }
 

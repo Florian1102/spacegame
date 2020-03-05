@@ -92,7 +92,7 @@ public class TradeOfferController {
 		} 
 		TradeOffer tradeOffer = tradeOfferRepository.findById(id).get();
 		if (tradeOffer.getTradeOfferOfUser().getId() != userId) {
-			return new ResponseEntity<>("Das Angebot ist nicht von dir", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Das Angebot ist nicht von dirp", HttpStatus.NOT_FOUND);
 		}
 		tradeOfferRepository.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
