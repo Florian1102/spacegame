@@ -14,3 +14,10 @@
     <h1>Energie</h1>
     <h2>{{spaceship?.energy | number: '1.0-0':'de-DE'}}</h2>
 </div>
+<div>
+    <h1>Position</h1>
+    <h2 *ngIf="!spaceship?.currentPosition">Verbleibende Flugdauer: {{spaceship?.flightDuration}} Sekunden</h2>
+    <h2 *ngIf="spaceship?.currentPosition">
+        {{spaceship?.currentPosition?.galaxy}}:{{spaceship?.currentPosition?.system}}:{{spaceship?.currentPosition?.position}}
+    </h2>
+</div>

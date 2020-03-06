@@ -33,6 +33,8 @@ export class SpecializationComponent implements OnInit {
     this.spaceshipService.changeToFighterOrMerchant(this.spaceshipId, merchantOrFighter).subscribe(() => {
       this.findSpaceship();
       this.authService.updateUser(this.userId);
+    },
+    error => { alert(error.error) 
     })
   }
 

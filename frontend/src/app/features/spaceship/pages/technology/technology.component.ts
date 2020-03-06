@@ -64,7 +64,9 @@ export class TechnologyComponent implements OnInit {
       this.technologyService.researchTechnology(this.technologyId, nameOfResearch).subscribe(() => {
         this.findTechnology();
         this.findSpaceship(); 
-        this.authService.updateUser(this.userId)})
+        this.authService.updateUser(this.userId)},
+        error => { alert(error.error) 
+        })
     }
   }
 

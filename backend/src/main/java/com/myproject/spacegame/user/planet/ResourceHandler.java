@@ -73,7 +73,7 @@ public class ResourceHandler {
 			} else {
 				double deltaMetal = (metal > (spaceshipFound.getMetalStore() - spaceshipFound.getMetal())) ? (spaceshipFound.getMetalStore() - spaceshipFound.getMetal()) : metal;
 				double deltaCrystal = (crystal > (spaceshipFound.getCrystalStore() - spaceshipFound.getCrystal())) ? (spaceshipFound.getCrystalStore() - spaceshipFound.getCrystal()) : crystal;
-				double deltaHydrogen = (metal > (spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen())) ? (spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen()) : hydrogen;
+				double deltaHydrogen = (hydrogen > (spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen())) ? (spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen()) : hydrogen;
 				
 				spaceshipFound.setMetal(spaceshipFound.getMetal() + deltaMetal);
 				spaceshipFound.setCrystal(spaceshipFound.getCrystal() + deltaCrystal);
