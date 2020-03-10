@@ -1,5 +1,7 @@
 package com.myproject.spacegame.user.planet;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -112,7 +114,6 @@ public class Planet {
 	@NotNull
 	@Column(nullable = false)
 	private int commandCentralLvl;
-	// TODO weiteres Gebäude um schneller bauen zu können
 
 	@NotNull
 	@Column(nullable = false)
@@ -121,9 +122,14 @@ public class Planet {
 	@Column(nullable = false)
 	private int defenseTower;
 	
+	@Column
+	private LocalDateTime endOfBuilding = null;
+	@Column
+	private String nameOfBuilding = null;
 	@NotNull
-	@Column(nullable = false)
-	private Long remainingBuildingDuration;
+	@Column
+	private int currentLvlOfBuilding = 0;
+	
 	@NotNull
 	@Column(nullable = false)
 	private double reduceBuildingDuration;
@@ -151,12 +157,5 @@ public class Planet {
 		this.solarSatellite += 1;
 		this.energy = (foundPlanet.getEnergy() + (statsOfSolarSatellite.getProductionEnergy() * foundPlanet.getUser().getTechnology().getEnergyResearchFactor()));
 	}
-	public void setRemainingBuildingDuration(Long buildingOrResearchDuration) {
-		this.remainingBuildingDuration = (long) (buildingOrResearchDuration * this.reduceBuildingDuration);
-	}
-//	public void setResearchDuration(Long buildingOrResearchDuration) {
-//		this.buildingOrResearchDuration = (long) (buildingOrResearchDuration * this.reduceResearchDuration);
-//	}
-	
 	
 }

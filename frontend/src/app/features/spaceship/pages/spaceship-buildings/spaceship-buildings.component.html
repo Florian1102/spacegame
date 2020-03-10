@@ -23,7 +23,8 @@
     <p>Dauer:
         {{buildingStatsOfSpaceship?.buildingOrResearchDuration * spaceship?.reduceBuildingDuration | rounddown | number: '1.0-0':'de-DE'}}
     </p>
-    <button *ngIf="spaceship?.remainingBuildingDuration == 0" (click)="increaseLvl('spaceship')">Ausbauen</button>
+    <button *ngIf="spaceship?.endOfBuilding == null" (click)="increaseLvl('spaceship')">Ausbauen</button>
+    <app-timer *ngIf="spaceship?.nameOfBuilding === 'spaceship'" [necessaryTime]="spaceship?.endOfBuilding"></app-timer>
 </div>
 <div>
     <h2>Forschungslabor - Aktuelles Level {{spaceship?.researchLaboratoryLvl}}</h2>
@@ -31,9 +32,9 @@
         Kristall: {{buildingStatsOfResearchLaboratory?.necessaryCrystal | number: '1.0-0':'de-DE'}} Wasserstoff:
         {{buildingStatsOfResearchLaboratory?.necessaryHydrogen | number: '1.0-0':'de-DE'}} Energie:
         {{buildingStatsOfResearchLaboratory?.necessaryEnergy | number: '1.0-0':'de-DE'}}</p>
-    <p>Dauer:
-        {{buildingStatsOfResearchLaboratory?.buildingOrResearchDuration * spaceship?.reduceBuildingDuration | rounddown | number: '1.0-0':'de-DE'}}
-    </p>
-    <button *ngIf="spaceship?.remainingBuildingDuration == 0"
-        (click)="increaseLvl('researchlaboratory')">Ausbauen</button>
+        <p>Dauer:
+            {{buildingStatsOfResearchLaboratory?.buildingOrResearchDuration * spaceship?.reduceBuildingDuration | rounddown | number: '1.0-0':'de-DE'}}
+        </p>
+        <button *ngIf="spaceship?.endOfBuilding == null" (click)="increaseLvl('researchlaboratory')">Ausbauen</button>
+        <app-timer *ngIf="spaceship?.nameOfBuilding === 'researchlaboratory'" [necessaryTime]="spaceship?.endOfBuilding"></app-timer>
 </div>

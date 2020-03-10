@@ -58,7 +58,7 @@ export class TechnologyComponent implements OnInit {
   }
 
   increaseLvl(nameOfResearch: string){
-    if (this.spaceship.remainingResearchDuration > 0) {
+    if (this.spaceship.endOfBuilding != null) {
       alert("Es wird bereits etwas erforscht");
     } else {
       this.technologyService.researchTechnology(this.technologyId, nameOfResearch).subscribe(() => {

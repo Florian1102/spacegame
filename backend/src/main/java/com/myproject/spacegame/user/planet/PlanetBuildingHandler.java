@@ -1,13 +1,5 @@
 package com.myproject.spacegame.user.planet;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.buildingStats.BuildingStats;
@@ -24,7 +16,7 @@ public class PlanetBuildingHandler {
 	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
 
 	public boolean proofBuildPossible(Planet planet) throws Exception {
-		if (planet.getRemainingBuildingDuration() > 0) {
+		if (planet.getEndOfBuilding() != null) {
 			throw new Exception("Es wird schon etwas gebaut");
 		} else if (planet.getRemainingFields() < 1) {
 			throw new Exception("Du hast keinen Platz mehr auf dem Planeten");
@@ -55,23 +47,6 @@ public class PlanetBuildingHandler {
 		} else {
 			throw new Exception("Es liegen keine Informationen über das aktuelle Level des Gebäudes vor");
 		}
-	}
-
-	public void prepareBuild(Planet planetWithUpdatedRessources, BuildingStats statsOfBuildingNextLvl)
-			throws Exception {
-
-		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-
-		@SuppressWarnings("unused")
-		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
-			public Object call() throws Exception {
-				Planet planetWithFinishedBuilding = build(planetWithUpdatedRessources.getId(), statsOfBuildingNextLvl);
-
-				return new ResponseEntity<>(planetWithFinishedBuilding, HttpStatus.OK);
-			}
-		}, planetWithUpdatedRessources.getRemainingBuildingDuration(), TimeUnit.SECONDS);
-
-		executorService.shutdown();
 	}
 
 	public Planet build(Long id, BuildingStats statsOfBuildingNextLvl) throws Exception {
@@ -127,7 +102,9 @@ public class PlanetBuildingHandler {
 		} else {
 			throw new Exception("Das erhöhen des Gebäudelevels ist fehlgeschlagen");
 		}
-		foundPlanet.setRemainingBuildingDuration(0L);
+		foundPlanet.setNameOfBuilding(null);
+		foundPlanet.setCurrentLvlOfBuilding(0);
+		foundPlanet.setEndOfBuilding(null);
 		return foundPlanet;
 	}
 }

@@ -1,5 +1,7 @@
 package com.myproject.spacegame.user.spaceship;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -98,14 +100,14 @@ public class Spaceship {
 	@Column(nullable = false)
 	private int researchLaboratoryLvl = 0;
 	
+	@Column
+	private LocalDateTime endOfBuilding = null;
+	@Column
+	private String nameOfBuilding = null;
 	@NotNull
-	@Column(nullable = false)
-	private Long remainingBuildingDuration = 0L;
+	@Column
+	private int currentLvlOfBuilding = 0;
 	
-	@NotNull
-	@Column(nullable = false)
-	private Long remainingResearchDuration = 0L;
-
 	@NotNull
 	@Column(nullable = false)
 	private double hydrogenConsumption = 10;
@@ -129,10 +131,4 @@ public class Spaceship {
 	@Column(nullable = false)
 	private Long flightDuration = 0L;
 	
-	public void setRemainingBuildingDuration(Long buildingOrResearchDuration) {
-		this.remainingBuildingDuration = (long) (buildingOrResearchDuration * this.reduceBuildingDuration);
-	}
-	public void setRemainingResearchDuration(Long buildingOrResearchDuration) {
-		this.remainingResearchDuration = (long) (buildingOrResearchDuration * this.reduceResearchDuration);
-	}
 }

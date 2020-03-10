@@ -1,5 +1,6 @@
 package com.myproject.spacegame.user.spaceship;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -115,11 +116,12 @@ public class SpaceshipController {
 						spaceshipFound, statsOfBuildingNextLvl.getNecessaryMetal(),
 						statsOfBuildingNextLvl.getNecessaryCrystal(), statsOfBuildingNextLvl.getNecessaryHydrogen(),
 						statsOfBuildingNextLvl.getNecessaryEnergy());
-				spaceshipWithUpdatedRessources
-						.setRemainingBuildingDuration(statsOfBuildingNextLvl.getBuildingOrResearchDuration());
+				spaceshipWithUpdatedRessources.setNameOfBuilding(nameOfBuilding);
+				spaceshipWithUpdatedRessources.setCurrentLvlOfBuilding(currentLvlOfSpecificBuilding);
+				LocalDateTime date = LocalDateTime.now();
+				spaceshipWithUpdatedRessources.setEndOfBuilding(date.plusSeconds((long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()*spaceshipWithUpdatedRessources.getReduceBuildingDuration())));
 				spaceshipRepository.save(spaceshipWithUpdatedRessources);
 
-				spaceshipBuildingHandler.prepareBuild(spaceshipWithUpdatedRessources, statsOfBuildingNextLvl);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 		} catch (Exception e) {

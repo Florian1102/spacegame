@@ -1,5 +1,6 @@
 package com.myproject.spacegame.user.planet;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -133,23 +134,10 @@ public class PlanetController {
 		planet.setMetalStorehouse(5000);
 		planet.setCrystalStorehouse(5000);
 		planet.setHydrogenTank(1000);
-		planet.setRemainingBuildingDuration(0L);
 		planet.setReduceBuildingDuration(1.0);
 		return planet;
 	}
 
-//	@PutMapping("/planets/{id}")
-//	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid Planet planet) {
-//
-//		if (!planetRepository.existsById(id)) {
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//
-//		planet.setId(id);
-//		planetRepository.save(planet);
-//		return new ResponseEntity<>(HttpStatus.OK);
-//	}
-	
 	@PutMapping("/planets/{planetId}/rename")
 	public ResponseEntity<?> renamePlanet(@PathVariable Long planetId, @RequestBody String name) {
 		
@@ -181,10 +169,11 @@ public class PlanetController {
 				Planet planetWithUpdatedRessources = resourceHandler.calculateNewPlanetRessources(planetFound,
 						statsOfBuildingNextLvl.getNecessaryMetal(), statsOfBuildingNextLvl.getNecessaryCrystal(),
 						statsOfBuildingNextLvl.getNecessaryHydrogen());
-
-				planetWithUpdatedRessources.setRemainingBuildingDuration(statsOfBuildingNextLvl.getBuildingOrResearchDuration());
+				planetWithUpdatedRessources.setNameOfBuilding(nameOfBuilding);
+				planetWithUpdatedRessources.setCurrentLvlOfBuilding(currentLvlOfSpecificBuilding);
+				LocalDateTime date = LocalDateTime.now();
+				planetWithUpdatedRessources.setEndOfBuilding(date.plusSeconds((long) (statsOfBuildingNextLvl.getBuildingOrResearchDuration()* planetWithUpdatedRessources.getReduceBuildingDuration())));
 				planetRepository.save(planetWithUpdatedRessources);
-				planetBuildingHandler.prepareBuild(planetWithUpdatedRessources, statsOfBuildingNextLvl);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 		} catch (Exception e) {

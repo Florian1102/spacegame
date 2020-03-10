@@ -1,5 +1,6 @@
 package com.myproject.spacegame.user.technology;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class TechnologyController {
 		}
 		Spaceship spaceshipOfPlayer = technologyFound.getUser().getSpaceship();
 		try {
-			if (!technologyResearchHandler.proofBuildPossible(spaceshipOfPlayer)) {
+			if (!technologyResearchHandler.proofBuildPossible(technologyFound, spaceshipOfPlayer)) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
 				int currentLvlOfSpecificTechnology = technologyResearchHandler.getCurrentLvlOfSpecificTechnology(technologyFound,
@@ -65,11 +66,11 @@ public class TechnologyController {
 						statsOfTechnologyNextLvl.getNecessaryMetal(), statsOfTechnologyNextLvl.getNecessaryCrystal(),
 						statsOfTechnologyNextLvl.getNecessaryHydrogen(), statsOfTechnologyNextLvl.getNecessaryEnergy());
 				
-				spaceshipWithUpdatedRessources.setRemainingResearchDuration(statsOfTechnologyNextLvl.getBuildingOrResearchDuration());
+				technologyFound.setNameOfResearch(technologyName);
+				technologyFound.setCurrentLvlOfResearch(currentLvlOfSpecificTechnology);
+				LocalDateTime date = LocalDateTime.now();
+				technologyFound.setEndOfResearch(date.plusSeconds((long) (statsOfTechnologyNextLvl.getBuildingOrResearchDuration()*spaceshipWithUpdatedRessources.getReduceResearchDuration())));				spaceshipRepository.save(spaceshipWithUpdatedRessources);
 
-				spaceshipRepository.save(spaceshipWithUpdatedRessources);
-
-				technologyResearchHandler.prepareBuild(spaceshipWithUpdatedRessources, technologyFound, statsOfTechnologyNextLvl);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 		} catch (Exception e) {

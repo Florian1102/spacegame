@@ -1,9 +1,5 @@
 <h1>Technologie</h1>
 
-<div *ngIf="spaceship?.remainingResearchDuration > 0">
-    <p>Es wird noch etwas erforscht. Verbleibende Zeit: {{spaceship?.remainingResearchDuration}}</p>
-</div>
-
 <div>
     <h2>Energie-Forschung - Aktuelles Level {{technology?.energyResearchLvl}}</h2>
     <p>Benötigte Ressourcen: Metall: {{buildingStatsOfEnergyResearch?.necessaryMetal | number: '1.0-0':'de-DE'}} Kristall:
@@ -13,7 +9,8 @@
     <p>Dauer:
         {{buildingStatsOfEnergyResearch?.buildingOrResearchDuration * spaceship?.reduceResearchDuration | rounddown | number: '1.0-0':'de-DE'}}
     </p>
-    <button *ngIf="spaceship?.remainingResearchDuration == 0" (click)="increaseLvl('energyresearch')">Erforschen</button>
+    <button *ngIf="technology?.endOfResearch == null" (click)="increaseLvl('energyresearch')">Erforschen</button>
+    <app-timer *ngIf="technology?.nameOfResearch === 'energyresearch'" [necessaryTime]="technology?.endOfResearch"></app-timer>
 </div>
 
 <div>
@@ -22,8 +19,9 @@
         {{buildingStatsOfResourceResearch?.necessaryCrystal | number: '1.0-0':'de-DE'}} Wasserstoff:
         {{buildingStatsOfResourceResearch?.necessaryHydrogen | number: '1.0-0':'de-DE'}} Energie:
         {{buildingStatsOfResourceResearch?.necessaryEnergy | number: '1.0-0':'de-DE'}}</p>
-    <p>Dauer:
-        {{buildingStatsOfResourceResearch?.buildingOrResearchDuration * spaceship?.reduceResearchDuration | rounddown | number: '1.0-0':'de-DE'}}
-    </p>
-    <button *ngIf="spaceship?.remainingResearchDuration == 0" (click)="increaseLvl('resourceresearch')">Erforschen</button>
+        <p>Dauer:
+            {{buildingStatsOfResourceResearch?.buildingOrResearchDuration * spaceship?.reduceResearchDuration | rounddown | number: '1.0-0':'de-DE'}}
+        </p>
+        <button *ngIf="technology?.endOfResearch == null" (click)="increaseLvl('resourceresearch')">Erforschen</button>
+        <app-timer *ngIf="technology?.nameOfResearch === 'resourceresearch'" [necessaryTime]="technology?.endOfResearch"></app-timer>
 </div>

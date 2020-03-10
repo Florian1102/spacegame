@@ -47,7 +47,7 @@ export class SpaceshipBuildingsComponent implements OnInit {
   }
 
   increaseLvl(nameOfBuilding: string){
-    if (this.spaceship.remainingBuildingDuration > 0) {
+    if (this.spaceship.endOfBuilding != null) {
       alert("Es befindet sich noch etwas im Bau");
     } else {
       this.spaceshipService.levelUpSpaceshipBuilding(this.spaceship.id, nameOfBuilding).subscribe(() => {

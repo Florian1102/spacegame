@@ -1,13 +1,5 @@
 package com.myproject.spacegame.user.spaceship;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.buildingStats.BuildingStats;
@@ -25,7 +17,7 @@ public class SpaceshipBuildingHandler {
 	private final SpaceshipHandler spaceshipHandler;
 
 	public boolean proofBuildPossible(Spaceship spaceship) throws Exception {
-		if (spaceship.getRemainingBuildingDuration() > 0) {
+		if (spaceship.getEndOfBuilding() != null) {
 			throw new Exception("Es wird schon etwas gebaut");
 		} else {
 			return true;
@@ -44,23 +36,7 @@ public class SpaceshipBuildingHandler {
 		}
 	}
 
-	public void prepareBuild(Spaceship spaceshipWithUpdatedRessources, BuildingStats statsOfBuildingNextLvl)
-			throws Exception {
-
-		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-
-		@SuppressWarnings("unused")
-		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
-			public Object call() throws Exception {
-				Spaceship spacehipWithFinishedBuilding = build(spaceshipWithUpdatedRessources.getId(),
-						statsOfBuildingNextLvl);
-				return new ResponseEntity<>(spacehipWithFinishedBuilding, HttpStatus.OK);
-			}
-		}, spaceshipWithUpdatedRessources.getRemainingBuildingDuration(), TimeUnit.SECONDS);
-		executorService.shutdown();
-	}
-
-	private Spaceship build(Long id, BuildingStats statsOfBuildingNextLvl) throws Exception {
+	public Spaceship build(Long id, BuildingStats statsOfBuildingNextLvl) throws Exception {
 		if (!spaceshipRepository.existsById(id)) {
 			throw new Exception("Raumschiff existiert nicht");
 		}
@@ -92,7 +68,9 @@ public class SpaceshipBuildingHandler {
 		} else {
 			throw new Exception("Das erhöhen des Gebäudelevels ist fehlgeschlagen");
 		}
-		foundSpaceship.setRemainingBuildingDuration(0L);
+		foundSpaceship.setEndOfBuilding(null);
+		foundSpaceship.setNameOfBuilding(null);
+		foundSpaceship.setCurrentLvlOfBuilding(0);
 		return foundSpaceship;
 	}
 }

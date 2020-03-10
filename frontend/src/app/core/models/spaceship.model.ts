@@ -21,8 +21,8 @@ export interface Spaceship {
     crystalStore: number;
     hydrogenTank: number;
     researchLaboratoryLvl: number;
-    remainingBuildingDuration: number;
-    remainingResearchDuration: number;
+    // remainingBuildingDuration: number;
+    // remainingResearchDuration: number;
     hydrogenConsumption: number;
     reduceBuildingDuration: number;
     reduceResearchDuration: number;
@@ -30,5 +30,8 @@ export interface Spaceship {
     fighterSpaceship: boolean;
     counterOfChangedSpecialization: number;
     flightDuration: number;
+    endOfBuilding: Date;
+	nameOfBuilding: string;
+	currentLvlOfBuilding: number;
 
 }

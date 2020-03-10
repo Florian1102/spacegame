@@ -1,10 +1,14 @@
 package com.myproject.spacegame.user.technology;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.myproject.spacegame.buildingStats.BuildingStats;
@@ -32,6 +36,15 @@ public class Technology {
 	private int resourceResearchLvl = 0;
 	private double resourceResearchFactor = 1;
 	//TODO: Weitere Forschungen hinzufügen
+	
+	@Column
+	private LocalDateTime endOfResearch = null;
+	@Column
+	private String nameOfResearch = null;
+	@NotNull
+	@Column
+	private int currentLvlOfResearch = 0;
+	
 	public void setEnergyResearchLvl(BuildingStats statsOfEnergyReserach) {
 		this.energyResearchLvl = statsOfEnergyReserach.getLevel();
 		this.energyResearchFactor = statsOfEnergyReserach.getEnergyResearchFactor();

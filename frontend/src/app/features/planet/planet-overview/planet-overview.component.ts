@@ -26,11 +26,11 @@ export class PlanetOverviewComponent implements OnInit {
   buildingStatsOfHydrogenTank: Buildingstats;
   buildingStatsOfSolarsatellite: Buildingstats;
 
-  constructor(private route: ActivatedRoute, 
-              private router: Router, 
-              private planetService: PlanetService, 
-              private authService: AuthService,
-              private buildingstatsService: BuildingstatsService) { 
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private planetService: PlanetService,
+    private authService: AuthService,
+    private buildingstatsService: BuildingstatsService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
@@ -38,30 +38,34 @@ export class PlanetOverviewComponent implements OnInit {
     this.route.paramMap.subscribe(paramMap => {
       this.userId = +paramMap.get('userId')
       this.planetId = +paramMap.get('planetId')
-      
+
     });
     this.findPlanet();
 
   }
 
-  findPlanet(){
+  findPlanet() {
     this.planetService.findPlanetById(this.planetId).subscribe(foundPlanet => {
       this.planet = foundPlanet;
       this.getBuildingStats();
     });
   }
 
-  levelUpPlanetBuilding(nameOfBuilding: string){
-    this.planetService.levelUpPlanetBuilding(this.planetId, nameOfBuilding).subscribe(() => {
-      this.findPlanet();
-      this.authService.updateUser(this.userId);
-    },
-    error => { alert(error.error) 
-    })
+  levelUpPlanetBuilding(nameOfBuilding: string) {
+    if (this.planet.endOfBuilding != null) {
+      alert("Es befindet sich noch etwas im Bau");
+    } else {
+      this.planetService.levelUpPlanetBuilding(this.planetId, nameOfBuilding).subscribe(() => {
+        this.findPlanet();
+        this.authService.updateUser(this.userId);
+      },
+        error => {
+          alert(error.error)
+        })
+    }
   }
-  // @coach: Hast du hier einen Tipp, sodass man nicht immer so viele Abfragen auf einmal machen muss?
 
-  getBuildingStats(){
+  getBuildingStats() {
     this.buildingstatsService.findBuildingstats(this.planet.commandCentralLvl + 1, "commandcentral").subscribe(foundBuildingStats => this.buildingStatsOfCommandCentral = foundBuildingStats);
     this.buildingstatsService.findBuildingstats(this.planet.metalMineLvl + 1, "metalmine").subscribe(foundBuildingStats => this.buildingStatsOfMetalMine = foundBuildingStats);
     this.buildingstatsService.findBuildingstats(this.planet.crystalMineLvl + 1, "crystalmine").subscribe(foundBuildingStats => this.buildingStatsOfCrystalMine = foundBuildingStats);

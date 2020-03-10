@@ -5,10 +5,11 @@ import { ButtonComponent } from './components/button/button.component';
 import { AdvertisementComponent } from './components/advertisement/advertisement.component';
 import { RouterModule } from '@angular/router';
 import { RounddownPipe } from './pipes/rounddown.pipe';
+import { TimerComponent } from './components/timer/timer.component';
 
 
 @NgModule({
-  declarations: [ButtonComponent, AdvertisementComponent, RounddownPipe],
+  declarations: [ButtonComponent, AdvertisementComponent, RounddownPipe, TimerComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -24,7 +25,7 @@ import { RounddownPipe } from './pipes/rounddown.pipe';
     AdvertisementComponent,
     RouterModule,
     RounddownPipe,
-    
+    TimerComponent
   ]
 })
 export class SharedModule { }

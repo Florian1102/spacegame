@@ -1,13 +1,5 @@
 package com.myproject.spacegame.user.technology;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.buildingStats.BuildingStats;
@@ -26,8 +18,8 @@ public class TechnologyResearchHandler {
 	private final SpaceshipRepository spaceshipRepository;
 	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
 
-	public boolean proofBuildPossible(Spaceship spaceship) throws Exception {
-		if (spaceship.getRemainingResearchDuration() > 0) {
+	public boolean proofBuildPossible(Technology technology, Spaceship spaceship) throws Exception {
+		if (technology.getEndOfResearch() != null) {
 			throw new Exception("Es wird schon etwas erforscht");
 		} else {
 			// TODO: Hier müssen weitere Einschränkungen eingefügt werden. Manche
@@ -48,24 +40,7 @@ public class TechnologyResearchHandler {
 		}
 	}
 
-	public void prepareBuild(Spaceship spaceshipWithUpdatedRessources, Technology technologyFound,
-			BuildingStats statsOfTechnologyNextLvl) throws Exception {
-
-		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-
-		@SuppressWarnings("unused")
-		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
-			public Object call() throws Exception {
-				Technology researchFinished = build(spaceshipWithUpdatedRessources.getId(), technologyFound.getId(),
-						statsOfTechnologyNextLvl);
-
-				return new ResponseEntity<>(researchFinished, HttpStatus.OK);
-			}
-		}, spaceshipWithUpdatedRessources.getRemainingResearchDuration(), TimeUnit.SECONDS);
-		executorService.shutdown();
-	}
-
-	private Technology build(Long spaceshipId, Long technologyId, BuildingStats statsOfTechnologyNextLvl)
+	public Technology build(Long spaceshipId, Long technologyId, BuildingStats statsOfTechnologyNextLvl)
 			throws Exception {
 		if (!spaceshipRepository.existsById(spaceshipId)) {
 			throw new Exception("Raumschiff existiert nicht");
@@ -75,7 +50,6 @@ public class TechnologyResearchHandler {
 		}
 
 		Spaceship foundSpaceship = spaceshipRepository.findById(spaceshipId).get();
-		foundSpaceship.setRemainingResearchDuration(0L);
 //		spaceshipHandler.calculateAndSaveSpaceshipStats(foundSpaceship);
 		// TODO Auswirkungen von erhöhter Forschung auf Raumschiff und Planeten hier einfügen
 		spaceshipRepository.save(foundSpaceship);
@@ -102,6 +76,9 @@ public class TechnologyResearchHandler {
 		} else {
 			throw new Exception("Das erhöhen des Gebäudelevels ist fehlgeschlagen");
 		}
+		foundTechnology.setNameOfResearch(null);
+		foundTechnology.setCurrentLvlOfResearch(0);
+		foundTechnology.setEndOfResearch(null);
 		return foundTechnology;
 	}
 }

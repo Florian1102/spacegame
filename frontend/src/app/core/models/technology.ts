@@ -7,5 +7,8 @@ export interface Technology {
     energyResearchFactor?: number;
     resourceResearchLvl?: number;
     resourceResearchFactor?: number;
+    endOfResearch: Date;
+	nameOfResearch: string;
+	currentLvlOfReseearch: number;
 	
 }
