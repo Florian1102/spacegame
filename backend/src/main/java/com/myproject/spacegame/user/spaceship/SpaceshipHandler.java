@@ -1,19 +1,9 @@
 package com.myproject.spacegame.user.spaceship;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.buildingStats.BuildingStats;
-import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
-import com.myproject.spacegame.user.planet.Planet;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,10 +13,6 @@ public class SpaceshipHandler {
 
 	private final SpaceshipRepository spaceshipRepository;
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
-
-	public void flyToPlanet(Spaceship spaceship, Planet planet) {
-		// TODO: Zeit berechnen
-	}
 
 	public Spaceship calculateAndSaveSpaceshipStats(Spaceship spaceshipFound) throws Exception {
 
@@ -63,48 +49,38 @@ public class SpaceshipHandler {
 		return spaceshipFound;
 	}
 
-	public Long calculateFlightDuration(Spaceship spaceship, CoordinateSystem coordinates) {
+	public Long calculateFlightDuration(Spaceship spaceship, int galaxy, int system, int position) {
 
-		Long speed = spaceship.getSpeed();
-		Long galaxyDistance = (long) Math.abs((spaceship.getCurrentPosition().getGalaxy() - coordinates.getGalaxy()));
-		Long systemDistance = (long) Math.abs((spaceship.getCurrentPosition().getSystem() - coordinates.getSystem()));
-		Long positionDistance = (long) Math
-				.abs((spaceship.getCurrentPosition().getPosition() - coordinates.getPosition()));
+		Long galaxyDistance = (long) Math.abs((spaceship.getCurrentPosition().getGalaxy() - galaxy));
+		Long systemDistance = (long) Math.abs((spaceship.getCurrentPosition().getSystem() - system));
+		Long positionDistance = (long) Math.abs((spaceship.getCurrentPosition().getPosition() - position));
 
 		Long timeForDistance = (galaxyDistance * 60) + (systemDistance * 20) + (positionDistance * 10); // TODO: ändern
 																										// in 5 STunden,
 																										// halbe Stunde,
 																										// 15 Minuten
-		Long flightDuration = timeForDistance / speed;
+		Long flightDuration = (long) Math.abs((timeForDistance - spaceship.getSpeed() / 10));
 		return flightDuration;
 	}
 
-	public double calculateHydrogenConsumption(Spaceship spaceship, CoordinateSystem coordinates) {
-		double hydrogenConsumption = spaceship.getHydrogenConsumption();
-		Long galaxyDistance = (long) Math.abs((spaceship.getCurrentPosition().getGalaxy() - coordinates.getGalaxy()));
-		Long systemDistance = (long) Math.abs((spaceship.getCurrentPosition().getSystem() - coordinates.getSystem()));
-		Long positionDistance = (long) Math.abs((spaceship.getCurrentPosition().getPosition() - coordinates.getPosition()));
+	public double calculateHydrogenConsumption(Spaceship spaceship, int galaxy, int system, int position) {
+		Long galaxyDistance = (long) Math.abs((spaceship.getCurrentPosition().getGalaxy() - galaxy));
+		Long systemDistance = (long) Math.abs((spaceship.getCurrentPosition().getSystem() - system));
+		Long positionDistance = (long) Math.abs((spaceship.getCurrentPosition().getPosition() - position));
 
-		Long timeForDistance = (galaxyDistance * 300) + (systemDistance * 15) + (positionDistance * 10); // TODO: evtl.
-																											// Werte
-																											// anpassen
-		double flightDuration = timeForDistance * hydrogenConsumption;
-		return flightDuration;
+		Long hydrogenConsumptionForDistance = (galaxyDistance * 300) + (systemDistance * 15) + (positionDistance * 10); // TODO:
+																														// evtl.
+		// Werte
+		// anpassen
+		double hydrogenConsumption = hydrogenConsumptionForDistance * spaceship.getHydrogenConsumption();
+		return hydrogenConsumption;
 	}
 
-	public void flyBack(Long spaceshipId, Long flightDuration, CoordinateSystem lastPosition) {
-		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-		@SuppressWarnings("unused")
-		ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
-			public Object call() throws Exception {
-				Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
-				spaceshipFound.setFlightDuration(0L);
-				spaceshipFound.setCurrentPosition(lastPosition);
-				spaceshipRepository.save(spaceshipFound);
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-		}, flightDuration, TimeUnit.SECONDS);
-		executorService.shutdown();
-	}
+
+//	public void flyBack(Long spaceshipId, Long flightDuration, CoordinateSystem lastPosition) {
+//				Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
+//				spaceshipFound.setCurrentPosition(lastPosition);
+//				spaceshipRepository.save(spaceshipFound);
+//	}
 
 }

@@ -1,6 +1,7 @@
 package com.myproject.spacegame.user.spaceship;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
@@ -17,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.user.User;
+import com.myproject.spacegame.user.spaceship.flight.Flight;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +42,10 @@ public class Spaceship {
 	@ManyToOne
 	@JoinColumn(name = "currentPosition_id")
 	private CoordinateSystem currentPosition;
+	
+	@OneToMany(mappedBy = "spaceship")
+	@JsonBackReference(value = "flightToSpaceship")
+	private List<Flight> flights;
 	
 	@NotNull
 	@Column(nullable = false)
@@ -127,8 +134,8 @@ public class Spaceship {
 	@Column(nullable = false)
 	private int counterOfChangedSpecialization = 0;
 	
-	@NotNull
-	@Column(nullable = false)
-	private Long flightDuration = 0L;
+//	@NotNull
+//	@Column(nullable = false)
+//	private Long flightDuration = 0L;
 	
 }

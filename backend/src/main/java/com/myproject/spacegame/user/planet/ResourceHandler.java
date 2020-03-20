@@ -29,8 +29,8 @@ public class ResourceHandler {
 		}
 	}
 
-	private boolean proofPlanetRessourcesEnough(Planet planet, Long necessaryMetal, Long necessaryCrystal,
-			Long necessaryHydrogen) throws Exception {
+	private boolean proofPlanetRessourcesEnough(Planet planet, double necessaryMetal, double necessaryCrystal,
+			double necessaryHydrogen) throws Exception {
 		if (planet.getMetal() < necessaryMetal || planet.getCrystal() < necessaryCrystal
 				|| planet.getHydrogen() < necessaryHydrogen) {
 			return false;
@@ -39,8 +39,8 @@ public class ResourceHandler {
 		}
 	}
 
-	public Spaceship calculateNewSpaceshipRessources(Spaceship spaceship, Long necessaryMetal, Long necessaryCrystal,
-			Long necessaryHydrogen, Long necessaryEnergy) throws Exception {
+	public Spaceship calculateNewSpaceshipRessources(Spaceship spaceship, double necessaryMetal, double necessaryCrystal,
+			double necessaryHydrogen, double necessaryEnergy) throws Exception {
 
 		if (!proofSpaceshipRessourcesEnough(spaceship, necessaryMetal, necessaryCrystal, necessaryHydrogen, necessaryEnergy)) {
 			throw new Exception("Du hast nicht ausreichend Ressourcen auf dem Raumschiff");
@@ -53,8 +53,8 @@ public class ResourceHandler {
 		}
 	}
 
-	public boolean proofSpaceshipRessourcesEnough(Spaceship spaceship, Long necessaryMetal, Long necessaryCrystal,
-			Long necessaryHydrogen, Long necessaryEnergy) throws Exception {
+	public boolean proofSpaceshipRessourcesEnough(Spaceship spaceship, double necessaryMetal, double necessaryCrystal,
+			double necessaryHydrogen, double necessaryEnergy) throws Exception {
 		if (spaceship.getMetal() < necessaryMetal || spaceship.getCrystal() < necessaryCrystal
 				|| spaceship.getHydrogen() < necessaryHydrogen || spaceship.getEnergy() < necessaryEnergy) {
 			return false;
@@ -63,39 +63,36 @@ public class ResourceHandler {
 		}
 	}
 
-	public ResponseEntity<?> pickUpOrDeliverResources(Long spaceshipId, Long planetId, Long metal, Long crystal, Long hydrogen,
+	public Spaceship pickUpOrDeliverResources(Spaceship spaceship, Long planetId, double metal, double crystal, double hydrogen,
 			boolean pickUpOrDeliver) throws Exception {
-		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
 		Planet planetFound = planetRepository.findById(planetId).get();
 		if (pickUpOrDeliver) {
 			if (!proofPlanetRessourcesEnough(planetFound, metal, crystal, hydrogen)) {
-				return new ResponseEntity<>("Du hast nicht so viele Rohstoffe auf dem Planeten", HttpStatus.BAD_REQUEST);
+				throw new Exception("Du hast nicht so viele Rohstoffe auf dem Planeten");
 			} else {
-				double deltaMetal = (metal > (spaceshipFound.getMetalStore() - spaceshipFound.getMetal())) ? (spaceshipFound.getMetalStore() - spaceshipFound.getMetal()) : metal;
-				double deltaCrystal = (crystal > (spaceshipFound.getCrystalStore() - spaceshipFound.getCrystal())) ? (spaceshipFound.getCrystalStore() - spaceshipFound.getCrystal()) : crystal;
-				double deltaHydrogen = (hydrogen > (spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen())) ? (spaceshipFound.getHydrogenTank() - spaceshipFound.getHydrogen()) : hydrogen;
-				
-				spaceshipFound.setMetal(spaceshipFound.getMetal() + deltaMetal);
-				spaceshipFound.setCrystal(spaceshipFound.getCrystal() + deltaCrystal);
-				spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() + deltaHydrogen);
+				double deltaMetal = (metal > (spaceship.getMetalStore() - spaceship.getMetal())) ? (spaceship.getMetalStore() - spaceship.getMetal()) : metal;
+				double deltaCrystal = (crystal > (spaceship.getCrystalStore() - spaceship.getCrystal())) ? (spaceship.getCrystalStore() - spaceship.getCrystal()) : crystal;
+				double deltaHydrogen = (hydrogen > (spaceship.getHydrogenTank() - spaceship.getHydrogen())) ? (spaceship.getHydrogenTank() - spaceship.getHydrogen()) : hydrogen;
+				spaceship.setMetal(spaceship.getMetal() + deltaMetal);
+				spaceship.setCrystal(spaceship.getCrystal() + deltaCrystal);
+				spaceship.setHydrogen(spaceship.getHydrogen() + deltaHydrogen);
 				planetFound.setMetal(planetFound.getMetal() - deltaMetal);
 				planetFound.setCrystal(planetFound.getCrystal() - deltaCrystal);
 				planetFound.setHydrogen(planetFound.getHydrogen() - deltaHydrogen);
 			}
 		} else {
-			if (!proofSpaceshipRessourcesEnough(spaceshipFound, metal, crystal, hydrogen, 0L)) {
-				return new ResponseEntity<>("Du hast nicht so viele Rohstoffe auf dem Raumschiff", HttpStatus.BAD_REQUEST);
+			if (!proofSpaceshipRessourcesEnough(spaceship, metal, crystal, hydrogen, 0L)) {
+				throw new Exception("Du hast nicht so viele Rohstoffe auf dem Raumschiff");
 			} else {
-				spaceshipFound.setMetal(spaceshipFound.getMetal() - metal);
-				spaceshipFound.setCrystal(spaceshipFound.getCrystal() - crystal);
-				spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() - hydrogen);
+				spaceship.setMetal(spaceship.getMetal() - metal);
+				spaceship.setCrystal(spaceship.getCrystal() - crystal);
+				spaceship.setHydrogen(spaceship.getHydrogen() - hydrogen);
 				planetFound.setMetal(planetFound.getMetal() + metal);
 				planetFound.setCrystal(planetFound.getCrystal() + crystal);
 				planetFound.setHydrogen(planetFound.getHydrogen() + hydrogen);
 			}
 		}
-		spaceshipRepository.save(spaceshipFound);
 		planetRepository.save(planetFound);
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		return spaceship;
 	}
 }
