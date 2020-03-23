@@ -30,8 +30,8 @@ export class TimerComponent implements OnInit {
         this.isRunning = true;
 
         if (this.deltaTime <= 0 && this.isRunning) {
-          window.location.reload();
           this.isRunning = false;
+          window.location.reload();
         };
       }
     }, 1000);

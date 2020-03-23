@@ -8,6 +8,7 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
 	List<Flight> findAllBySpaceshipId(Long id);
 	Flight findBySpaceshipIdAndIsFlyingTrue(Long id);
+	boolean existsBySpaceshipIdAndIsFlyingTrue(Long id);
 	List<Flight> findAllByIsFlyingTrue();
 
 }

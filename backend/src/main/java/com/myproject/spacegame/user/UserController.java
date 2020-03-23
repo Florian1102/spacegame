@@ -72,7 +72,7 @@ public class UserController {
 		Random random = new Random();
 		int galaxy = random.nextInt(10) + 1;
 		int system = random.nextInt(100) + 1; 
-		spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, 0)); 
+		spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, 1)); 
 		user.setSpaceship(spaceship);
 
 		Technology technology = new Technology();

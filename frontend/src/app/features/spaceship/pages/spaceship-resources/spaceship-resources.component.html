@@ -16,8 +16,9 @@
 </div>
 <div>
     <h1>Position</h1>
-    <h2 *ngIf="!spaceship?.currentPosition">Verbleibende Flugdauer: {{spaceship?.flightDuration}} Sekunden</h2>
+    <h2 *ngIf="!spaceship?.currentPosition"> Verbleibende Flugdauer: <app-timer [necessaryTime]="flight?.arrivalTime"></app-timer></h2>
     <h2 *ngIf="spaceship?.currentPosition">
         {{spaceship?.currentPosition?.galaxy}}:{{spaceship?.currentPosition?.system}}:{{spaceship?.currentPosition?.position}}
     </h2>
+    
 </div>

@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpaceshipService } from 'src/app/core/services/spaceship.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Spaceship } from 'src/app/core/models/spaceship.model';
+import { FlightService } from 'src/app/core/services/flight.service';
 
 @Component({
   selector: 'app-fly-to-planet',
@@ -26,6 +27,7 @@ export class FlyToPlanetComponent implements OnInit {
   galaxy: number;
   system: number;
   position: number;
+  action: string;
 
   message: string;
 
@@ -33,7 +35,8 @@ export class FlyToPlanetComponent implements OnInit {
   pickupOrDeliverState: boolean = true;
 
   constructor(private planetService: PlanetService, 
-              private spaceshipService: SpaceshipService, 
+              private spaceshipService: SpaceshipService,
+              private flightService: FlightService, 
               private authService: AuthService, 
               private route: ActivatedRoute, 
               private router: Router, 
@@ -55,9 +58,10 @@ export class FlyToPlanetComponent implements OnInit {
       metal: ['', [Validators.required, Validators.min(0)]],
       crystal: ['', [Validators.required, Validators.min(0)]],
       hydrogen: ['', [Validators.required, Validators.min(0)]],
-      galaxy: [''],
-      system: [''],
-      position: ['']
+      galaxy: ['', [Validators.required]],
+      system: ['', [Validators.required]],
+      position: ['', [Validators.required]],
+      action: ['', [Validators.required]]
     });
   }
 
@@ -75,27 +79,6 @@ export class FlyToPlanetComponent implements OnInit {
 
   changeState(){
     this.pickupOrDeliverState = !this.pickupOrDeliverState;
-  }
-
-  pickupResources(){
-    this.metal = this.form.value.metal;
-    this.crystal = this.form.value.crystal;
-    this.hydrogen = this.form.value.hydrogen;
-    if (this.form.valid) {
-      this.spaceshipService.pickUpResources(this.spaceshipId, this.planetId, this.metal, this.crystal, this.hydrogen).subscribe(()=> {
-        this.message = "Das Raumschiff ist losgeflogen";
-        this.authService.updateUser(this.userId);
-        this.form = this.fb.group({
-          metal: [],
-          crystal: [],
-          hydrogen: []
-        });
-      },
-      error => { alert(error.error) 
-      })
-    } else {
-        alert("Eingabe ungültig");
-    }
   }
 
   maxResourcesOfPlanet(){ 
@@ -117,15 +100,16 @@ export class FlyToPlanetComponent implements OnInit {
     });
   }
 
-  deliverResources(){
+  flyToCoordinate(){
     this.metal = this.form.value.metal;
     this.crystal = this.form.value.crystal;
     this.hydrogen = this.form.value.hydrogen;
     this.galaxy = this.form.value.galaxy;
     this.system = this.form.value.system;
     this.position = this.form.value.position;
+    this.action = this.form.value.action;
     if (this.form.valid) {
-      this.spaceshipService.deliverResources(this.spaceshipId, this.metal, this.crystal, this.hydrogen, this.galaxy, this.system, this.position).subscribe(()=> {
+      this.flightService.flyToCoordinateWithAction(this.spaceshipId, this.action, this.galaxy, this.system, this.position, this.metal, this.crystal, this.hydrogen).subscribe(()=> {
         this.message = "Das Raumschiff ist losgeflogen";
         this.authService.updateUser(this.userId);
         this.form = this.fb.group({

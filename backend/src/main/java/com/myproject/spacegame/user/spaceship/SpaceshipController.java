@@ -1,11 +1,6 @@
 package com.myproject.spacegame.user.spaceship;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
@@ -20,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myproject.spacegame.buildingStats.BuildingStats;
-import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.coordinateSystem.CoordinateSystemRepository;
 import com.myproject.spacegame.services.CalculatePointsOfPlayer;
 import com.myproject.spacegame.services.GetStatsOfBuildingsAndTechnologies;
-import com.myproject.spacegame.user.planet.Planet;
-import com.myproject.spacegame.user.planet.PlanetRepository;
 import com.myproject.spacegame.user.planet.ResourceHandler;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +31,6 @@ public class SpaceshipController {
 	private final SpaceshipBuildingHandler spaceshipBuildingHandler;
 	private final GetStatsOfBuildingsAndTechnologies getStatsOfBuildingsAndTechnologies;
 	private final ResourceHandler resourceHandler;
-	private final PlanetRepository planetRepository;
 	private final CalculatePointsOfPlayer calculatePointsOfPlayer;
 	private final SpaceshipHandler spaceshipHandler;
 	private final CoordinateSystemRepository coordinateSystemRepository;
@@ -49,40 +40,42 @@ public class SpaceshipController {
 
 		return ResponseEntity.of(spaceshipRepository.findById(spaceshipId));
 	}
+	
+	@GetMapping("/{spaceshipId}/calculateHydrogenConsumptionForFlightTo")
+	public ResponseEntity<?> getHydrogenConsumptionForFlight(@PathVariable Long spaceshipId,
+			@RequestParam(required = true) int galaxy, @RequestParam(required = true) int system,
+			@RequestParam(required = true) int position) {
 
-//	@GetMapping("/{spaceshipId}/calculatedurationtocoordinates")
-//	public ResponseEntity<?> showFlightDurationToCoordinate(@PathVariable Long spaceshipId,
-//			@RequestParam(required = true) int galaxy, @RequestParam(required = true) int system,
-//			@RequestParam(required = true) int position) {
-//
-//		if (!spaceshipRepository.existsById(spaceshipId)) {
-//			return new ResponseEntity<>("Raumschiff exisitiert nicht", HttpStatus.NOT_FOUND);
-//		} else if (!coordinateSystemRepository.existsByGalaxyAndSystemAndPosition(galaxy, system, position)) {
-//			return new ResponseEntity<>("Koordinaten existieren nicht", HttpStatus.NOT_FOUND);
-//		}
-//		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
-//		CoordinateSystem coordinatesFound = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system,
-//				position);
-//		Long calculatedDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound, coordinatesFound);
-//		return new ResponseEntity<>(calculatedDuration, HttpStatus.OK);
-//	}
+		if (!spaceshipRepository.existsById(spaceshipId)) {
+			return new ResponseEntity<>("Raumschiff wurde nicht gefunden", HttpStatus.NOT_FOUND);
+		} else if (!coordinateSystemRepository.existsByGalaxyAndSystemAndPosition(galaxy, system, position)) {
+			return new ResponseEntity<>("Koordinate wurde nicht gefunden", HttpStatus.NOT_FOUND);
+		} else {
+			Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
+			double hydrogenConsumption = spaceshipHandler.calculateHydrogenConsumption(spaceshipFound, galaxy, system,
+					position);
+			return new ResponseEntity<>(hydrogenConsumption, HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping("/{spaceshipId}/calculateDurationForFlightTo")
+	public ResponseEntity<?> getDurationForFlight(@PathVariable Long spaceshipId,
+			@RequestParam(required = true) int galaxy, @RequestParam(required = true) int system,
+			@RequestParam(required = true) int position) {
+		
+		if (!spaceshipRepository.existsById(spaceshipId)) {
+			return new ResponseEntity<>("Raumschiff wurde nicht gefunden", HttpStatus.NOT_FOUND);
+		} else if (!coordinateSystemRepository.existsByGalaxyAndSystemAndPosition(galaxy, system, position)) {
+			return new ResponseEntity<>("Koordinate wurde nicht gefunden", HttpStatus.NOT_FOUND);
+		} else {
+			Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
+			Long flightDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound, galaxy, system, position);
+			LocalDateTime date = LocalDateTime.now();
+			LocalDateTime arrivalTime = date.plusSeconds(flightDuration);
+			return new ResponseEntity<>(arrivalTime, HttpStatus.OK);
+		}
+	}
 
-//	@GetMapping("/{spaceshipId}/calculatehydrogenconsumption")
-//	public ResponseEntity<?> showHydrogenConsumptionToCoordinate(@PathVariable Long spaceshipId,
-//			@RequestParam(required = true) int galaxy, @RequestParam(required = true) int system,
-//			@RequestParam(required = true) int position) {
-//
-//		if (!spaceshipRepository.existsById(spaceshipId)) {
-//			return new ResponseEntity<>("Raumschiff exisitiert nicht", HttpStatus.NOT_FOUND);
-//		} else if (!coordinateSystemRepository.existsByGalaxyAndSystemAndPosition(galaxy, system, position)) {
-//			return new ResponseEntity<>("Koordinaten existieren nicht", HttpStatus.NOT_FOUND);
-//		}
-//		Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
-//		CoordinateSystem coordinatesFound = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system,
-//				position);
-//		double calculatedDuration = spaceshipHandler.calculateHydrogenConsumption(spaceshipFound, coordinatesFound);
-//		return new ResponseEntity<>(calculatedDuration, HttpStatus.OK);
-//	}
 
 	@PutMapping("/{spaceshipId}")
 	public ResponseEntity<?> update(@PathVariable Long spaceshipId, @RequestBody @Valid Spaceship spaceship) {
@@ -185,110 +178,4 @@ public class SpaceshipController {
 		return updatedSpaceship;
 	}
 
-//	@PutMapping("/{spaceshipId}/pickup/{planetId}/resources") 
-//	public ResponseEntity<?> pickUpResources(
-//			@PathVariable Long spaceshipId, 
-//			@PathVariable Long planetId, 
-//			@RequestParam(required = true) Long metal,
-//			@RequestParam(required = true) Long crystal, 
-//			@RequestParam(required = true) Long hydrogen) {
-//		if (!spaceshipRepository.existsById(spaceshipId)) {
-//			return new ResponseEntity<>("Das Raumschiff existiert nicht", HttpStatus.NOT_FOUND);
-//		} else if (!planetRepository.existsById(planetId)) {
-//			return new ResponseEntity<>("Der Planet existiert nicht", HttpStatus.NOT_FOUND);
-//		}
-//		try {
-//			Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
-//			Planet planetFound = planetRepository.findById(planetId).get();
-//			if (spaceshipFound.getFlightDuration() > 0) {
-//				return new ResponseEntity<>("Das Raumschiff fliegt bereits", HttpStatus.BAD_REQUEST);
-//			} else if (!spaceshipFound.getUser().getPlanets().contains(planetFound)) {
-//					throw new Exception("Das Abholen von Ressourcen von einem fremden Planeten ist nicht erlaubt");
-//				} else {
-//					double hydrogenConsumptionForTheFlight = spaceshipHandler.calculateHydrogenConsumption(spaceshipFound, planetFound.getCoordinates());
-//					if (hydrogenConsumptionForTheFlight > spaceshipFound.getHydrogen()) {
-//						throw new Exception("Du hast nicht ausreichend Wasserstoff");
-//					}
-//					CoordinateSystem lastPosition = spaceshipFound.getCurrentPosition();
-//					spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() - hydrogenConsumptionForTheFlight);
-//					Long flightDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound, planetFound.getCoordinates()); 
-//					spaceshipFound.setFlightDuration(flightDuration * 2);
-//					spaceshipFound.setCurrentPosition(null);
-//					spaceshipRepository.save(spaceshipFound);
-//					
-//					ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-//					@SuppressWarnings("unused")
-//					ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
-//						public Object call() throws Exception {
-//							try {
-//								resourceHandler.pickUpOrDeliverResources(spaceshipFound.getId(), planetFound.getId(), metal,
-//										crystal, hydrogen, true);
-//								spaceshipHandler.flyBack(spaceshipFound.getId(), flightDuration, lastPosition);
-//								return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//							} catch (Exception e) {
-//								return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//							}
-//						}
-//					}, flightDuration, TimeUnit.SECONDS);
-//					executorService.shutdown();
-//					return new ResponseEntity<>(HttpStatus.ACCEPTED);
-//				}
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//		}
-//	}
-	
-//	@PutMapping("/{spaceshipId}/deliver") 
-//	public ResponseEntity<?> deliverResources(
-//			@PathVariable Long spaceshipId, 
-//			@RequestParam(required = true) Long metal,
-//			@RequestParam(required = true) Long crystal, 
-//			@RequestParam(required = true) Long hydrogen,
-//			@RequestParam(required = true) int galaxy,
-//			@RequestParam(required = true) int system,
-//			@RequestParam(required = true) int position) {
-//		if (!spaceshipRepository.existsById(spaceshipId)) {
-//			return new ResponseEntity<>("Das Raumschiff existiert nicht", HttpStatus.NOT_FOUND);
-//		} else if (!coordinateSystemRepository.existsPlanetByGalaxyAndSystemAndPosition(galaxy, system, position)) {
-//			return new ResponseEntity<>("Der Planet existiert nicht", HttpStatus.NOT_FOUND);
-//		}
-//		try {
-//			Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
-//			Planet planetFound = coordinateSystemRepository.findByGalaxyAndSystemAndPosition(galaxy, system, position).getPlanet();
-//			if (spaceshipFound.getFlightDuration() > 0) {
-//				return new ResponseEntity<>("Das Raumschiff fliegt bereits", HttpStatus.BAD_REQUEST);
-//			} else if (!resourceHandler.proofSpaceshipRessourcesEnough(spaceshipFound, metal, crystal, hydrogen, 0L)){ 
-//				return new ResponseEntity<>("Du hast nicht so viele Ressourcen auf dem Raumschiff", HttpStatus.BAD_REQUEST);
-//			} else {
-//				double hydrogenConsumptionForTheFlight = spaceshipHandler.calculateHydrogenConsumption(spaceshipFound, planetFound.getCoordinates());
-//				if (hydrogenConsumptionForTheFlight > spaceshipFound.getHydrogen()) {
-//					throw new Exception("Du hast nicht ausreichend Wasserstoff");
-//				}
-//				CoordinateSystem lastPosition = spaceshipFound.getCurrentPosition();
-//				spaceshipFound.setHydrogen(spaceshipFound.getHydrogen() - hydrogenConsumptionForTheFlight);
-//				Long flightDuration = spaceshipHandler.calculateFlightDuration(spaceshipFound, planetFound.getCoordinates()); 
-//				spaceshipFound.setFlightDuration(flightDuration * 2);
-//				spaceshipFound.setCurrentPosition(null);
-//				spaceshipRepository.save(spaceshipFound);
-//				ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-//				@SuppressWarnings("unused")
-//				ScheduledFuture<?> scheduledFuture = executorService.schedule(new Callable<Object>() {
-//					public Object call() throws Exception {
-//						try {
-//							resourceHandler.pickUpOrDeliverResources(spaceshipFound.getId(), planetFound.getId(), metal,
-//									crystal, hydrogen, false);
-//							spaceshipHandler.flyBack(spaceshipFound.getId(), flightDuration, lastPosition);
-//							return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//						} catch (Exception e) {
-//							return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//						}
-//					}
-//				}, flightDuration, TimeUnit.SECONDS);
-//				executorService.shutdown();
-//				return new ResponseEntity<>(HttpStatus.ACCEPTED);
-//			}
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//		}
-//	}
 }

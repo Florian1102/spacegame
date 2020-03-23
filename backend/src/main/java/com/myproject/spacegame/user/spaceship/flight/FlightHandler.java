@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.coordinateSystem.CoordinateSystemRepository;
 import com.myproject.spacegame.user.planet.ColonizePlanet;
-import com.myproject.spacegame.user.planet.Planet;
 import com.myproject.spacegame.user.planet.ResourceHandler;
 import com.myproject.spacegame.user.spaceship.Spaceship;
 import com.myproject.spacegame.user.spaceship.SpaceshipRepository;
@@ -51,36 +50,31 @@ public class FlightHandler {
 					case "colonize":
 						colonizePlanet.colonizePlanet(spaceship.getUser().getId(), flight.getDestinationGalaxy(),
 								flight.getDestinationSystem(), flight.getDestinationPosition());
-						// flyback
 						spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(
-								flight.getStartGalaxy(), flight.getStartSystem(), flight.getStartPosition()));
+								flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition()));
 						break;
 					case "deliver":
 						planetId = getPlanetId(flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition());
 						spaceship = resourceHandler.pickUpOrDeliverResources(spaceship, planetId, flight.getMetal(),
 								flight.getCrystal(), flight.getHydrogen(), false);
-						// flyback
 						spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(
-								flight.getStartGalaxy(), flight.getStartSystem(), flight.getStartPosition()));
+								flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition()));
 						break;
 					case "pickup":
 						planetId = getPlanetId(flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition());
 						spaceship = resourceHandler.pickUpOrDeliverResources(spaceship, planetId, flight.getMetal(),
 								flight.getCrystal(), flight.getHydrogen(), true);
-						// flyback
 						spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(
-								flight.getStartGalaxy(), flight.getStartSystem(), flight.getStartPosition()));
+								flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition()));
 						break;
 					case "attack":
 						planetId = getPlanetId(flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition());
 						// implement function attack()
-						// flyback
 						spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(
-								flight.getStartGalaxy(), flight.getStartSystem(), flight.getStartPosition()));
+								flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition()));
 						break;
 					case "station":
 						planetId = getPlanetId(flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition());
-						// implement function station()
 						spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(
 								flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition()));
 						break;
@@ -89,6 +83,8 @@ public class FlightHandler {
 					}
 				} catch (Exception e) {
 					e.getMessage();
+					spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(
+							flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition()));
 				} finally {
 					// Es muss sichergestellt werden dass das Raumschiff wieder eine Position hat
 					flightRepository.save(flight);

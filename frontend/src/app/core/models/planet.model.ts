@@ -29,7 +29,6 @@ export interface Planet {
     commandCentralLvl: number;
     solarSatellite: number;
     defenseTower: number;
-    // remainingBuildingDuration: number;
     reduceBuildingDuration: number;
     endOfBuilding: Date;
 	nameOfBuilding: string;

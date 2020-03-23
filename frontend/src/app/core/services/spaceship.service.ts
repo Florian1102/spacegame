@@ -17,11 +17,11 @@ export class SpaceshipService {
   }
 
   public showFlightDurationToCoordinate(id: number, galaxy: number, system: number, position: number): Observable<Spaceship>{
-    return this.http.get<Spaceship>(baseUrl + "/" + id + "/calculatedurationtocoordinates?galaxy=" + galaxy + "&system=" + system + "&position=" + position);
+    return this.http.get<Spaceship>(baseUrl + "/" + id + "/calculateDurationForFlightTo?galaxy=" + galaxy + "&system=" + system + "&position=" + position);
   }
   
   public showHydrogenConsumptionToCoordinate(id: number, galaxy: number, system: number, position: number): Observable<Spaceship>{
-    return this.http.get<Spaceship>(baseUrl + "/" + id + "/calculatehydrogenconsumption?galaxy=" + galaxy + "&system=" + system + "&position=" + position);
+    return this.http.get<Spaceship>(baseUrl + "/" + id + "/calculateHydrogenConsumptionForFlightTo?galaxy=" + galaxy + "&system=" + system + "&position=" + position);
   }
   
   public levelUpSpaceshipBuilding(id: number, nameOfBuilding: string): Observable<Spaceship>{
@@ -32,12 +32,4 @@ export class SpaceshipService {
     return this.http.put<Spaceship>(baseUrl + "/" + id + "/choosefighterormerchant/" + fighterOrMerchant, null);
   }
   
-  public pickUpResources(id: number, planetId: number, metal: number, crystal: number, hydrogen: number): Observable<Spaceship>{
-    return this.http.put<Spaceship>(baseUrl + "/" + id + "/pickup/" + planetId + "/resources?metal=" + metal + "&crystal=" + crystal + "&hydrogen=" + hydrogen, null);
-  }
-
-  public deliverResources(id: number, metal: number, crystal: number, hydrogen: number, galaxy: number, system: number, position: number): Observable<Spaceship>{
-    return this.http.put<Spaceship>(baseUrl + "/" + id + "/deliver?metal=" + metal + "&crystal=" + crystal + "&hydrogen=" + hydrogen + '&galaxy=' + galaxy + '&system=' + system + '&position=' + position, null);
-  }
-
 }

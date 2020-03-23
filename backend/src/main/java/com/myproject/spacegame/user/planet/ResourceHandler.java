@@ -1,11 +1,8 @@
 package com.myproject.spacegame.user.planet;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.myproject.spacegame.user.spaceship.Spaceship;
-import com.myproject.spacegame.user.spaceship.SpaceshipRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ResourceHandler {
 
-	private final SpaceshipRepository spaceshipRepository;
 	private final PlanetRepository planetRepository;
 
 	public Planet calculateNewPlanetRessources(Planet planet, Long necessaryMetal, Long necessaryCrystal,

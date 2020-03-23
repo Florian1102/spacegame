@@ -76,11 +76,4 @@ public class SpaceshipHandler {
 		return hydrogenConsumption;
 	}
 
-
-//	public void flyBack(Long spaceshipId, Long flightDuration, CoordinateSystem lastPosition) {
-//				Spaceship spaceshipFound = spaceshipRepository.findById(spaceshipId).get();
-//				spaceshipFound.setCurrentPosition(lastPosition);
-//				spaceshipRepository.save(spaceshipFound);
-//	}
-
 }
