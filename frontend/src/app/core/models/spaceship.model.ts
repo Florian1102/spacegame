@@ -29,7 +29,6 @@ export interface Spaceship {
     merchantSpaceship: boolean;
     fighterSpaceship: boolean;
     counterOfChangedSpecialization: number;
-    flightDuration: number;
     endOfBuilding: Date;
 	nameOfBuilding: string;
 	currentLvlOfBuilding: number;

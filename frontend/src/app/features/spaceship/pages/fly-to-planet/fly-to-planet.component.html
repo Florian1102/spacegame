@@ -15,7 +15,7 @@
     <input formControlName="position" type="number" placeholder="Position" />
     <input formControlName="metal" type="number" placeholder="Metall" />
     <input formControlName="crystal" type="number" placeholder="Kristall" />
-    <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" />
+    <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" /><br>
     <!-- <button *ngIf="form.action.pickup" type="button" (click)="maxResourcesOfSpaceship()">Maximale Menge mitnehmen</button><br> -->
     <div *ngIf="form.controls.metal.invalid && (form.controls.metal.touched || form.controls.metal.dirty) || form.controls.crystal.invalid && (form.controls.crystal.touched || form.controls.crystal.dirty) || form.controls.hydrogen.invalid && (form.controls.hydrogen.touched || form.controls.hydrogen.dirty)">        Es müssen alle Felder ausgefüllt sein!
     </div>

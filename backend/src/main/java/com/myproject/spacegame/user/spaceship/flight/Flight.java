@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.myproject.spacegame.user.spaceship.Spaceship;
 
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class Flight {
 	
 	@ManyToOne
 	@JoinColumn(name = "spaceship_id", nullable = false)
-	@JsonManagedReference(value = "flightToSpaceship")
+	@JsonBackReference(value = "flightToSpaceship")
 	private Spaceship spaceship;
 	
 	private String action;

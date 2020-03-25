@@ -33,6 +33,7 @@ export class SpaceshipResourcesComponent implements OnInit {
 
   ngOnInit() {
     this.findSpaceship();
+    this.findActiveFlight();
   }
 
   findSpaceship(){

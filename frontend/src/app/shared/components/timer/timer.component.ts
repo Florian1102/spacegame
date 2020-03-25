@@ -10,31 +10,38 @@ export class TimerComponent implements OnInit {
   @Input() necessaryTime: any;
   currentTime: any;
   deltaTime: any;
-  days: number = 0;
-  hours: number = 0;
-  minutes: number = 0;
-  seconds: number = 0;
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
   isRunning: boolean = false;
 
-  constructor() { }
+  constructor() { 
+    this.setCurrentDeltaTime();
+
+  }
 
   ngOnInit() {
-    this.setCurrentDeltaTime();
-    this.convertTime();
-
+    
     setInterval(() => {
       if (this.necessaryTime !== null){
-
+        
         this.setCurrentDeltaTime();
-        this.convertTime();
         this.isRunning = true;
-
+        
         if (this.deltaTime <= 0 && this.isRunning) {
           this.isRunning = false;
           window.location.reload();
         };
       }
     }, 1000);
+    
+  }
+  
+  setCurrentDeltaTime(){
+    this.currentTime = new Date().getTime();
+    this.deltaTime = new Date(this.necessaryTime).getTime() - this.currentTime;
+    this.convertTime();
   }
 
   convertTime(){
@@ -51,9 +58,5 @@ export class TimerComponent implements OnInit {
     }
   }
 
-  setCurrentDeltaTime(){
-    this.currentTime = new Date().getTime();
-    this.deltaTime = new Date(this.necessaryTime).getTime() + 1000 - this.currentTime;
-  }
 
 }

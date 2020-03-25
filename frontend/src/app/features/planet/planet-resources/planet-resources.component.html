@@ -10,5 +10,5 @@
     Aktuelle Produktion: {{planet.hydrogenProductionEveryHour | number: '1.0-0':'de-DE'}}<br>
     Energie: {{planet.energy | number: '1.0-0':'de-DE'}}<br>
     <button (click)="deletePlanet(planet.id)">Planet löschen</button><br>
-    <a [routerLink]="'/user/' + user.id + '/spaceship/' + user.spaceship.id + '/fly'" [queryParams]="{planetid: planet?.id}">Rohstoffe abholen/liefern</a><br>
+    <a [routerLink]="'/user/' + user.id + '/spaceship/' + user.spaceship.id + '/fly'" [queryParams]="{planetid: planet?.id}">Rohstoffe abholen</a><br>
 </div>

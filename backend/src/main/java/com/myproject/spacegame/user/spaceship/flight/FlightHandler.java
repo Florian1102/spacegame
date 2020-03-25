@@ -72,6 +72,7 @@ public class FlightHandler {
 						// implement function attack()
 						spaceship.setCurrentPosition(coordinateSystemRepository.findByGalaxyAndSystemAndPosition(
 								flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition()));
+						//flyback()
 						break;
 					case "station":
 						planetId = getPlanetId(flight.getDestinationGalaxy(), flight.getDestinationSystem(), flight.getDestinationPosition());

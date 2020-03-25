@@ -29,5 +29,10 @@
         <td>
             <div *ngFor="let spaceship of coordinateSystemRow.listOfSpaceshipsInThisSystem">Id: {{spaceship?.id}}</div>
         </td>
+        <td>
+            <a *ngIf="!coordinateSystemRow.planet" [routerLink]="'/user/' + userId + '/spaceship/' + user.spaceship.id + '/fly'" [queryParams]="{action: 'colonize', galaxy: galaxy, system: system, position: coordinateSystemRow?.position}">Kolonisieren</a><br>
+            <a *ngIf="coordinateSystemRow.planet && !user.planets.includes(coordinateSystemRow?.planet)" [routerLink]="'/user/' + userId + '/spaceship/' + user.spaceship.id + '/fly'" [queryParams]="{action: 'attack', galaxy: galaxy, system: system, position: coordinateSystemRow?.position}">Angreifen</a><br>
+            <a *ngIf="isUsersPlanet(coordinateSystemRow?.planet)" [routerLink]="'/user/' + userId + '/spaceship/' + user.spaceship.id + '/fly'" [queryParams]="{action: 'station', galaxy: galaxy, system: system, position: coordinateSystemRow?.position}">Stationieren</a><br>
+        </td>
     </tr>
 </table> 

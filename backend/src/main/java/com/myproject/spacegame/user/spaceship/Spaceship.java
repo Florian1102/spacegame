@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.myproject.spacegame.coordinateSystem.CoordinateSystem;
 import com.myproject.spacegame.user.User;
@@ -44,7 +45,7 @@ public class Spaceship {
 	private CoordinateSystem currentPosition;
 	
 	@OneToMany(mappedBy = "spaceship")
-	@JsonBackReference(value = "flightToSpaceship")
+	@JsonManagedReference(value = "flightToSpaceship")
 	private List<Flight> flights;
 	
 	@NotNull
@@ -133,9 +134,5 @@ public class Spaceship {
 	@NotNull
 	@Column(nullable = false)
 	private int counterOfChangedSpecialization = 0;
-	
-//	@NotNull
-//	@Column(nullable = false)
-//	private Long flightDuration = 0L;
 	
 }

@@ -49,9 +49,9 @@ public class FlightController {
 	@GetMapping("/{spaceshipId}/activeflight")
 	public ResponseEntity<?> showActiveFlightOfUser(@PathVariable Long spaceshipId) {
 
-		if (!flightRepository.existsBySpaceshipIdAndIsFlyingIsTrue(spaceshipId)) {
-			return new ResponseEntity<>("Kein aktiver Flug", HttpStatus.NOT_FOUND);
-		}
+//		if (!flightRepository.existsBySpaceshipIdAndIsFlyingIsTrue(spaceshipId)) {
+//			return new ResponseEntity<>("Kein aktiver Flug", HttpStatus.NOT_FOUND);
+//		}
 		Flight flight = flightRepository.findBySpaceshipIdAndIsFlyingIsTrue(spaceshipId);
 		return new ResponseEntity<>(flight, HttpStatus.OK);
 	}

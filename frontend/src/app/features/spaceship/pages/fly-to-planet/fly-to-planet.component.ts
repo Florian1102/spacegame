@@ -45,26 +45,29 @@ export class FlyToPlanetComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.route.queryParamMap.subscribe(queryParamMap => {
+      this.planetId = +queryParamMap.get('planetid');
+      this.galaxy = +queryParamMap.get('galaxy');
+      this.system = +queryParamMap.get('system');
+      this.position = +queryParamMap.get('position');
+      this.action = queryParamMap.get('action');
+      if (this.planetId){
+        this.findPlanet();  
+      }
+    });
     this.form = this.fb.group({
-      action: ['', [Validators.required]],
+      action: [this.action, [Validators.required]],
       metal: ['', [Validators.required, Validators.min(0)]],
       crystal: ['', [Validators.required, Validators.min(0)]],
       hydrogen: ['', [Validators.required, Validators.min(0)]],
-      galaxy: ['', [Validators.required]],
-      system: ['', [Validators.required]],
-      position: ['', [Validators.required]]
+      galaxy: [this.galaxy, [Validators.required]],
+      system: [this.system, [Validators.required]],
+      position: [this.position, [Validators.required]]
     });
     
     this.route.paramMap.subscribe(paramMap => {
       this.userId = +paramMap.get('userId')
       this.spaceshipId = +paramMap.get('spaceshipId')
-    });
-    this.route.queryParamMap.subscribe(queryParamMap => {
-      this.planetId = +queryParamMap.get('planetid');
-      if (this.planetId){
-        this.findPlanet();
-        
-      }
     });
     this.findSpaceship();
     

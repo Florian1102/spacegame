@@ -5,9 +5,6 @@
         <td>Level: {{user?.spaceship?.spaceshipLvl}}</td>
     </tr>
     <tr>
-        <td *ngIf="!user?.spaceship?.currentPosition">
-            Raumschiff ist unterwegs: {{user?.spaceship?.flightDuration}} Sekunden
-        </td>
         <td *ngIf="user?.spaceship?.currentPosition"> Position: {{user?.spaceship?.currentPosition?.galaxy}}:{{user?.spaceship?.currentPosition?.system}}:{{user?.spaceship?.currentPosition?.position}} </td>
         <td *ngIf="user?.spaceship?.spaceshipLvl < 5"><a>Spezialisierung erst ab Level 5 möglich</a></td>
         <td *ngIf="user?.spaceship?.merchantSpaceship">Spezialisierung: Handelsschiff</td>
