@@ -33,9 +33,6 @@ export class SpaceshipResourcesComponent implements OnInit {
 
   ngOnInit() {
     this.findSpaceship();
-    // if (this.user.spaceship.currentPosition===null){
-    //   this.findActiveFlight();
-    // }
   }
 
   findSpaceship(){

@@ -1,12 +1,11 @@
 <h1>Galaxie</h1>
 <form [formGroup]="form" (ngSubmit)="search()">
 
-    <input formControlName="galaxy" type="number" placeholder="Galaxie" />
-    <input formControlName="system" type="number" placeholder="System"/>
+    Galaxie<input formControlName="galaxy" type="number" placeholder="Galaxie" />
+    System<input formControlName="system" type="number" placeholder="System"/>
     <button type="submit">Suchen</button>
 </form>
 
-<p>Galaxie: {{galaxy}} System: {{system}}</p>
 <table>
     <tr>
         <td>

@@ -10,13 +10,13 @@
         <option value='attack'>Planet angreifen</option>
         <option value='station'>Raumschiff stationieren</option>
     </select><br>
+    <input formControlName="galaxy" type="number" placeholder="Galaxie" />
+    <input formControlName="system" type="number" placeholder="System" />
+    <input formControlName="position" type="number" placeholder="Position" />
     <input formControlName="metal" type="number" placeholder="Metall" />
     <input formControlName="crystal" type="number" placeholder="Kristall" />
     <input formControlName="hydrogen" type="number" placeholder="Wasserstoff" />
     <!-- <button *ngIf="form.action.pickup" type="button" (click)="maxResourcesOfSpaceship()">Maximale Menge mitnehmen</button><br> -->
-    <input formControlName="galaxy" type="number" placeholder="Galaxie" />
-    <input formControlName="system" type="number" placeholder="System" />
-    <input formControlName="position" type="number" placeholder="Position" />
     <div *ngIf="form.controls.metal.invalid && (form.controls.metal.touched || form.controls.metal.dirty) || form.controls.crystal.invalid && (form.controls.crystal.touched || form.controls.crystal.dirty) || form.controls.hydrogen.invalid && (form.controls.hydrogen.touched || form.controls.hydrogen.dirty)">        Es müssen alle Felder ausgefüllt sein!
     </div>
     <button type="submit">Los</button>

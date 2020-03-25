@@ -1,6 +1,7 @@
 <a [routerLink]="'/user/' + user.id + '/overview'">Übersicht</a><br>
 <a [routerLink]="'/user/' + user.id + '/spaceship/' + user.spaceship.id + '/buildings'">Raumschiff-Ausbau</a><br>
+<a [routerLink]="'/user/' + user.id + '/spaceship/' + user.spaceship.id + '/fly'">Raumschiff fliegen</a><br>
 <a [routerLink]="'/user/' + user.id + '/spaceship/' + user.spaceship.id + '/technology/' + user.technology.id">Technologie</a><br>
-<a [routerLink]="'/user/' + user.id + '/coordinatesystem'" [queryParams]="{galaxy: user?.spaceship?.currentPosition?.galaxy, system: user?.spaceship?.currentPosition?.system}">Galaxie</a><br>
+<a [routerLink]="'/user/' + user.id + '/coordinatesystem'" [queryParams]="{galaxy: 1, system: 1}">Galaxie</a><br>
 <a [routerLink]="'/user/' + user.id + '/tradeoffers/'">Handelsangebote</a><br>
 <a routerLink="/highscore">Highscore</a><br>

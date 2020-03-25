@@ -16,10 +16,10 @@ import { FlightService } from 'src/app/core/services/flight.service';
 export class FlyToPlanetComponent implements OnInit {
 
   userId: number;
-  planetId: number;
   spaceshipId: number;
   spaceship: Spaceship;
   planet: Planet;
+  planetId: number;
 
   metal: number = 0;
   crystal: number = 0;
@@ -45,29 +45,43 @@ export class FlyToPlanetComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
-      this.userId = +paramMap.get('userId')
-      this.spaceshipId = +paramMap.get('spaceshipId')
-      this.planetId = +paramMap.get('planetId')
-    });
-    
-    this.findPlanet();
-    this.findSpaceship();
-
     this.form = this.fb.group({
+      action: ['', [Validators.required]],
       metal: ['', [Validators.required, Validators.min(0)]],
       crystal: ['', [Validators.required, Validators.min(0)]],
       hydrogen: ['', [Validators.required, Validators.min(0)]],
       galaxy: ['', [Validators.required]],
       system: ['', [Validators.required]],
-      position: ['', [Validators.required]],
-      action: ['', [Validators.required]]
+      position: ['', [Validators.required]]
     });
+    
+    this.route.paramMap.subscribe(paramMap => {
+      this.userId = +paramMap.get('userId')
+      this.spaceshipId = +paramMap.get('spaceshipId')
+    });
+    this.route.queryParamMap.subscribe(queryParamMap => {
+      this.planetId = +queryParamMap.get('planetid');
+      if (this.planetId){
+        this.findPlanet();
+        
+      }
+    });
+    this.findSpaceship();
+    
   }
-
+  
   findPlanet(){
     this.planetService.findPlanetById(this.planetId).subscribe(foundPlanet => {
       this.planet = foundPlanet;
+        this.form = this.fb.group({
+          action: ['pickup', [Validators.required]],
+          metal: [this.planet.metal, [Validators.required, Validators.min(0)]],
+          crystal: [this.planet.crystal, [Validators.required, Validators.min(0)]],
+          hydrogen: [this.planet.hydrogen, [Validators.required, Validators.min(0)]],
+          galaxy: [this.planet.coordinates.galaxy, [Validators.required]],
+          system: [this.planet.coordinates.system, [Validators.required]],
+          position: [this.planet.coordinates.position, [Validators.required]]
+        });
     });
   }
 
@@ -81,24 +95,24 @@ export class FlyToPlanetComponent implements OnInit {
     this.pickupOrDeliverState = !this.pickupOrDeliverState;
   }
 
-  maxResourcesOfPlanet(){ 
-    this.form = this.fb.group({
-      metal: [Math.floor(this.planet.metal)],
-      crystal: [Math.floor(this.planet.crystal)],
-      hydrogen: [Math.floor(this.planet.hydrogen)]
-    });
-  }
+  // maxResourcesOfPlanet(){ 
+  //   this.form = this.fb.group({
+  //     metal: [Math.floor(this.planet.metal)],
+  //     crystal: [Math.floor(this.planet.crystal)],
+  //     hydrogen: [Math.floor(this.planet.hydrogen)]
+  //   });
+  // }
 
-  maxResourcesOfSpaceship(){ 
-    this.form = this.fb.group({
-      metal: [Math.floor(this.spaceship.metal)],
-      crystal: [Math.floor(this.spaceship.crystal)],
-      hydrogen: [Math.floor(this.spaceship.hydrogen)],
-      galaxy: [''],
-      system: [''],
-      position: [''],
-    });
-  }
+  // maxResourcesOfSpaceship(){ 
+  //   this.form = this.fb.group({
+  //     metal: [Math.floor(this.spaceship.metal)],
+  //     crystal: [Math.floor(this.spaceship.crystal)],
+  //     hydrogen: [Math.floor(this.spaceship.hydrogen)],
+  //     galaxy: [''],
+  //     system: [''],
+  //     position: [''],
+  //   });
+  // }
 
   flyToCoordinate(){
     this.metal = this.form.value.metal;

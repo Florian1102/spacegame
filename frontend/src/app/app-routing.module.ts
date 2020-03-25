@@ -37,7 +37,7 @@ const routes: Routes = [
   { path: 'user/:userId/spaceship/:spaceshipId/specialization', component: SpecializationComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/spaceship/:spaceshipId/planet/colonize', component: ColonizePlanetComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/:planetId/rename', component: RenamePlanetComponent, canActivate: [AuthGuard]},
-  { path: 'user/:userId/spaceship/:spaceshipId/planet/:planetId/fly', component: FlyToPlanetComponent, canActivate: [AuthGuard]},
+  { path: 'user/:userId/spaceship/:spaceshipId/fly', component: FlyToPlanetComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/planet/:planetId', component: PlanetOverviewComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/coordinatesystem', component: CoordinateSystemViewComponent, canActivate: [AuthGuard]},
   { path: 'user/:userId/tradeoffers', component: OffersOverviewComponent, canActivate: [AuthGuard]},

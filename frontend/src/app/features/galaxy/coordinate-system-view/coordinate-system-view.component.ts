@@ -20,15 +20,15 @@ export class CoordinateSystemViewComponent implements OnInit {
   constructor(private route: ActivatedRoute, private coordinateSystemService: CoordinateSystemService, private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.route.queryParamMap.subscribe(paramMap => {
-      this.galaxy = +paramMap.get('galaxy');
-      this.system = +paramMap.get('system');
+    this.route.queryParamMap.subscribe(queryParamMap => {
+      this.galaxy = +queryParamMap.get('galaxy');
+      this.system = +queryParamMap.get('system');
     });
     this.findCoordinateSystem(this.galaxy, this.system);
 
     this.form = this.fb.group({
-      galaxy: ['galaxy'],
-      system: ['system']
+      galaxy: [this.galaxy],
+      system: [this.system]
     });
   }
 
